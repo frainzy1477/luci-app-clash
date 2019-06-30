@@ -11,8 +11,8 @@
 	<a target="_blank" href="https://github.com/frainzy1477/clash/releases/tag/c0.15.0">
     <img src="https://img.shields.io/badge/Clash-v0.15.0-orange.svg">
   </a>
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.22.0">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.22.0-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.23.0">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.23.0-blue.svg">
   </a>
   
   </p>
@@ -22,7 +22,7 @@
 
 - Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/c0.15.0) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.22.0)
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.23.0)
 
  
 ## Features
