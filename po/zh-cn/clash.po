@@ -1,0 +1,205 @@
+msgid "No New Version"
+msgstr "已安装最新本"
+
+msgid "Overview"
+msgstr "概览"
+
+msgid "Download"
+msgstr "下载新版本"
+
+msgid "Checking..."
+msgstr "正在检查..."
+
+msgid "Rule-based Custom Proxy Client"
+msgstr "基于规则的自定义代理客户端"
+
+msgid "Check Error!"
+msgstr "检查错误"
+
+msgid "New Version"
+msgstr "最新版本"
+
+msgid "Current Version"
+msgstr "当前版本"
+
+msgid "Return Check"
+msgstr "返回检查"
+
+msgid "Check Update"
+msgstr "检查更新"
+
+msgid "DNS Forwarding"
+msgstr "DNS转发"
+
+msgid "Enabling will set custom DNS forwarder in DHCP and DNS Settings"
+msgstr "启用自定义DNS转发"
+
+msgid "Proxy Lan IP"
+msgstr "走代理的局域网IP"
+
+msgid "Only selected IPs will be proxied if enabled"
+msgstr "如果启用，仅选择IP只走代理"
+
+msgid "Proxy Lan List"
+msgstr "走代理的IP列表"
+
+msgid "Only selected IPs will be proxied"
+msgstr "选择IP只走代理"
+
+msgid "Bypass Lan IP"
+msgstr "不走代理的局域网IP"
+
+msgid "Selected IPs will not be proxied if enabled"
+msgstr "如果启用，仅选择IP只不走代理"
+
+msgid "Bypass Lan List"
+msgstr "不走代理的IP列表"
+
+msgid "Selected IPs will not be proxied"
+msgstr "选择LAN IP只不走代理"
+
+msgid "Do not enable both Proxy Lan IP & Bypass Lan IP at the same time"
+msgstr "不要同时启用走代理的LAN IP和不走代理的LAN IP"
+
+msgid "Enabling Custom DNS will Overwrite your config.yml dns section"
+msgstr "启用自定义DNS会覆盖config.yml dns"
+
+msgid "Dashboard Host"
+msgstr "外部控制Host"
+
+msgid "Dashboard Port"
+msgstr "外部控制端口"
+
+msgid "Clear Logs"
+msgstr "清理日志"
+
+msgid "Dashboard Secret"
+msgstr "外部控制密钥"
+
+msgid "Google"
+msgstr "谷歌网"
+
+msgid "Youtube"
+msgstr "Youtube网"
+
+msgid "Baidu"
+msgstr "百度网"
+
+msgid "Taobao"
+msgstr "淘宝网"
+
+msgid "CONNECT OK"
+msgstr "连接正常"
+
+msgid "TIMEOUT"
+msgstr "连接超时"
+
+msgid "NOT SET"
+msgstr "未设置"
+
+msgid "NO ACCESS"
+msgstr "无法访问"
+
+msgid "Domestic IP"
+msgstr "国内网IP"
+
+msgid "Global IP"
+msgstr "国外网IP"
+
+msgid "clash"
+msgstr "clash"
+
+msgid "OPEN DASHBOARD"
+msgstr "打开外部控制"
+
+msgid "Clash Dashboard"
+msgstr "Clash外部控制"
+
+msgid "Yacd Dashboard"
+msgstr "Yacd外部控制"
+
+msgid "Client"
+msgstr "客户端"
+
+msgid "Clash Client"
+msgstr "客户端"
+
+msgid "Configuration"
+msgstr "配置文件"
+
+msgid "logs"
+msgstr "日志"
+
+msgid "Custom DNS"
+msgstr "自定义DNS"
+
+msgid "Modify yml DNS"
+msgstr "修改 DNS"
+
+msgid "Logs"
+msgstr "日志"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Update time (every day)"
+msgstr "更新时间 (每天)"
+
+msgid "Auto Update"
+msgstr "自动更新"
+
+msgid "Auto Update Server subscription"
+msgstr "自动更新服务器订阅"
+
+msgid "Daily Server subscription update time"
+msgstr "每日服务器订阅更新时间"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Config"
+msgstr "配置"
+
+msgid "Please modify the file here."
+msgstr "填写时请按照模板格式"
+
+msgid "GEOIP Database"
+msgstr "GEOIP数据库"
+
+msgid "Update GEOIP Database"
+msgstr "更新GEOIP数据库"
+
+msgid "Upload Clash Configuration"
+msgstr "上传Clash配置"
+
+msgid "NB: Rename your config file to config.yaml before upload. file will save to /etc/clash"
+msgstr "注意：上传之前，请将配置文件重命名为config.yaml。文件将保存到 /etc/clash"
+
+msgid "Redir Port"
+msgstr "转发端口"
+
+msgid "Subcription Url"
+msgstr "订阅URL"
+
+msgid "Update Subcription"
+msgstr "更新订阅配置"
+
+msgid "Update Configuration"
+msgstr "更新配置文件"
+
+msgid "After clash start running, wait a moment for servers to resolve"
+msgstr "运行后，等待服务器传"
+
+msgid "Redir Port"
+msgstr "转发端口"
+
+msgid "Server Subscription Address"
+msgstr "服务器订阅地址"
+
+msgid "Changes to config file must be made from source"
+msgstr "必须从源文件更改配置文件"
+
+
