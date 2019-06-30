@@ -5,7 +5,7 @@ local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 
-ful = SimpleForm("upload", nil)
+ful = Form("upload", nil)
 ful.reset = false
 ful.submit = false
 

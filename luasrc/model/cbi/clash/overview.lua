@@ -3,7 +3,7 @@ local m
 local sys = require "luci.sys"
 local uci = luci.model.uci.cursor()
 
-ful = SimpleForm("upload", nil)
+ful = Form("upload", nil)
 ful.reset = false
 ful.submit = false
 

@@ -8,7 +8,7 @@ local UTIL = require "luci.util"
 
 local http = luci.http
 
-ful = SimpleForm("upload", nil)
+ful = Form("upload", nil)
 ful.reset = false
 ful.submit = false
 
