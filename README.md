@@ -17,9 +17,9 @@
   
  ## Usage
 
-- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.0) .
+- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.23.0)
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases)
 
  
 ## Features
