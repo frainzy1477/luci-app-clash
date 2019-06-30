@@ -1,8 +1,8 @@
-<h3 align="center">
+<h2 align="center">
   <img src="https://github.com/Dreamacro/clash/raw/master/docs/logo.png" alt="Clash" width="200">
   <br>Luci For Clash - OpenWrt <br>
 
-</h3>
+</h2>
 
   <p align="center">
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
@@ -48,7 +48,7 @@
 
 ## License
 
-Clash for OpenWrt is released under the MIT License - see detailed [LICENSE](https://github.com/frainzy1477/luci-app-clash/blob/rm/LICENSE) .
+Luci For Clash - OpenWrt is released under the GPL v3.0 License - see detailed [LICENSE](https://github.com/frainzy1477/luci-app-clash/blob/master/LICENSE) .
 
 IP Query / Website Access Check based on  knowledge from  [MyIP](https://github.com/SukkaW/MyIP)
 
