@@ -61,8 +61,8 @@ msgstr "选择LAN IP只不走代理"
 msgid "Do not enable both Proxy Lan IP & Bypass Lan IP at the same time"
 msgstr "不要同时启用走代理的LAN IP和不走代理的LAN IP"
 
-msgid "Enabling Custom DNS will Overwrite your config.yml dns section"
-msgstr "启用自定义DNS会覆盖config.yml dns"
+msgid "Enabling Custom DNS will Overwrite your config.yaml dns section"
+msgstr "启用自定义DNS会覆盖config.yaml dns"
 
 msgid "Dashboard Host"
 msgstr "外部控制Host"
