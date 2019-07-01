@@ -74,7 +74,7 @@ y.description = translate("Enabling will set custom DNS forwarder in DHCP and DN
 md = s:option(Flag, "mode", translate("Custom DNS"))
 md.default = 1
 md.rmempty = false
-md.description = translate("Enabling Custom DNS will Overwrite your config.yml dns section")
+md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")
 
 
 local dns = "/usr/share/clash/dns.yaml"
