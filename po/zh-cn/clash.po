@@ -133,7 +133,7 @@ msgstr "日志"
 msgid "Custom DNS"
 msgstr "自定义DNS"
 
-msgid "Modify yml DNS"
+msgid "Modify yaml DNS"
 msgstr "修改 DNS"
 
 msgid "Logs"
