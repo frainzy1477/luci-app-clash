@@ -78,7 +78,7 @@ md.description = translate("Enabling Custom DNS will Overwrite your config.yaml 
 
 
 local dns = "/usr/share/clash/dns.yaml"
-o = s:option(TextValue, "dns",translate("Modify yml DNS"))
+o = s:option(TextValue, "dns",translate("Modify yaml DNS"))
 o.template = "clash/tvalue"
 o.rows = 25
 o.wrap = "off"
