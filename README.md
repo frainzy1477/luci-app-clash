@@ -21,6 +21,7 @@
 
 - Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases)
 
+- [fake-ip wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
  
 ## Features
 - Support sspanel Server subscription
