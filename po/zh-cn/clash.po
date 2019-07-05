@@ -1,6 +1,12 @@
 msgid "No New Version"
 msgstr "已安装最新本"
 
+msgid "Log level"
+msgstr "日志级别"
+
+msgid "Choose Log Level"
+msgstr "选择日志级别"
+
 msgid "Overview"
 msgstr "概览"
 

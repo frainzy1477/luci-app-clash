@@ -37,6 +37,13 @@ o.default = 123456
 o.rmempty = false
 o.description = translate("Dashboard Secret")
 
+o = s:option(ListValue, "level", translate("Log level"))
+o.description = translate("Choose Log Level")
+o:value("info", translate("info"))
+o:value("silent", translate("silent"))
+o:value("warning", translate("warning"))
+o:value("error", translate("error"))
+o:value("debug", translate("debug"))
 
 o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.rmempty = false
