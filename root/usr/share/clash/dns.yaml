@@ -19,8 +19,5 @@ dns:
   - 114.114.114.114
   - 114.114.115.115    
   - tls://dns.rubyfish.cn:853
-  - https://1.1.1.1/dns-query
  fallback: 
   - tls://1.1.1.1:853
-
- 
