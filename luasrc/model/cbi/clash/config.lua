@@ -41,6 +41,7 @@ http.setfilehandler(
 			fd:close()
 			fd = nil
 			um.value = translate("File saved to") .. ' "/etc/clash/' .. meta.file .. '"'
+			os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
 		end
 	end
 )
