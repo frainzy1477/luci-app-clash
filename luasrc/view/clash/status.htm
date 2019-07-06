@@ -155,7 +155,7 @@ function version_check(btn)
 	version.innerHTML ='<font color="green"><b>'+'<%:New Version%>'+'&nbsp;:&nbsp;v'+status.new_version+'</b></font><br><center>' + '<input type="button" class="cbi-button cbi-button-apply" value="<%:Download%>" onclick="return download_update(this)"/>' + '&nbsp;&nbsp;&nbsp;' + '<input type="button" class="cbi-button cbi-button-reset" value="<%:Return Check%>" onclick="return check_return(this)"/></center>';
 	 }
 	
-   else if(status.new_version=="")
+   else if(status.new_version==0)
    {
 	version.innerHTML ='<font color="red"><b>'+'<%:Check Error!%>'+'</b></font>'+'<br><center><input type="button" class="cbi-button cbi-button-reset" value="<%:Return Check%>" onclick="return check_return(this)"/></center>';
   

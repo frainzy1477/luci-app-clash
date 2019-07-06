@@ -1,4 +1,3 @@
-
 #experimental:
 #  ignore-resolve-fail: true
 
@@ -21,3 +20,5 @@ dns:
   - tls://dns.rubyfish.cn:853
  fallback: 
   - tls://1.1.1.1:853
+  
+  
