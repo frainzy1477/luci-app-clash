@@ -163,37 +163,34 @@ rules(){
 		lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 		lan=$(uci get clash.config.proxylan 2>/dev/null)
 		dns_port=`grep listen: /etc/clash/config.yaml |awk -F ':' '{print $3}' |tr -cd "[0-9]"`
-		iptables -t nat -N clash   
-		iptables -t nat -N clash_dns            
-		iptables -t nat -A clash -d 0.0.0.0/8 -j RETURN
-		iptables -t nat -A clash -d 10.0.0.0/8 -j RETURN
-		iptables -t nat -A clash -d 127.0.0.0/8 -j RETURN
-		iptables -t nat -A clash -d 169.254.0.0/16 -j RETURN
-		iptables -t nat -A clash -d 172.16.0.0/12 -j RETURN
-		iptables -t nat -A clash -d 192.168.0.0/16 -j RETURN
-		iptables -t nat -A clash -d 224.0.0.0/4 -j RETURN
-		iptables -t nat -A clash -d 240.0.0.0/4 -j RETURN		
-		iptables -t nat -A clash -d $lan_ip -j RETURN
+		iptables -t nat -N clash_tcp   
+		iptables -t nat -N clash_udp            
+		iptables -t nat -A clash_tcp -d 0.0.0.0/8 -j RETURN
+		iptables -t nat -A clash_tcp -d 10.0.0.0/8 -j RETURN
+		iptables -t nat -A clash_tcp -d 127.0.0.0/8 -j RETURN
+		iptables -t nat -A clash_tcp -d 169.254.0.0/16 -j RETURN
+		iptables -t nat -A clash_tcp -d 172.16.0.0/12 -j RETURN
+		iptables -t nat -A clash_tcp -d 192.168.0.0/16 -j RETURN
+		iptables -t nat -A clash_tcp -d 224.0.0.0/4 -j RETURN
+		iptables -t nat -A clash_tcp -d 240.0.0.0/4 -j RETURN		
+		iptables -t nat -A clash_tcp -d $lan_ip -j RETURN
 
-		iptables -t nat -A clash -p tcp --dport 22 -j ACCEPT
+		iptables -t nat -A clash_tcp -p tcp --dport 22 -j ACCEPT
 
-		iptables -t nat -A clash_dns -p udp -j REDIRECT --to-ports $dns_port
-      	        iptables -t nat -A clash_dns -p tcp -j REDIRECT --to-ports $dns_port
+		iptables -t nat -A clash_udp -p udp -j REDIRECT --to-ports $dns_port      	        
 
 		if [ $lanac -eq 1 ]; then
-			iptables -t nat -A clash -p tcp -m set --match-set clash_lan src -j RETURN
-			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports $proxy_port
+			iptables -t nat -A clash_tcp -p tcp -m set --match-set clash_lan src -j RETURN
+			iptables -t nat -A clash_tcp -p tcp -j REDIRECT --to-ports $proxy_port
 		elif [ $lan -eq 1 ]; then	
-			iptables -t nat -A clash -p tcp -m set --match-set clash_lan_ac src -j REDIRECT --to-ports $proxy_port
+			iptables -t nat -A clash_tcp -p tcp -m set --match-set clash_lan_ac src -j REDIRECT --to-ports $proxy_port
 		else
-			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports $proxy_port
+			iptables -t nat -A clash_tcp -p tcp -j REDIRECT --to-ports $proxy_port
 		fi
 
+		iptables -t nat -I PREROUTING 1 -p udp --dport 53 -j clash_udp
 
-		iptables -t nat -I PREROUTING 1 -p tcp --dport 53 -j clash_dns
-        	iptables -t nat -I PREROUTING 1 -p udp --dport 53 -j clash_dns
-
-		iptables -t nat -A PREROUTING -p tcp -j clash
+		iptables -t nat -A PREROUTING -p tcp -j clash_tcp
 
 	
 		
