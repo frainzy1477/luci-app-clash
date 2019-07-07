@@ -309,8 +309,7 @@ restart(){
 
 		if pidof clash >/dev/null; then
 			stop
-			sleep 2
-		    	start
+			start
 		else
 		    	start
 		fi	

@@ -26,7 +26,7 @@ o.description = translate("Redir Port")
 
 o = s:option(Value, "dash_port")
 o.title = translate("Dashboard Port")
-o.default = 9090
+o.default = 9191
 o.datatype = "port"
 o.rmempty = false
 o.description = translate("Dashboard Port")
