@@ -271,12 +271,12 @@ fi
 
 stop_service(){
 #=========================================================================================================================== 
-		iptables -t nat -F clash >/dev/null 2>&1
-		iptables -t nat -X clash >/dev/null 2>&1
-		iptables -t nat -F clash_dns >/dev/null 2>&1
-		iptables -t nat -X clash_dns >/dev/null 2>&1
-		iptables -t nat -D PREROUTING -p tcp -j clash >/dev/null 2>&1
-		iptables -t nat -D PREROUTING -p tcp -j clash_dns >/dev/null 2>&1
+		iptables -t nat -F clash_tcp >/dev/null 2>&1
+		iptables -t nat -X clash_tcp >/dev/null 2>&1
+		iptables -t nat -F clash_udp >/dev/null 2>&1
+		iptables -t nat -X clash_udp >/dev/null 2>&1
+		iptables -t nat -D PREROUTING -p tcp -j clash_tcp >/dev/null 2>&1
+		iptables -t nat -D PREROUTING -p udp -j clash_udp >/dev/null 2>&1
 
 		ipset -! flush clash_lan_ac >/dev/null 2>&1
 		ipset -! flush clash_lan >/dev/null 2>&1
