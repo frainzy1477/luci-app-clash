@@ -5,15 +5,10 @@ local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 
-
-
 m = Map("clash")
 s = m:section(TypedSection, "clash")
 s.anonymous = true
 s.addremove=false
-
-
-
 
 md = s:option(Flag, "proxylan", translate("Proxy Lan IP"))
 md.default = 1
@@ -41,7 +36,7 @@ o.description = update_time
 o.inputstyle = "reload"
 o.write = function()
   SYS.call("bash /usr/share/clash/ipdb.sh >>/tmp/clash.log 2>&1 &")
-  HTTP.redirect(DISP.build_url("admin", "services", "clash","settings"))
+  HTTP.redirect(DISP.build_url("admin", "services", "clash","settings", "access"))
 end
 
 
@@ -64,33 +59,7 @@ luci.ip.neighbors({ family = 4 }, function(entry)
 end)
 o:depends("rejectlan", 1)
 
-y = s:option(Flag, "dnsforwader", translate("DNS Forwarding"))
-y.default = 1
-y.rmempty = false
-y.description = translate("Enabling will set custom DNS forwarder in DHCP and DNS Settings")
 
 
-
-md = s:option(Flag, "mode", translate("Custom DNS"))
-md.default = 1
-md.rmempty = false
-md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")
-
-
-local dns = "/usr/share/clash/dns.yaml"
-o = s:option(TextValue, "dns",translate("Modify yaml DNS"))
-o.template = "clash/tvalue"
-o.rows = 25
-o.wrap = "off"
-o.cfgvalue = function(self, section)
-	return NXFS.readfile(dns) or ""
-end
-o.write = function(self, section, value)
-	NXFS.writefile(dns, value:gsub("\r\n", "\n"))
-end
-o.description = translate("Please modify the file here.")
-o:depends("mode", 1)
 
 return m
-
-

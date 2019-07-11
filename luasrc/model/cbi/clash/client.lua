@@ -15,35 +15,8 @@ o = s:option( Flag, "enable")
 o.title = translate("Enable")
 o.default = 0
 o.rmempty = false
-o.description = translate("After clash start running, wait a moment for servers to resolve")
+o.description = translate("Enable Client")
 
-o = s:option(Value, "proxy_port")
-o.title = translate("Redir Port")
-o.default = 7892
-o.datatype = "port"
-o.rmempty = false
-o.description = translate("Redir Port")
-
-o = s:option(Value, "dash_port")
-o.title = translate("Dashboard Port")
-o.default = 9191
-o.datatype = "port"
-o.rmempty = false
-o.description = translate("Dashboard Port")
-
-o = s:option(Value, "dash_pass")
-o.title = translate("Dashboard Secret")
-o.default = 123456
-o.rmempty = false
-o.description = translate("Dashboard Secret")
-
-o = s:option(ListValue, "level", translate("Log level"))
-o.description = translate("Choose Log Level")
-o:value("info", translate("info"))
-o:value("silent", translate("silent"))
-o:value("warning", translate("warning"))
-o:value("error", translate("error"))
-o:value("debug", translate("debug"))
 
 o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.rmempty = false
@@ -65,7 +38,7 @@ o.rmempty = true
 
 o = s:option(Button,"update")
 o.title = translate("Update Subcription")
-o.inputtitle = translate("Update Configuration")
+o.inputtitle = translate("Update")
 o.inputstyle = "reload"
 o.write = function()
   os.execute("mv /etc/clash/config.yaml /etc/clash/config.bak")

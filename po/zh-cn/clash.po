@@ -1,3 +1,28 @@
+
+msgid "enabled"
+msgstr "启用"
+
+msgid "disabled"
+msgstr "停用"
+
+msgid "Access Control"
+msgstr "访问控制"
+
+msgid "Proxy Ports"
+msgstr "代理端口设置"
+
+msgid "DNS Settings"
+msgstr "DNS设置"
+
+msgid "Http Port"
+msgstr "http代理端口"
+
+msgid "Socks Port"
+msgstr "socks代理端口"
+
+msgid "Redir Port"
+msgstr "redir代理端口"
+
 msgid "No New Version"
 msgstr "已安装最新本"
 
@@ -37,8 +62,8 @@ msgstr "检查更新"
 msgid "DNS Forwarding"
 msgstr "DNS转发"
 
-msgid "Enabling will set custom DNS forwarder in DHCP and DNS Settings"
-msgstr "启用自定义DNS转发"
+msgid "Set custom DNS forwarder in DHCP and DNS Settings"
+msgstr "在DHCP和DNS设置自定义DNS转发"
 
 msgid "Proxy Lan IP"
 msgstr "走代理的局域网IP"
@@ -63,9 +88,6 @@ msgstr "不走代理的IP列表"
 
 msgid "Selected IPs will not be proxied"
 msgstr "选择LAN IP只不走代理"
-
-msgid "Do not enable both Proxy Lan IP & Bypass Lan IP at the same time"
-msgstr "不要同时启用走代理的LAN IP和不走代理的LAN IP"
 
 msgid "Enabling Custom DNS will Overwrite your config.yaml dns section"
 msgstr "启用自定义DNS会覆盖config.yaml dns"
@@ -169,8 +191,8 @@ msgstr "启用"
 msgid "Config"
 msgstr "配置"
 
-msgid "Please modify the file here."
-msgstr "填写时请按照模板格式"
+msgid "NB: press ENTER to create a blank line at the end of input."
+msgstr "填写时请按照模板格式, 按Enter键在输入结束时创建一行空行"
 
 msgid "GEOIP Database"
 msgstr "GEOIP数据库"
@@ -184,28 +206,20 @@ msgstr "上传Clash配置"
 msgid "NB: Rename your config file to config.yaml before upload. file will save to /etc/clash"
 msgstr "注意：上传之前，请将配置文件重命名为config.yaml。文件将保存到 /etc/clash"
 
-msgid "Redir Port"
-msgstr "转发端口"
-
 msgid "Subcription Url"
 msgstr "订阅URL"
 
 msgid "Update Subcription"
 msgstr "更新订阅配置"
 
-msgid "Update Configuration"
-msgstr "更新配置文件"
+msgid "Update"
+msgstr "更新"
 
-msgid "After clash start running, wait a moment for servers to resolve"
-msgstr "运行后，等待服务器传"
-
-msgid "Redir Port"
-msgstr "转发端口"
+msgid "Enable Client"
+msgstr "启用客户端"
 
 msgid "Server Subscription Address"
 msgstr "服务器订阅地址"
 
 msgid "Changes to config file must be made from source"
 msgstr "必须从源文件更改配置文件"
-
-

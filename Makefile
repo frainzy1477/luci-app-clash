@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=0.25.0
+PKG_VERSION:=0.27.0
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -22,11 +22,10 @@ define Package/luci-app-clash/description
 	LuCI configuration for clash.
 endef
 
-#define Package/$(PKG_NAME)/postinst
+define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-#rm -rf /tmp/luci*
-#/etc/init.d/clash disable
-#endef
+rm -rf /tmp/luci*
+endef
 
 define Build/Prepare
 	${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
@@ -63,6 +62,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash_version $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/check_version.sh $(1)/usr/share/clash/
+	
 	
 	$(INSTALL_BIN) ./root/usr/share/clash/web/* $(1)/usr/share/clash/web
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/

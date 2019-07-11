@@ -9,8 +9,8 @@
 dns:
  enable: true
  # ipv6: false
- listen: 0.0.0.0:5353
- enhanced-mode: redir-host
+ listen: 0.0.0.0:5300
+ enhanced-mode: fake-ip
  #fake-ip-range: 198.18.0.1/16
  nameserver: 
   - 101.132.183.99
@@ -19,6 +19,7 @@ dns:
   - 114.114.115.115    
   - tls://dns.rubyfish.cn:853
   - https://1.1.1.1/dns-query
- fallback:
-  - tls://1.1.1.1:853
-  - tls://8.8.8.8:853
+# fallback:
+#  - tls://1.1.1.1:853
+
+

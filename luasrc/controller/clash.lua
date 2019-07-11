@@ -1,18 +1,21 @@
 module("luci.controller.clash", package.seeall)
 
 function index()
+
 	if not nixio.fs.access("/etc/config/clash") then
 		return
 	end
 
-
-	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 60).dependent = true
+	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 60).dependent = false
 	entry({"admin", "services", "clash", "overview"},cbi("clash/overview"),_("Overview"), 10).leaf = true
 	entry({"admin", "services", "clash", "client"},cbi("clash/client"),_("Client"), 20).leaf = true
-	entry({"admin", "services", "clash", "settings"},cbi("clash/settings"),_("Settings"), 30).leaf = true
-	entry({"admin", "services", "clash", "config"},cbi("clash/config"),_("Config"), 40).leaf = true
+	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 100)
+	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 100).leaf = true
+	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 120).leaf = true
+	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 130).leaf = true
+	entry({"admin", "services", "clash", "config"},form("clash/config"),_("Config"), 140).leaf = true
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
-	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 50).leaf = true
+	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 150).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 
 	
