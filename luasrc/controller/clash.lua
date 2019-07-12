@@ -13,7 +13,7 @@ function index()
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 100).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 120).leaf = true
 	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 130).leaf = true
-	entry({"admin", "services", "clash", "config"},form("clash/config"),_("Config"), 140).leaf = true
+	entry({"admin", "services", "clash", "config"},cbi("clash/config"),_("Config"), 140).leaf = true
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
 	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 150).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
