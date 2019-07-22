@@ -204,8 +204,11 @@ rules(){
 
 yml_yaml(){
 #===========================================================================================================================
-if [ -f /etc/clash/config.yml ];then
+subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
+if [ -f /etc/clash/config.yml ] && [ ! -f /etc/clash/config.yaml ];then
 	mv /etc/clash/config.yml /etc/clash/config.yaml
+elif [ ! -f /etc/clash/config.yaml ] && [ $subscribe_url ];then
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log >/dev/null 2>&1
 fi
 #===========================================================================================================================
 }
