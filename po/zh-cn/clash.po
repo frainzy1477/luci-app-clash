@@ -5,6 +5,12 @@ msgstr "启用"
 msgid "disabled"
 msgstr "停用"
 
+msgid "Start Client"
+msgstr "启用客户端"
+
+msgid "Stop Client"
+msgstr "停用客户端"
+
 msgid "Access Control"
 msgstr "访问控制"
 
