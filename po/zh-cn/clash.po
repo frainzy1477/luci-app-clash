@@ -2,14 +2,14 @@
 msgid "enabled"
 msgstr "启用"
 
+msgid "Subcription Type"
+msgstr "服务器订阅类型"
+
+msgid "Select Subcription Type, enter only your subcription url without https://tgbot.lbyczf.com/*?"
+msgstr "选择服务器订阅类型,输入服务器订阅不要带https://tgbot.lbyczf.com/*?"
+
 msgid "disabled"
 msgstr "停用"
-
-msgid "Start Client"
-msgstr "启用客户端"
-
-msgid "Stop Client"
-msgstr "停用客户端"
 
 msgid "Access Control"
 msgstr "访问控制"
@@ -194,6 +194,9 @@ msgstr "每日服务器订阅更新时间"
 msgid "Enable"
 msgstr "启用"
 
+msgid "Delete Config"
+msgstr "删除配置"
+
 msgid "Config"
 msgstr "配置"
 
@@ -206,8 +209,8 @@ msgstr "GEOIP数据库"
 msgid "Update GEOIP Database"
 msgstr "更新GEOIP数据库"
 
-msgid "Upload Clash Configuration"
-msgstr "上传Clash配置"
+msgid "Upload Config"
+msgstr "上传配置"
 
 msgid "NB: Rename your config file to config.yaml before upload. file will save to /etc/clash"
 msgstr "注意：上传之前，请将配置文件重命名为config.yaml。文件将保存到 /etc/clash"

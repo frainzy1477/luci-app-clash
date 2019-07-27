@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=0.29.0
+PKG_VERSION:=0.30.0
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -64,6 +64,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/ipdb.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash_version $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/check_version.sh $(1)/usr/share/clash/
 	

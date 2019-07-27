@@ -3,7 +3,6 @@
 START=99
 STOP=15
 
-
 CLASH="/etc/clash/clash"
 CLASH_CONFIG="/etc/clash"
 CRON_FILE="/etc/crontabs/root"
@@ -52,7 +51,7 @@ yml_change(){
 		socks_port=$(uci get clash.config.socks_port 2>/dev/null)
 		dash_port=$(uci get clash.config.dash_port 2>/dev/null)
 		log_level=$(uci get clash.config.level 2>/dev/null)
-
+		subtype=$(uci get clash.config.subcri 2>/dev/null)
 if [ $mode -eq 1 ];  then	
 		
 		sed -i "/Proxy:/i\#clash-openwrt" /etc/clash/config.yaml
@@ -76,10 +75,19 @@ if [ $mode -eq 1 ];  then
 		sed -i '/#=============/ d' /etc/clash/config.yaml
 		
 else
-		
+		if [ $subtype=="v2rayn2clash" ] || [ $subtype=="surge2clash" ];then
+		sed -i "/Proxy:/i\#clash-openwrt" /etc/clash/config.yaml
+                sed -i "/#clash-openwrt/a\#=============" /etc/clash/config.yaml
+		sed -i "/#=============/a\ " /etc/clash/config.yaml
+		sed -i '1,/#clash-openwrt/d' /etc/clash/config.yaml		
+		mv /etc/clash/config.yaml /etc/clash/dns.yaml
+		cat /usr/share/clash/dns.yaml /etc/clash/dns.yaml > /etc/clash/config.yaml 
+		rm -rf /etc/clash/dns.yaml
+		else
 		sed -i "/dns:/i\#clash-openwrt" /etc/clash/config.yaml
                sed -i "/#clash-openwrt/a\#=============" /etc/clash/config.yaml
 		sed -i '1,/#clash-openwrt/d' /etc/clash/config.yaml
+		fi
 		sed -i "1i\port: ${http_port}" /etc/clash/config.yaml
 		sed -i "2i\socks-port: ${socks_port}" /etc/clash/config.yaml
 		sed -i "3i\redir-port: ${redir_port}" /etc/clash/config.yaml
@@ -177,11 +185,8 @@ rules(){
 		iptables -t nat -A clash_tcp -d 224.0.0.0/4 -j RETURN
 		iptables -t nat -A clash_tcp -d 240.0.0.0/4 -j RETURN		
 		iptables -t nat -A clash_tcp -d $lan_ip -j RETURN
-
 		iptables -t nat -A clash_tcp -p tcp --dport 22 -j ACCEPT
-
-		iptables -t nat -A clash_udp -p udp -j REDIRECT --to-ports $dns_port      	        
-
+		iptables -t nat -A clash_udp -p udp -j REDIRECT --to-ports $dns_port
 		if [ $lanac -eq 1 ]; then
 			iptables -t nat -A clash_tcp -p tcp -m set --match-set clash_lan src -j RETURN
 			iptables -t nat -A clash_tcp -p tcp -j REDIRECT --to-ports $redir_port
@@ -190,9 +195,7 @@ rules(){
 		else
 			iptables -t nat -A clash_tcp -p tcp -j REDIRECT --to-ports $redir_port
 		fi
-
 		iptables -t nat -I PREROUTING 1 -p udp --dport 53 -j clash_udp
-
 		iptables -t nat -A PREROUTING -p tcp -j clash_tcp
 
 	
@@ -316,6 +319,7 @@ restart(){
 
 		if pidof clash >/dev/null; then
 			stop
+			sleep 2
 			start
 		else
 		    	start
@@ -323,4 +327,5 @@ restart(){
 
 #=========================================================================================================================== 
 }
+
 
