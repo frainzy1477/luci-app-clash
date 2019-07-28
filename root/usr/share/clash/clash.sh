@@ -9,22 +9,30 @@ if pidof clash >/dev/null; then
 fi
 rm -rf /etc/clash/config.bak 2> /dev/null
 if [ $subtype == "clash" ];then
-wget-ssl --user-agent="User-Agent: Mozilla" $subscribe_url -O 2>&1 >1 /etc/clash/config.yaml
+wget-ssl --timeout=10 --tries=2 --user-agent="User-Agent: Mozilla" $subscribe_url -O 2>&1 >1 /etc/clash/config.yaml
 elif [ $subtype == "v2rayn2clash" ];then
-wget-ssl --user-agent="User-Agent: Mozilla" $urlv2ray.$subscribe_url -O 2>&1 >1 /etc/clash/server.yaml
+wget-ssl --timeout=10 --tries=2 --user-agent="User-Agent: Mozilla" $urlv2ray.$subscribe_url -O 2>&1 >1 /etc/clash/server.yaml
 if [ -f /etc/clash/server.yaml ];then
 sed -i '/Rule:/,$d' /etc/clash/server.yaml 
 cat /etc/clash/server.yaml /usr/share/clash/rule.yaml > /etc/clash/config.yaml 
 fi
 elif [ $subtype == "surge2clash" ];then
-wget-ssl --user-agent="User-Agent: Mozilla" $urlsurge.$subscribe_url -O 2>&1 >1 /etc/clash/server.yaml
+wget-ssl --timeout=10 --tries=2 --user-agent="User-Agent: Mozilla" $urlsurge.$subscribe_url -O 2>&1 >1 /etc/clash/server.yaml
 if [ -f /etc/clash/server.yaml ];then
 sed -i '/Rule:/,$d' /etc/clash/server.yaml 
 cat /etc/clash/server.yaml /usr/share/clash/rule.yaml > /etc/clash/config.yaml
 fi
 fi
 rm -rf /etc/clash/server.yaml 2> /dev/null
-if [ $enable -eq 1 ]; then
-[ "$?" -eq "0" ] && /etc/init.d/clash restart 2>/dev/null
+if [ ! $enable ] && [ -f /etc/clash/config.yaml ];then
+uci set clash.config.enable=1
+uci commit clash
+/etc/init.d/clash restart 2>/dev/null
+elif [ $enable -eq 1 ] && [ -f /etc/clash/config.yaml ];then
+/etc/init.d/clash restart 2>/dev/null
+elif [ $enable -eq 0 ] && [ -f /etc/clash/config.yaml ];then
+uci set clash.config.enable=1
+uci commit clash
+/etc/init.d/clash restart 2>/dev/null
 fi
 
