@@ -24,15 +24,8 @@ cat /etc/clash/server.yaml /usr/share/clash/rule.yaml > /etc/clash/config.yaml
 fi
 fi
 rm -rf /etc/clash/server.yaml 2> /dev/null
-if [ ! $enable ] && [ -f /etc/clash/config.yaml ];then
-uci set clash.config.enable=1
-uci commit clash
+uci set clash.config.enable=1 2> /dev/null
+uci commit clash 2> /dev/null
 /etc/init.d/clash restart 2>/dev/null
-elif [ $enable -eq 1 ] && [ -f /etc/clash/config.yaml ];then
-/etc/init.d/clash restart 2>/dev/null
-elif [ $enable -eq 0 ] && [ -f /etc/clash/config.yaml ];then
-uci set clash.config.enable=1
-uci commit clash
-/etc/init.d/clash restart 2>/dev/null
-fi
+
 
