@@ -1,5 +1,5 @@
-msgid "Update Config/Restart Client"
-msgstr "更新配置/启用/启动/重新启动客户端"
+msgid "Update Config"
+msgstr "更新配置"
 
 msgid "Enable/Start/Restart Client"
 msgstr "启用/启动/重新启动客户端"
@@ -243,3 +243,6 @@ msgstr "启用客户端"
 
 msgid "Server Subscription Address"
 msgstr "服务器订阅地址"
+
+msgid "Changes to config file must be made from source"
+msgstr "必须从源文件更改配置文件"

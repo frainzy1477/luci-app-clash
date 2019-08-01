@@ -43,7 +43,7 @@ o.rmempty = true
 o = s:option(Button,"update")
 o.title = translate("Update Subcription")
 o.inputtitle = translate("Update")
-o.description = translate("Update Config/Restart Client")
+o.description = translate("Update Config")
 o.inputstyle = "reload"
 o.write = function()
   os.execute("sed -i '/enable/d' /etc/config/clash")
