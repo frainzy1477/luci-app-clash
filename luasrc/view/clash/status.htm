@@ -26,8 +26,8 @@
 <fieldset class="cbi-section">
 	<table width="100%" cellspacing="10">
 	
-	    <tr><td class="align-left" width="50%"><span><%:Global IP%> </span>&nbsp;:&nbsp;<span id="ip-ipify"></span> <span id="ip-ipify-ipip"></span></td>  <td class="align-right" width="25%">  <span><%:Google%></span>&nbsp;:&nbsp;<span id="_google"><em><%:Collecting data...%></em></span></td><td class="align-right"><%:Youtube%> </span>&nbsp;:&nbsp;<span id="_youtube"><em><%:Collecting data...%></em></span></td></tr>    
-	    <tr><td class="align-left" width="50%"><span><%:Domestic IP%> </span>&nbsp;:&nbsp;<span id="d-ip"></span></td>  <td class="align-right" width="25%"> <span><%:Baidu%></span>&nbsp;:&nbsp;<span  id="_baidu"><em><%:Collecting data...%></em></span></td> <td class="align-right"><%:Taobao%> </span>&nbsp;:&nbsp;<span id="_taobao"><em><%:Collecting data...%></em></span></td></tr>
+	    <tr><td class="align-left" width="50%"><span><%:Global IP%> </span>&nbsp;:&nbsp;<span id="ip-ipify"><font color=red><%:Checking...%></font></span> <span id="ip-ipify-ipip"></span></td>  <td class="align-right" width="25%">  <span><%:Google%></span>&nbsp;:&nbsp;<span id="_google"><em><%:Collecting data...%></em></span></td><td class="align-right"><%:Youtube%> </span>&nbsp;:&nbsp;<span id="_youtube"><em><%:Collecting data...%></em></span></td></tr>    
+	    <tr><td class="align-left" width="50%"><span><%:Domestic IP%> </span>&nbsp;:&nbsp;<span id="d-ip"><font color=red><%:Checking...%></font></span></td>  <td class="align-right" width="25%"> <span><%:Baidu%></span>&nbsp;:&nbsp;<span  id="_baidu"><em><%:Collecting data...%></em></span></td> <td class="align-right"><%:Taobao%> </span>&nbsp;:&nbsp;<span id="_taobao"><em><%:Collecting data...%></em></span></td></tr>
 	</table>
 </fieldset>
 
@@ -92,8 +92,7 @@ let IP = {
            
 }
 
-IP.getIpifyIP();
-IP.getIpipnetIP();
+
 			
 var HTTP = {
 	checker: (domain, cbElID) => {
@@ -116,6 +115,26 @@ var HTTP = {
 
 }
 
+          function Load()
+	      {
+	         var tbip = document.getElementsByTagName('HEAD').item(0);
+	         var tbipScript= document.createElement("script");
+	         tbipScript.async = "async";
+	         tbipScript.src='https://myip.ipip.net/?z=${random}';
+	         tbip.appendChild( tbipScript);
+
+	         var sbip = document.getElementsByTagName('HEAD').item(0);
+	         var sbipScript= document.createElement("script");
+	         sbipScript.async = "async";
+	         sbipScript.src='https://api.skk.moe/network/parseIp/ipip';
+	         sbip.appendChild( sbipScript);
+
+	         const $$ = document;
+	         random = parseInt(Math.random() * 100000000);
+		     IP.getIpifyIP();
+			IP.getIpipnetIP();
+       	     setTimeout("Load()",1000*8);
+		   }
 	var web = document.getElementById('_web');
 	var webb = document.getElementById('_webb');
 	var clash = document.getElementById('_clash');
