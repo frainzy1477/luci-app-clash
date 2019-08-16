@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.32.0">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.32.0-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.33.0">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.33.0-blue.svg">
   </a>
   
   </p>
@@ -22,8 +22,6 @@
 - Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases)
 
 - [fake-ip wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
-
-- [redir-host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
  
 ## Features
 - Support sspanel Server subscription

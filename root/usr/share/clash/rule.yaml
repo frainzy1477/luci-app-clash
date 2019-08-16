@@ -1,29 +1,23 @@
-
-      
   - name: "Overseas"
     type: select
     proxies: 
       - "Proxy"
       - "DIRECT"
-  
   - name: "GlobalTV"
     type: select 
     proxies: 
       - "Proxy"
       - "DIRECT"
-  
   - name: AsianTV 
     type: select 
     proxies: 
       - "DIRECT"
-      - "Proxy"
-      
+      - "Proxy"     
   - name: AdBlock 
     type: select 
     proxies: 
       - "REJECT" 
 
-  
 Rule:
 - DOMAIN-SUFFIX,zjhu.edu.cn,DIRECT
 - DOMAIN,gs.apple.com,Proxy
