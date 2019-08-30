@@ -247,8 +247,8 @@ msgstr "更新GEOIP数据库"
 msgid "Upload Config"
 msgstr "上传配置"
 
-msgid "NB: Rename your config file to config.yaml before upload. file will save to /etc/clash"
-msgstr "注意：上传之前，请将配置文件重命名为config.yaml。文件将保存到 /etc/clash"
+msgid "NB: Only upload file with name config.yml or config.yaml"
+msgstr "注意：仅上载名为config.yml或config.yaml的文件"
 
 msgid "Subcription Url"
 msgstr "订阅URL"
