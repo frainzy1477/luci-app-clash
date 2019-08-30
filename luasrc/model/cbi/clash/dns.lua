@@ -39,6 +39,12 @@ end
 o.description = translate("NB: press ENTER to create a blank line at the end of input.")
 o:depends("mode", 1)
 
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+	SYS.call("sh /usr/share/clash/yum_change.sh 2>&1 &")
+	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+end
+
 return m
 
 

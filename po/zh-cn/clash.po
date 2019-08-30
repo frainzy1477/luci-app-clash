@@ -70,8 +70,14 @@ msgstr "正在检查..."
 msgid "Not Installed"
 msgstr "未安装"
 
-msgid "Installed Version"
+msgid "Version"
 msgstr "已安装版本"
+
+msgid "NO CONFIG"
+msgstr "没配置"
+
+msgid "Clash Mode"
+msgstr "Clash模式"
 
 msgid "App Name"
 msgstr "应用程序名称"

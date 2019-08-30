@@ -61,6 +61,10 @@ local function new_core_version()
 	return luci.sys.exec("sed -n 1p /usr/share/clash/new_core_version")
 end
 
+local function e_mode()
+	return luci.sys.exec("grep enhanced-mode: /etc/clash/config.yaml |awk -F ':' '{print $2}'")
+end
+
 local function clash_core()
 	return luci.sys.exec("sh /usr/share/clash/installed_core.sh && sed -n 1p /usr/share/clash/installed_core")
 end
@@ -73,7 +77,8 @@ function check_status()
 		current_version = current_version(),
 		new_version = new_version(),
 		clash_core = clash_core(),
-		new_core_version = new_core_version()
+		new_core_version = new_core_version(),
+		e_mode = e_mode()
 
 	})
 end
@@ -88,7 +93,8 @@ function action_status()
 		new_version = new_version(),
 		dash_pass = dash_pass(),
 		clash_core = clash_core(),
-		new_core_version = new_core_version()
+		new_core_version = new_core_version(),
+		e_mode = e_mode()
 
 	})
 end
