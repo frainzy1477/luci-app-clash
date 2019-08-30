@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.34.0">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.34.0-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v0.35.0">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v0.35.0-blue.svg">
   </a>
   
   </p>
