@@ -46,8 +46,9 @@ del_cron(){
 
 
 yml_change() {
-	(/usr/share/clash/yum_change.sh && sleep 3 >/dev/null 2>&1) &
+	sh /usr/share/clash/yum_change.sh >/dev/null 2>&1
 }
+
 
 
 
