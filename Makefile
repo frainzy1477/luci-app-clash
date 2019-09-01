@@ -24,10 +24,11 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-rm -rf /tmp/luci*
+rm -f /tmp/luci-indexcache
 endef
 
 define Build/Prepare
+	chmod 777 -R ${CURDIR}/tools/po2lmo
 	${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
 endef
 
