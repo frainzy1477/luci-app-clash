@@ -14,6 +14,9 @@
   
   </p>
 
+  <p align="center">
+    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview.png">
+  </p>
   
  ## Usage
 
@@ -25,7 +28,7 @@
 
 - opkg install clash_0.15.1-dev_x86_64.ipk
 
-- opkg install luci-app-clash_0.36.0-1_all.ipk
+- opkg install luci-app-clash_0.37.0-1_all.ipk
 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
