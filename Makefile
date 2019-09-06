@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=0.36.0
+PKG_VERSION:=0.37.0
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -24,7 +24,7 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-rm -f /tmp/luci-indexcache
+rm -rf /tmp/luci*
 endef
 
 define Build/Prepare
@@ -67,6 +67,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/check_version.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/check_core_version.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/installed_core.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/yum_change.sh $(1)/usr/share/clash/
 	
 	$(INSTALL_BIN) ./root/usr/share/clash/web/* $(1)/usr/share/clash/web
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
