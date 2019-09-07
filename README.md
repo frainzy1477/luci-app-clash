@@ -21,6 +21,16 @@
 
 - Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases)
 
+- cd /tmp
+
+- opkg install clash_0.15.1-dev_x86_64.ipk
+
+- opkg install luci-app-clash_1.0.1-1_all.ipk
+
+- [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
+
+- [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
+
 - [fake-ip wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
 ## Features
