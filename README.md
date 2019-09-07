@@ -8,15 +8,12 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.0.0">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.0.0-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.0.1">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.0.1-blue.svg">
   </a>
   
   </p>
 
-  <p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/v1.0.0.png">
-  </p>
   
  ## Usage
 
@@ -24,15 +21,7 @@
 
 - Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases)
 
-- cd /tmp
-
-- opkg install clash_0.15.1-dev_x86_64.ipk
-
-- opkg install luci-app-clash_1.0.0-1_all.ipk
-
-- [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
-
-- [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
+- [fake-ip wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
 ## Features
 - Support sspanel Server subscription
@@ -67,3 +56,4 @@ IP Query / Website Access Check based on  knowledge from  [MyIP](https://github.
 [Clash Dashboard](https://github.com/Dreamacro/clash-dashboard)
 
 [Yet Another Clash Dashboard](https://github.com/haishanh/yacd)
+

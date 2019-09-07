@@ -262,6 +262,9 @@ msgstr "更新"
 msgid "Enable Client"
 msgstr "启用客户端"
 
+msgid "Config In Use"
+msgstr "使用中的配置"
+
 msgid "Server Subscription Address"
 msgstr "服务器订阅地址"
 
@@ -342,3 +345,21 @@ msgstr "未配置"
 
 msgid "NB: Attention to Proxy Group and Rule when making changes to this section"
 msgstr "注意：更改时，请注意代理组和规则"
+
+msgid "Subscription Config"
+msgstr "订阅配置"
+
+msgid "Subscribe Config"
+msgstr "订阅配置"
+
+msgid "Uploaded Config"
+msgstr "上传的配置"
+
+msgid "Custom Config"
+msgstr "自定义配置"
+
+msgid "Config Type"
+msgstr "配置类型"
+
+msgid "Select Configuration type"
+msgstr "选择配置类型”"

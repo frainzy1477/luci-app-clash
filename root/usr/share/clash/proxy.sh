@@ -1,19 +1,22 @@
 #!/bin/sh /etc/rc.common
 . /lib/functions.sh
+enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
+if [ "$enable_create" == "1" ];then
+
 if pidof clash >/dev/null; then
 /etc/init.d/clash stop 2>/dev/null
 else
 uci set clash.config.enable=1 2> /dev/null
 uci commit clash 2> /dev/null
 fi
-enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
-if [ "$enable_create" == "1" ];then
+
+
 status=$(ps|grep -c /usr/share/clash/proxy.sh)
 [ "$status" -gt "3" ] && exit 0
 
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
-CONFIG_YAML="/etc/clash/config.yaml"
+CONFIG_YAML="/etc/clash/custom/config.yaml"
 CONFIG_YAML_BAK="/etc/clash/config.bak"
 TEMP_FILE="/tmp/dns_temp.yaml"
 SERVERS="/tmp/servers_temp.yaml"
@@ -184,8 +187,7 @@ EOF
 config_load clash
 config_foreach servers_set "servers"
 
-size=$(ls -l $SERVER_FILE|awk '{print $5}')
-if [ $size -ne 0 ]; then
+if [ "$(ls -l $SERVER_FILE|awk '{print $5}')" -ne 0 ]; then
 sed -i "1i\Proxy:" $SERVER_FILE
 
 egrep '^ {0,}-' $SERVER_FILE |grep name: |awk -F 'name: ' '{print $2}' |sed 's/,.*//' >$Proxy_Group 2>&1
@@ -269,5 +271,9 @@ cat $SERVERS $RULE_PROXY > $CONFIG_YAML
 rm -rf  $SERVERS $RULE_PROXY $Proxy_Group $TEMP_FILE $Proxy_Group_url
 fi
 rm -rf  $SERVER_FILE
-fi
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+if [ $config_type == "cus" ];then 
 /etc/init.d/clash restart 2>/dev/null
+fi
+fi
+

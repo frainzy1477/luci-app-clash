@@ -1,5 +1,27 @@
 #!/bin/bash
 CONFIG_YAML="/etc/clash/config.yaml"
+CONFIG_YAML_SUB="/etc/clash/sub/config.yaml"
+CONFIG_YAML_UPL="/etc/clash/upload/config.yaml"
+CONFIG_YAML_CUS="/etc/clash/custom/config.yaml"
+
+select_config(){
+#=========================================================================================================================== 
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+if [ -f $CONFIG_YAML ];then 
+	rm -rf $CONFIG_YAML
+fi
+if [ $config_type == "sub" ];then 
+	cp $CONFIG_YAML_SUB $CONFIG_YAML
+elif [ $config_type == "upl" ];then 
+	cp $CONFIG_YAML_UPL $CONFIG_YAML
+elif [ $config_type == "cus" ];then 
+	cp $CONFIG_YAML_CUS $CONFIG_YAML
+fi
+#=========================================================================================================================== 
+}
+
+select_config
+
 #===========================================================================================================================
 		mode=$(uci get clash.config.mode 2>/dev/null)
 		da_password=$(uci get clash.config.dash_pass 2>/dev/null)

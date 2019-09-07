@@ -5,8 +5,9 @@ local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 local uci = require("luci.model.uci").cursor()
 local fs = require "luci.clash"
-
+local m, s, o
 local clash = "clash"
+
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
@@ -31,11 +32,10 @@ k = Map(clash)
 s = k:section(TypedSection, "clash")
 s.anonymous = true
 
-y = s:option(ListValue, "enable_servers", translate("Enable Create Config"))
+y = s:option(ListValue, "enable_servers", translate("Create Config"))
 y.default = 0
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
-y.description = translate("Enable to create custom config.yaml. Note that this will overide any configuration you already have")
 
 
 o = s:option(Button,"Delete_Severs")
@@ -49,18 +49,6 @@ o.write = function()
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
-o = s:option(Button,"Create_Severs")
-o.title = translate("Create Config")
-o.inputtitle = translate("Create Config")
-o.description = translate("Perform this action to generate new configuration")
-o:depends("enable_servers", "1")
-o.inputstyle = "apply"
-o.write = function()
-  uci:set("clash", "enable_servers", "enable", 1)
-  luci.sys.call("uci commit clash") 
-  SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
-end
 
 
 
@@ -99,7 +87,13 @@ function o.cfgvalue(...)
 end
 
 
-
-
+local apply = luci.http.formvalue("cbi.apply")
+o:depends("enable_servers", "1")
+if apply then
+        uci:set("clash", "enable_servers", "enable", 1)
+        luci.sys.call("uci commit clash") 
+	SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
+end
 
 return k, m
+

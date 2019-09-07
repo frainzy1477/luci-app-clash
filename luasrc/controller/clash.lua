@@ -6,18 +6,26 @@ function index()
 		return
 	end
 
-	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 60).dependent = false
+	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 10).dependent = false
 	entry({"admin", "services", "clash", "overview"},cbi("clash/overview"),_("Overview"), 10).leaf = true
 	entry({"admin", "services", "clash", "client"},cbi("clash/client"),_("Client"), 20).leaf = true
-	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 100)
-	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 100).leaf = true
-	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 120).leaf = true
-	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 130).leaf = true
-	entry({"admin", "services", "clash", "servers"}, arcombine(cbi("clash/servers"),cbi("clash/servers-config")),_("Servers"), 140).leaf = true
-	entry({"admin", "services", "clash", "config"},cbi("clash/config"),_("Config"), 150).leaf = true
+	
+	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 30)
+	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 30).leaf = true
+	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 40).leaf = true
+	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 50).leaf = true
+	
+	entry({"admin", "services", "clash", "servers"}, arcombine(cbi("clash/servers"),cbi("clash/servers-config")),_("Custom Config"), 60).leaf = true
+	
+	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 70)
+	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 80).leaf = true
+	entry({"admin", "services", "clash", "config", "subconfig"},cbi("clash/subconfig"),_("Subscribe Config"), 90).leaf = true
+	entry({"admin", "services", "clash", "config", "upconfig"},cbi("clash/upconfig"),_("Uploaded Config"), 100).leaf = true
+	entry({"admin", "services", "clash", "config", "cusconfig"},cbi("clash/cusconfig"),_("Custom Config"), 110).leaf = true
+	
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
-	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 160).leaf = true
-	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 170).leaf = true
+	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 120).leaf = true
+	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 130).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 
 	
@@ -63,7 +71,7 @@ local function new_core_version()
 end
 
 local function e_mode()
-	return luci.sys.exec("grep enhanced-mode: /etc/clash/config.yaml |awk -F ':' '{print $2}'")
+	return luci.sys.exec("egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}'")
 end
 
 local function clash_core()

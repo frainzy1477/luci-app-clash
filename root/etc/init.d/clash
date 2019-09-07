@@ -10,6 +10,9 @@ CRON_FILE="/etc/crontabs/root"
 CONFIG_YAML="/etc/clash/config.yaml"
 CONFIG_YAML_OLD="/etc/clash/config.yml"
 
+CONFIG_YAML_SUB="/etc/clash/sub/config.yaml"
+CONFIG_YAML_UPL="/etc/clash/upload/config.yaml"
+CONFIG_YAML_CUS="/etc/clash/custom/config.yaml"
 
 revert_dns() {
 #=========================================================================================================================== 
@@ -45,9 +48,30 @@ del_cron(){
 }
 
 
-yml_change() {
-	sh /usr/share/clash/yum_change.sh >/dev/null 2>&1
+select_config(){
+#=========================================================================================================================== 
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+if [ -f $CONFIG_YAML ];then 
+	rm -rf $CONFIG_YAML
+fi
+if [ $config_type == "sub" ];then 
+	cp $CONFIG_YAML_SUB $CONFIG_YAML
+elif [ $config_type == "upl" ];then 
+	cp $CONFIG_YAML_UPL $CONFIG_YAML
+elif [ $config_type == "cus" ];then 
+	cp $CONFIG_YAML_CUS $CONFIG_YAML
+fi
+#=========================================================================================================================== 
 }
+
+
+
+yml_change() {
+#=========================================================================================================================== 
+	sh /usr/share/clash/yum_change.sh >/dev/null 2>&1
+#=========================================================================================================================== 
+}
+
 
 
 
@@ -59,7 +83,7 @@ yml_dns_change(){
 	
 	if [ $dns_port -eq 53 ]; then
 	          sed -i '/listen:/ d' $CONFIG_YAML
-	          sed -i "/nameserver:/i\  listen: 0.0.0.0:5300" $CONFIG_YAML
+	          sed -i "/nameserver:/i\ listen: 0.0.0.0:5300" $CONFIG_YAML
 	fi	
 
 	if [ $dnsforwader -eq 1 ]; then	
@@ -148,7 +172,7 @@ rules(){
 
 		iptables -t nat -A PREROUTING -p tcp -j clash_tcp
 		
-		iptables -t nat -A OUTPUT -p tcp -d 198.18.0.1/24 -j REDIRECT --to-ports $redir_port
+		iptables -t nat -A OUTPUT -p tcp -d 198.18.0.1/24 -j REDIRECT --to-ports $redir_port			
 		
 	
 		
@@ -158,8 +182,7 @@ rules(){
 yml_yaml(){
 #===========================================================================================================================
 subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
-size=$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')
-if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ $size -eq 0 ];then
+if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ];then
 	mv $CONFIG_YAML_OLD $CONFIG_YAML
 elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ];then
 	sh /usr/share/clash/clash.sh >>/tmp/clash.log >/dev/null 2>&1
@@ -172,9 +195,10 @@ start(){
 if pidof clash >/dev/null; then
 	kill $(pidof clash) >/dev/null 2>&1 || kill -9 $(ps | grep clash | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 fi
+
 enable=$(uci get clash.config.enable 2>/dev/null)
 yml_yaml
-size=$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')
+select_config
 lan=$(uci get clash.config.proxylan 2>/dev/null)
 lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 
@@ -182,7 +206,7 @@ if [ $enable -eq 1 ]; then
 if [ ! -f /etc/clash/clash ]; then
 	echo "===============================$(date "+%Y-%m-%d %H:%M:%S")  /etc/clash/clash not found, download and install clash ipk =====================================" >> /tmp/clash.log
 else
-if [ $size -ne 0 ] && [ -f /etc/clash/clash ]; then
+if [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
 
 	
 	if [ $lan ]; then
@@ -240,6 +264,7 @@ stop(){
 		iptables -t nat -X clash_udp >/dev/null 2>&1
 		iptables -t nat -D PREROUTING -p tcp -j clash_tcp >/dev/null 2>&1
 		iptables -t nat -D PREROUTING -p udp -j clash_udp >/dev/null 2>&1
+		
 
 		ipset -! flush clash_lan_ac >/dev/null 2>&1
 		ipset -! flush clash_lan >/dev/null 2>&1
