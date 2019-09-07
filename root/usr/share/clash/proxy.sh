@@ -3,12 +3,7 @@
 enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
 if [ "$enable_create" == "1" ];then
 
-if pidof clash >/dev/null; then
-/etc/init.d/clash stop 2>/dev/null
-else
-uci set clash.config.enable=1 2> /dev/null
-uci commit clash 2> /dev/null
-fi
+
 
 
 status=$(ps|grep -c /usr/share/clash/proxy.sh)
@@ -273,7 +268,9 @@ fi
 rm -rf  $SERVER_FILE
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ $config_type == "cus" ];then 
+if pidof clash >/dev/null; then
 /etc/init.d/clash restart 2>/dev/null
+fi
 fi
 fi
 

@@ -182,9 +182,9 @@ rules(){
 yml_yaml(){
 #===========================================================================================================================
 subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
-if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ];then
+if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML_OLD|awk '{print int($5/1024)}')" -ne 0 ];then
 	mv $CONFIG_YAML_OLD $CONFIG_YAML
-elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ];then
+elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ] || [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
 	sh /usr/share/clash/clash.sh >>/tmp/clash.log >/dev/null 2>&1
 fi
 #===========================================================================================================================
