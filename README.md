@@ -31,7 +31,6 @@
 
 - [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
 
-- [fake-ip wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
 ## Features
 - Support sspanel Server subscription
