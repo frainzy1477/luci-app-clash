@@ -28,7 +28,9 @@ servers_set()
    config_get "obfs_vmess" "$section" "obfs_vmess" ""
    config_get "host" "$section" "host" ""
    config_get "custom" "$section" "custom" ""
+   config_get "custom_host" "$section" "custom_host" ""
    config_get "tls" "$section" "tls" ""
+   config_get "tls_custom" "$section" "tls_custom" ""
    config_get "skip_cert_verify" "$section" "skip_cert_verify" ""
    config_get "path" "$section" "path" ""
    config_get "alterId" "$section" "alterId" ""
@@ -87,7 +89,7 @@ servers_set()
    
    if [ ! -z "$path" ]; then
       if [ "$type" != "vmess" ]; then
-         path=", path: '$path'"
+         paths="path: '$path'"
       else
          path=", ws-path: $path"
       fi
@@ -131,12 +133,29 @@ cat >> "$SERVER_FILE" <<-EOF
     $host
 EOF
   fi
+  if [ "$tls_custom" = "true" ] && [ "$type" = "ss" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+    tls: true
+EOF
+  fi
+   if [ "$skip_cert_verify" = "true" ] && [ "$type" = "ss" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+    skip_cert_verifys: true
+EOF
+  fi
 
   if [ ! -z "$path" ]; then
 cat >> "$SERVER_FILE" <<-EOF
-    $path
+    $paths
 EOF
   fi
+
+  if [ ! -z "$custom_host" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+    host: "$custom_host"
+EOF
+  fi
+
   if [ ! -z "$custom" ]; then
 cat >> "$SERVER_FILE" <<-EOF
     headers:
@@ -154,9 +173,12 @@ EOF
    fi
 }
 
-echo 'Proxy:' >> $SERVER_FILE
 config_load clash
 config_foreach servers_set "servers"
+
+size=$(ls -l $SERVER_FILE|awk '{print $5}')
+if [ $size -ne 0 ]; then
+sed -i "1i\Proxy:" $SERVER_FILE
 
 egrep '^ {0,}-' $SERVER_FILE |grep name: |awk -F 'name: ' '{print $2}' |sed 's/,.*//' >$Proxy_Group 2>&1
 sed -i "s/^ \{0,\}/      - /" $Proxy_Group 2>/dev/null 
@@ -166,14 +188,7 @@ sed -i "3i\  - name: Proxy" $Proxy_Group
 sed -i "4i\    type: select" $Proxy_Group
 sed -i "5i\    proxies:" $Proxy_Group
 
-if [ ! -z $Proxy_Group ];then
-
 cat $Proxy_Group $CONFIG_YAML_RULE > $RULE_PROXY
-
-if [ -f $CONFIG_YAML ]; then
-rm -rf $CONFIG_YAML
-fi 
-
 
 mode=$(uci get clash.config.mode 2>/dev/null)
 da_password=$(uci get clash.config.dash_pass 2>/dev/null)
@@ -182,10 +197,6 @@ http_port=$(uci get clash.config.http_port 2>/dev/null)
 socks_port=$(uci get clash.config.socks_port 2>/dev/null)
 dash_port=$(uci get clash.config.dash_port 2>/dev/null)
 log_level=$(uci get clash.config.level 2>/dev/null)
-
-if [ -f $TEMP_FILE ];then
-	rm -rf  $TEMP_FILE
-fi
 			
 cat >> "$TEMP_FILE" <<-EOF		
 	port: ${http_port}
@@ -226,7 +237,13 @@ cat >> "$TEMP_FILE" <<-EOF
 EOF
 
 cat $TEMP_FILE $SERVER_FILE > $SERVERS
+
+if [ -f $CONFIG_YAML ]; then
+rm -rf $CONFIG_YAML
+fi 
+
 cat $SERVERS $RULE_PROXY > $CONFIG_YAML
-rm -rf  $SERVERS $SERVER_FILE $RULE_PROXY $Proxy_Group $TEMP_FILE
+rm -rf  $SERVERS $RULE_PROXY $Proxy_Group $TEMP_FILE
 fi
+rm -rf  $SERVER_FILE
 fi

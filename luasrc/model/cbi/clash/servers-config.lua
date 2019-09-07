@@ -91,12 +91,6 @@ for _, v in ipairs(securitys) do o:value(v, v:upper()) end
 o.rmempty = true
 o:depends("type", "vmess")
 
-o = s:option(ListValue, "udp", translate("UDP Enable"))
-o.rmempty = false
-o.default = "false"
-o:value("true")
-o:value("false")
-o:depends("type", "ss")
 
 o = s:option(ListValue, "obfs", translate("obfs-mode"))
 o.rmempty = false
@@ -120,18 +114,40 @@ o.rmempty = true
 o:depends("obfs", "tls")
 o:depends("obfs", "http")
 
-o = s:option(Value, "custom", translate("ws-headers"))
+o = s:option(ListValue, "udp", translate("udp"))
+o.rmempty = false
+o.default = "false"
+o:value("true")
+o:value("false")
+o:depends("type", "ss")
+
+o = s:option(ListValue, "tls_custom", translate("tls"))
+o.rmempty = false
+o.default = "false"
+o:value("true")
+o:value("false")
+o:depends("obfs", "websocket")
+
+
+o = s:option(Value, "custom_host", translate("host"))
 o.rmempty = true
 o:depends("obfs", "websocket")
-o:depends("obfs_vmess", "websocket")
+
 
 -- [[ WS部分 ]]--
 
 -- WS路径
-o = s:option(Value, "path", translate("ws-Path"))
+o = s:option(Value, "path", translate("Path"))
 o.rmempty = true
 o:depends("obfs", "websocket")
 o:depends("obfs_vmess", "websocket")
+
+
+o = s:option(Value, "custom", translate("headers"))
+o.rmempty = true
+o:depends("obfs", "websocket")
+o:depends("obfs_vmess", "websocket")
+
 
 -- AlterId
 o = s:option(Value, "alterId", translate("AlterId"))
@@ -164,6 +180,7 @@ o.rmempty = true
 o.default = "false"
 o:value("true")
 o:value("false")
+o:depends("obfs", "websocket")
 o:depends("type", "vmess")
 o:depends("type", "socks5")
 o:depends("type", "http")
