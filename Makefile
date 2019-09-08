@@ -13,7 +13,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Services
 	TITLE:=LuCI app for clash
-	DEPENDS:=+bash +coreutils-nohup +wget
+	DEPENDS:=+luci +luci-base +iptables +dnsmasq-full +coreutils +coreutils-nohup +bash +wget +ipset
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef
