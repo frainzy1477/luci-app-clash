@@ -23,10 +23,7 @@ define Package/luci-app-clash/description
 endef
 
 
-define Package/$(PKG_NAME)/postinst
-#!/bin/sh
-rm -rf /tmp/luci*
-endef
+
 
 define Build/Prepare
 	chmod 777 -R ${CURDIR}/tools/po2lmo
@@ -48,9 +45,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DIR) $(1)/etc/clash
-	$(INSTALL_DIR) $(1)/etc/clash/sub
-	$(INSTALL_DIR) $(1)/etc/clash/upload
-	$(INSTALL_DIR) $(1)/etc/clash/custom
 	$(INSTALL_DIR) $(1)/www
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/usr/share/clash
@@ -62,10 +56,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) 	./root/etc/init.d/clash $(1)/etc/init.d/clash
 	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
 	$(INSTALL_CONF) ./root/etc/clash/* $(1)/etc/clash/
-	
-	$(INSTALL_CONF) ./root/etc/clash/sub/config.yaml $(1)/etc/clash/sub/
-	$(INSTALL_CONF) ./root/etc/clash/upload/config.yaml $(1)/etc/clash/upload/
-	$(INSTALL_CONF) ./root/etc/clash/custom/config.yaml $(1)/etc/clash/custom/
 
 	$(INSTALL_BIN) ./root/usr/share/clash/clash-watchdog.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
@@ -95,6 +85,16 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DATA) ./luasrc/view/clash/* $(1)/usr/lib/lua/luci/view/clash/
 	$(INSTALL_DATA) ./po/zh-cn/clash.zh-cn.lmo $(1)/usr/lib/lua/luci/i18n/
 	
+endef
+
+define Package/$(PKG_NAME)/postinst
+#!/bin/sh
+/etc/init.d/clash disable
+rm -rf /tmp/luci*
+chmod 777 -R /etc/clash
+mkdir -p  /etc/clash/sub
+mkdir -p  /etc/clash/upload
+mkdir -p  /etc/clash/custom
 endef
 
 $(eval $(call BuildPackage,luci-app-clash))
