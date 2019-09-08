@@ -82,8 +82,7 @@ yml_dns_change(){
 	dnsforwader=$(uci get clash.config.dnsforwader 2>/dev/null)
 	
 	if [ $dns_port -eq 53 ]; then
-	          sed -i '/listen:/ d' $CONFIG_YAML
-	          sed -i "/nameserver:/i\ listen: 0.0.0.0:5300" $CONFIG_YAML
+			  sed -i 's/:53/:5300/g' $CONFIG_YAML
 	fi	
 
 	if [ $dnsforwader -eq 1 ]; then	

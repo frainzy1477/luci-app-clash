@@ -27,6 +27,7 @@ define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 /etc/init.d/clash disable
 rm -rf /tmp/luci*
+chmod 777 -R /etc/clash
 mkdir -p  /etc/clash/sub
 mkdir -p  /etc/clash/upload
 mkdir -p  /etc/clash/custom
