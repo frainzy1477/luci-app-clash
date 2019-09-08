@@ -63,9 +63,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
 	$(INSTALL_CONF) ./root/etc/clash/* $(1)/etc/clash/
 	
-	$(INSTALL_CONF) ./root/etc/clash/sub/* $(1)/etc/clash/sub/
-	$(INSTALL_CONF) ./root/etc/clash/upload/* $(1)/etc/clash/upload/
-	$(INSTALL_CONF) ./root/etc/clash/custom/* $(1)/etc/clash/sudtom/
+	$(INSTALL_CONF) ./root/etc/clash/sub/config.yaml $(1)/etc/clash/sub/
+	$(INSTALL_CONF) ./root/etc/clash/upload/config.yaml $(1)/etc/clash/upload/
+	$(INSTALL_CONF) ./root/etc/clash/custom/config.yaml $(1)/etc/clash/custom/
 
 	$(INSTALL_BIN) ./root/usr/share/clash/clash-watchdog.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
