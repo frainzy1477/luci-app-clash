@@ -358,6 +358,9 @@ msgstr "上传的配置"
 msgid "Custom Config"
 msgstr "自定义配置"
 
+msgid "Custom"
+msgstr "自定义"
+
 msgid "Config Type"
 msgstr "配置类型"
 

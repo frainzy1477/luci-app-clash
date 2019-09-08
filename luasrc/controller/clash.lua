@@ -15,7 +15,7 @@ function index()
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 40).leaf = true
 	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 50).leaf = true
 	
-	entry({"admin", "services", "clash", "servers"}, arcombine(cbi("clash/servers"),cbi("clash/servers-config")),_("Custom Config"), 60).leaf = true
+	entry({"admin", "services", "clash", "servers"}, arcombine(cbi("clash/servers"),cbi("clash/servers-config")),_("Custom"), 60).leaf = true
 	
 	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 70)
 	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 80).leaf = true
