@@ -71,7 +71,7 @@ local function new_core_version()
 end
 
 local function e_mode()
-	return luci.sys.exec("egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}'")
+	return luci.sys.exec("grep "^ \{0,\}enhanced-mode:" /etc/clash/config.yaml |awk -F ':' '{print $2}'")
 end
 
 local function clash_core()

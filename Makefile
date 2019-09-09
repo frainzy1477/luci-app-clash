@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.0.2
+PKG_VERSION:=1.0.3
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -89,12 +89,16 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-/etc/init.d/clash disable
+
 rm -rf /tmp/luci*
 chmod 777 -R /etc/clash
 mkdir -p  /etc/clash/sub
 mkdir -p  /etc/clash/upload
 mkdir -p  /etc/clash/custom
+
+
+exit 0
+
 endef
 
 $(eval $(call BuildPackage,luci-app-clash))
