@@ -37,7 +37,7 @@ end
 o = s:option(Button,"configrm")
 o.inputtitle = translate("Delete Config")
 o.write = function()
-  os.execute("rm -rf /etc/clash/sub/config.yaml")
+  SYS.call("rm -rf /etc/clash/sub/config.yaml")
 end
 
 o = s:option(Button, "Download") 

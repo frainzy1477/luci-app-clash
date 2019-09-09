@@ -18,5 +18,4 @@ config clash 'config'
 	option cusrule '0'
 	option enable_servers '1'
 	option config_type 'sub'
-	option subscribe_url 'https://www.xxx.com/link/ipU850D3Bc2QeWW8?clash=1'
 

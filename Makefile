@@ -95,7 +95,6 @@ mkdir -p  /etc/clash/sub
 mkdir -p  /etc/clash/upload
 mkdir -p  /etc/clash/custom
 
-
 exit 0
 
 endef
