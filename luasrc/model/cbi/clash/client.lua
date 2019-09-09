@@ -66,8 +66,7 @@ o.inputstyle = "reload"
 o.write = function()
   os.execute("sed -i '/enable/d' /etc/config/clash")
   uci:commit("clash")
-  os.execute("mv /etc/clash/config.yaml /etc/clash/config.bak")
-  os.execute("rm -rf /tmp/clash.log")
+  SYS.call("rm -rf /tmp/clash.log")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "client"))
 end

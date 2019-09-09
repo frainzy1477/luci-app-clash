@@ -21,7 +21,7 @@ um = sul:option(DummyValue, "", nil)
 um.template = "clash/clash_dvalue"
 
 local dir, fd
-dir = "/etc/clash/upload/"
+dir = "/usr/share/clash/config/upload/"
 http.setfilehandler(
 	function(meta, chunk, eof)
 		if not fd then
@@ -40,11 +40,11 @@ http.setfilehandler(
 		if eof and fd then
 			fd:close()
 			fd = nil
-			local clash_conf = "/etc/clash/upload/config.yml"
+			local clash_conf = "/usr/share/clash/config/upload/config.yml"
 			if NXFS.access(clash_conf) then
-				  SYS.call("mv /etc/clash/upload/config.yml /etc/clash/upload/config.yaml")
+				  SYS.call("mv /usr/share/clash/config/upload/config.yml /usr/share/clash/config/upload/config.yaml")
 			end
-			um.value = translate("File saved to") .. ' "/etc/clash/upload/config.yaml"'
+			um.value = translate("File saved to") .. ' "/usr/share/clash/config/upload/"'
 			
 		end
 	end
@@ -66,7 +66,7 @@ s.anonymous = true
 s.addremove=false
 
 
-local conf = "/etc/clash/upload/config.yaml"
+local conf = "/usr/share/clash/config/upload/config.yaml"
 sev = s:option(TextValue, "conf")
 sev.readonly=true
 sev.rows = 20

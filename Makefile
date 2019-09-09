@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.0.3
+PKG_VERSION:=1.0.4
 PKG_MAINTAINER:=frainzy1477
 
 
@@ -22,7 +22,10 @@ define Package/luci-app-clash/description
 endef
 
 
-
+define Package/$(PKG_NAME)/postinst
+#!/bin/sh
+rm -rf /tmp/luci*
+endef
 
 define Build/Prepare
 	chmod 777 -R ${CURDIR}/tools/po2lmo
@@ -51,6 +54,15 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/img
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/js
+	
+	$(INSTALL_DIR) $(1)/usr/share/clash/config
+	$(INSTALL_DIR) $(1)/usr/share/clash/config/sub
+	$(INSTALL_DIR) $(1)/usr/share/clash/config/upload
+	$(INSTALL_DIR) $(1)/usr/share/clash/config/custom
+	
+	$(INSTALL_BIN) ./root/usr/share/clash/config/upload/config.yaml $(1)/usr/share/clash/config/upload/
+	$(INSTALL_BIN) ./root/usr/share/clash/config/custom/config.yaml $(1)/usr/share/clash/config/custom/
+	$(INSTALL_BIN) ./root/usr/share/clash/config/sub/config.yaml $(1)/usr/share/clash/config/sub/
 
 	$(INSTALL_BIN) 	./root/etc/init.d/clash $(1)/etc/init.d/clash
 	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
@@ -86,17 +98,6 @@ define Package/$(PKG_NAME)/install
 	
 endef
 
-define Package/$(PKG_NAME)/postinst
-#!/bin/sh
 
-rm -rf /tmp/luci*
-chmod 777 -R /etc/clash
-mkdir -p  /etc/clash/sub
-mkdir -p  /etc/clash/upload
-mkdir -p  /etc/clash/custom
-
-exit 0
-
-endef
 
 $(eval $(call BuildPackage,luci-app-clash))

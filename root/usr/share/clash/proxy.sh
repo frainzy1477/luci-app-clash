@@ -11,7 +11,7 @@ status=$(ps|grep -c /usr/share/clash/proxy.sh)
 
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
-CONFIG_YAML="/etc/clash/custom/config.yaml"
+CONFIG_YAML="/usr/share/clash/config/custom/config.yaml"
 CONFIG_YAML_BAK="/etc/clash/config.bak"
 TEMP_FILE="/tmp/dns_temp.yaml"
 SERVERS="/tmp/servers_temp.yaml"

@@ -19,12 +19,9 @@ s.anonymous = true
 s.addremove=false
 
 
-local conf = "/etc/clash/sub/config.yaml"
+local conf = "/usr/share/clash/config/sub/config.yaml"
 sev = s:option(TextValue, "conf")
 sev.readonly=true
---update_time = SYS.exec("ls -l --full-time /etc/clash/config.yaml|awk '{print $6,$7;}'")
---sev.description = update_time
---sev.description = translate("Changes to config file must be made from source")
 sev.rows = 20
 sev.wrap = "off"
 sev.cfgvalue = function(self, section)
@@ -37,7 +34,7 @@ end
 o = s:option(Button,"configrm")
 o.inputtitle = translate("Delete Config")
 o.write = function()
-  SYS.call("rm -rf /etc/clash/sub/config.yaml")
+  SYS.call("rm -rf /usr/share/clash/config/sub/config.yaml")
 end
 
 o = s:option(Button, "Download") 
@@ -45,7 +42,7 @@ o.inputtitle = translate("Download Config")
 o.inputstyle = "apply"
 o.write = function ()
 	local sPath, sFile, fd, block
-	sPath = "/etc/clash/sub/config.yaml"
+	sPath = "/usr/share/clash/config/sub/config.yaml"
 	sFile = NXFS.basename(sPath)
 	if fs.isdirectory(sPath) then
 		fd = io.popen('tar -C "%s" -cz .' % {sPath}, "r")

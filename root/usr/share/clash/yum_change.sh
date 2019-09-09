@@ -1,8 +1,8 @@
 #!/bin/bash
 CONFIG_YAML="/etc/clash/config.yaml"
-CONFIG_YAML_SUB="/etc/clash/sub/config.yaml"
-CONFIG_YAML_UPL="/etc/clash/upload/config.yaml"
-CONFIG_YAML_CUS="/etc/clash/custom/config.yaml"
+CONFIG_YAML_SUB="/usr/share/clash/config/sub/config.yaml"
+CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
+CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
 
 select_config(){
 #=========================================================================================================================== 
