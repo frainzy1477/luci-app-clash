@@ -16,7 +16,6 @@ sul =ful:section(SimpleSection, "", translate(""))
 o = sul:option(FileUpload, "")
 o.title = translate("Upload Config")
 o.template = "clash/clash_upload"
-o.description = translate("NB: Only upload file with name config.yml or config.yaml")
 um = sul:option(DummyValue, "", nil)
 um.template = "clash/clash_dvalue"
 

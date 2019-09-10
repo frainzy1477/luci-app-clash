@@ -60,6 +60,9 @@ end)
 o:depends("rejectlan", 1)
 
 
-
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+    luci.sys.call("uci commit clash")
+end
 
 return m

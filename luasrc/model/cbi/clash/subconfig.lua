@@ -8,13 +8,10 @@ local uci = require("luci.model.uci").cursor()
 local fs = require "luci.clash"
 local http = luci.http
 
-ful = Form("upload", nil)
-ful.reset = false
-ful.submit = false
-
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
+m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -31,11 +28,14 @@ sev.write = function(self, section, value)
 end
 
 
+
 o = s:option(Button,"configrm")
 o.inputtitle = translate("Delete Config")
 o.write = function()
   SYS.call("rm -rf /usr/share/clash/config/sub/config.yaml")
 end
+
+
 
 o = s:option(Button, "Download") 
 o.inputtitle = translate("Download Config")
@@ -67,4 +67,4 @@ o.write = function ()
 	HTTP.close()
 end
 
-return ful , m
+return m
