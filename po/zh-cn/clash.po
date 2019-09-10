@@ -1,6 +1,9 @@
 msgid "Update Config"
 msgstr "更新配置"
 
+msgid "NOT RUNNING"
+msgstr "末运行"
+
 msgid "Enabled Custom Rule"
 msgstr "启用自定义规则"
 
