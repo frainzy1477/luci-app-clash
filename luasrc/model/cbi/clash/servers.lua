@@ -14,21 +14,6 @@ s = m:section(TypedSection, "clash" , translate("Rule"))
 s.anonymous = true
 s.addremove=false
 
-o = s:option(Value, "rule_url")
-o.title = translate("Custom Rule Url")
-o.description = translate("Insert your custom rule Url and click download")
-o.rmempty = true
-
-o = s:option(Button,"rule_update")
-o.title = translate("Download Rule")
-o.inputtitle = translate("Download Rule")
-o.description = translate("Download Rule")
-o.inputstyle = "reload"
-o.write = function()
-  uci:commit("clash")
-  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.log 2>&1 &")
-  HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
-end
 
 
 local rule = "/usr/share/clash/custom_rule.yaml"

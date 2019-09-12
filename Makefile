@@ -88,7 +88,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/check_core_version.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/yum_change.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/groups.sh $(1)/usr/share/clash/
-	$(INSTALL_BIN) ./root/usr/share/clash/rule.sh $(1)/usr/share/clash/
+	
 
 	
 	$(INSTALL_BIN) ./root/usr/share/clash/web/* $(1)/usr/share/clash/web
