@@ -27,7 +27,7 @@ function index()
 	entry({"admin", "services", "clash", "config", "cusconfig"},cbi("clash/cusconfig"),_("Custom Config"), 110).leaf = true
 	
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
-	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Logs"), 120).leaf = true
+	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 120).leaf = true
 	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 130).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 

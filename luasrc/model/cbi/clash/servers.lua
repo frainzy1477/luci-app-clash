@@ -136,7 +136,6 @@ if apply then
         uci:set("clash", "enable_servers", "enable", 1)
         luci.sys.call("uci commit clash") 
 	    SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
-		HTTP.redirect(DISP.build_url("admin", "services", "clash", "config", "cusconfig"))
 end
 
 return k, m
