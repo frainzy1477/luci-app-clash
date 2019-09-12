@@ -49,6 +49,14 @@
 - wget
 - bash
 - coreutils-nohup
+- luci
+- luci-base
+- ipset
+- libustream-openssl
+- dnsmasq-full
+- iptables
+- coreutils
+
 
 ## Clash on Other Platforms
 
