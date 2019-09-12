@@ -15,7 +15,10 @@ function index()
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 40).leaf = true
 	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 50).leaf = true
 	
-	entry({"admin", "services", "clash", "servers"}, arcombine(cbi("clash/servers"),cbi("clash/servers-config")),_("Custom"), 60).leaf = true
+	
+	entry({"admin", "services", "clash", "servers"},cbi("clash/servers"),_("Custom"), 60).leaf = true
+    entry({"admin", "services", "clash", "servers-config"},cbi("clash/servers-config"), nil).leaf = true
+    entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
 	
 	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 70)
 	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 80).leaf = true
@@ -51,7 +54,7 @@ local function localip()
 end
 
 local function check_version()
-	return luci.sys.exec("sh /usr/share/clash/check_version.sh")
+	return luci.sys.exec("sh /usr/share/clash/check_luci_version.sh")
 end
 
 local function check_core()
@@ -59,11 +62,11 @@ local function check_core()
 end
 
 local function current_version()
-	return luci.sys.exec("sed -n 1p /usr/share/clash/clash_version")
+	return luci.sys.exec("sed -n 1p /usr/share/clash/luci_version")
 end
 
 local function new_version()
-	return luci.sys.exec("sed -n 1p /usr/share/clash/new_version")
+	return luci.sys.exec("sed -n 1p /usr/share/clash/new_luci_version")
 end
 
 local function new_core_version()
@@ -74,8 +77,13 @@ local function e_mode()
 	return luci.sys.exec("egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}'")
 end
 
+
 local function clash_core()
-	return luci.sys.exec("sh /usr/share/clash/installed_core.sh && sed -n 1p /usr/share/clash/installed_core")
+	if nixio.fs.access("/usr/share/clash/core_version") then
+		return luci.sys.exec("sed -n 1p /usr/share/clash/core_version")
+	else
+		return "0"
+	end
 end
 
 function check_status()

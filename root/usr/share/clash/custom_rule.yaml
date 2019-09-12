@@ -1,17 +1,4 @@
-  - name: "GlobalTV"
-    type: select 
-    proxies: 
-      - "Proxy"
-      - "DIRECT"
-  - name: AsianTV 
-    type: select 
-    proxies: 
-      - "DIRECT"
-      - "Proxy"     
-  - name: AdBlock 
-    type: select 
-    proxies: 
-      - "REJECT" 
+
 
 Rule:
 - DOMAIN,gs.apple.com,Proxy

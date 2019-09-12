@@ -15,9 +15,9 @@ dns:
  #   'alpha.clash.dev': '::1'
  nameserver: 
   - 101.132.183.99
-  - 8.8.8.8
   - 119.29.29.29 
   - 114.114.114.114
   - 114.114.115.115    
   - tls://dns.rubyfish.cn:853
+  - https://dns.google/dns-query
   - https://1.1.1.1/dns-query

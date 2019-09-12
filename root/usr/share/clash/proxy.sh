@@ -1,9 +1,8 @@
 #!/bin/sh /etc/rc.common
 . /lib/functions.sh
 enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
+
 if [ "$enable_create" == "1" ];then
-
-
 
 
 status=$(ps|grep -c /usr/share/clash/proxy.sh)
@@ -12,12 +11,12 @@ status=$(ps|grep -c /usr/share/clash/proxy.sh)
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
 CONFIG_YAML="/usr/share/clash/config/custom/config.yaml"
-CONFIG_YAML_BAK="/etc/clash/config.bak"
 TEMP_FILE="/tmp/dns_temp.yaml"
-SERVERS="/tmp/servers_temp.yaml"
 Proxy_Group="/tmp/Proxy_Group"
-Proxy_Group_url="/tmp/Proxy_url"
-RULE_PROXY="/tmp/tempserv.yaml"
+GROUP_FILE="/tmp/groups.yaml"
+CONFIG_FILE="/tmp/y_groups"
+CFG_FILE="/etc/config/clash"
+
 
 servers_set()
 {
@@ -183,32 +182,96 @@ config_load clash
 config_foreach servers_set "servers"
 
 if [ "$(ls -l $SERVER_FILE|awk '{print $5}')" -ne 0 ]; then
-sed -i "1i\Proxy:" $SERVER_FILE
+
+sed -i "1i\   " $SERVER_FILE
+sed -i "2i\Proxy:" $SERVER_FILE
 
 egrep '^ {0,}-' $SERVER_FILE |grep name: |awk -F 'name: ' '{print $2}' |sed 's/,.*//' >$Proxy_Group 2>&1
-sed -i "s/^ \{0,\}/      - /" $Proxy_Group 2>/dev/null 
+sed -i "s/^ \{0,\}/    - /" $Proxy_Group 2>/dev/null 
 
-cat >> "$Proxy_Group_url" <<-EOF
-  - name: Auto - UrlTest
-    type: url-test
-    proxies:
-EOF
-cat $Proxy_Group >> $Proxy_Group_url 2>/dev/null
-cat >> "$Proxy_Group_url" <<-EOF
-    url: http://www.gstatic.com/generate_204
-    interval: "600"
-  - name: Proxy
-    type: select
-    proxies:
-      - Auto - UrlTest
-      - DIRECT
-EOF
-cat $Proxy_Group >> $Proxy_Group_url 2>/dev/null
 
-sed -i "1i  " $Proxy_Group_url
-sed -i "2i\Proxy Group:" $Proxy_Group_url
+yml_servers_add()
+{
+	
+	local section="$1"
+	config_get "name" "$section" "name" ""
+	config_list_foreach "$section" "groups" set_groups "$name" "$2"
+	
+}
 
-cat $Proxy_Group_url $CONFIG_YAML_RULE > $RULE_PROXY
+set_groups()
+{
+
+	if [ "$1" = "$3" ]; then
+	   echo "    - \"${2}\"" >>$GROUP_FILE
+	fi
+
+}
+
+set_other_groups()
+{
+
+   echo "    - ${1}" >>$GROUP_FILE
+
+}
+
+yml_groups_set()
+{
+
+   local section="$1"
+   config_get "type" "$section" "type" ""
+   config_get "name" "$section" "name" ""
+   config_get "old_name" "$section" "old_name" ""
+   config_get "test_url" "$section" "test_url" ""
+   config_get "test_interval" "$section" "test_interval" ""
+
+   if [ -z "$type" ]; then
+      return
+   fi
+   
+   if [ -z "$name" ]; then
+      return
+   fi
+   
+   echo "- name: $name" >>$GROUP_FILE
+   echo "  type: $type" >>$GROUP_FILE
+
+   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ]; then
+      echo "  proxies:" >>$GROUP_FILE
+      cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
+   else
+      echo "  proxies:" >>$GROUP_FILE
+   fi   
+ 
+   if [ "$name" != "$old_name" ]; then
+      sed -i "s/,${old_name}$/,${name}#d/g" $CONFIG_FILE 2>/dev/null
+      sed -i "s/:${old_name}$/:${name}#d/g" $CONFIG_FILE 2>/dev/null
+      sed -i "s/\'${old_name}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
+      config_load "clash"
+   fi
+   
+   config_list_foreach "$section" "other_group" set_other_groups 
+   config_foreach yml_servers_add "servers" "$name" 
+   
+   [ ! -z "$test_url" ] && {
+   	echo "  url: $test_url" >>$GROUP_FILE
+   }
+   [ ! -z "$test_interval" ] && {
+   echo "  interval: \"$test_interval\"" >>$GROUP_FILE
+   }
+}
+
+
+config_load clash
+config_foreach yml_groups_set "groups"
+
+
+if [ "$(ls -l $GROUP_FILE|awk '{print $5}')" -ne 0 ]; then
+sed -i "1i\  " $GROUP_FILE
+sed -i "2i\Proxy Group:" $GROUP_FILE
+fi
+
+
 
 mode=$(uci get clash.config.mode 2>/dev/null)
 da_password=$(uci get clash.config.dash_pass 2>/dev/null)
@@ -256,16 +319,14 @@ cat >> "$TEMP_FILE" <<-EOF
  
 EOF
 
-cat $TEMP_FILE $SERVER_FILE > $SERVERS
+cat $SERVER_FILE >> $TEMP_FILE  2>/dev/null
 
-if [ -f $CONFIG_YAML ]; then
-rm -rf $CONFIG_YAML
-fi 
+cat $GROUP_FILE >> $TEMP_FILE 2>/dev/null
 
-cat $SERVERS $RULE_PROXY > $CONFIG_YAML
-rm -rf  $SERVERS $RULE_PROXY $Proxy_Group $TEMP_FILE $Proxy_Group_url
-fi
-rm -rf  $SERVER_FILE
+cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
+
+rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
+
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ $config_type == "cus" ];then 
 if pidof clash >/dev/null; then
@@ -273,4 +334,5 @@ if pidof clash >/dev/null; then
 fi
 fi
 fi
-
+rm -rf $SERVER_FILE
+fi

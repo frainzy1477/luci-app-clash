@@ -74,8 +74,6 @@ yml_change() {
 
 
 
-
-
 yml_dns_change(){
 #=========================================================================================================================== 
 	dns_port=$(grep "^ \{0,\}listen:" $CONFIG_YAML |awk -F ':' '{print $3}' 2>/dev/null)
@@ -191,6 +189,7 @@ fi
 }
 
 start(){
+lang=$(uci get luci.main.lang 2>/dev/null)
 #=========================================================================================================================== 
 if pidof clash >/dev/null; then
 	kill $(pidof clash) >/dev/null 2>&1 || kill -9 $(ps | grep clash | grep -v grep | awk '{print $1}') >/dev/null 2>&1
@@ -204,7 +203,11 @@ lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 
 if [ $enable -eq 1 ]; then
 if [ ! -f /etc/clash/clash ]; then
-	echo "===============================$(date "+%Y-%m-%d %H:%M:%S")  /etc/clash/clash not found, download and install clash ipk =====================================" >> /tmp/clash.log
+	if [ $lang == "en" ];then
+		echo "$(date "+%Y-%m-%d %H:%M:%S") - /etc/clash/clash not found, from "https://github.com/frainzy1477/clash/releases" , download and install clash ipk  " >> /tmp/clash.log
+	elif [ $lang == "zh_cn" ];then
+		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到 /etc/clash/clash 请，从"https://github.com/frainzy1477/clash/releases" , 下载然后安装Clash ipk" >> /tmp/clash.log
+	fi
 else
 if [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
 
@@ -242,8 +245,12 @@ if [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/cla
 	
 	fi
 else
-	echo "===============================$(date "+%Y-%m-%d %H:%M:%S")  problem with config.yaml,  config.yaml is either empty or not found =====================================" >> /tmp/clash.log
-
+	if [ $lang == "en" ];then
+		echo "$(date "+%Y-%m-%d %H:%M:%S") -  problem with config.yaml,  config.yaml is either empty or not found " >> /tmp/clash.log
+	elif [ $lang == "zh_cn" ];then
+		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 你的config.yaml有问题还是为了空 0kb " >> /tmp/clash.log
+	fi
+	
 
 fi
 fi
@@ -257,6 +264,7 @@ fi
 
 
 stop(){
+lang=$(uci get luci.main.lang 2>/dev/null)
 #=========================================================================================================================== 
 		iptables -t nat -F clash_tcp >/dev/null 2>&1
 		iptables -t nat -X clash_tcp >/dev/null 2>&1
@@ -286,8 +294,13 @@ stop(){
   	  	del_cron
 
 	 	rm -rf /tmp/clash.log
-	
-	       echo "===============================$(date "+%Y-%m-%d %H:%M:%S")  CLIENT IS DISABLED =====================================" >> /tmp/clash.log
+		
+		if [ $lang == "en" ];then
+			echo "$(date "+%Y-%m-%d %H:%M:%S") - CLIENT IS DISABLED " >> /tmp/clash.log
+		elif [ $lang == "zh_cn" ];then
+			echo "$(date "+%Y-%m-%d %H:%M:%S")  - 客户端被禁用 " >> /tmp/clash.log
+		fi		
+	       
 
 #=========================================================================================================================== 	
 }

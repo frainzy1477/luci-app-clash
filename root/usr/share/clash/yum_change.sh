@@ -1,15 +1,17 @@
-#!/bin/bash
+#!/bin/sh
 CONFIG_YAML="/etc/clash/config.yaml"
 CONFIG_YAML_SUB="/usr/share/clash/config/sub/config.yaml"
 CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
 CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
 
-select_config(){
+
 #=========================================================================================================================== 
 config_type=$(uci get clash.config.config_type 2>/dev/null)
+
 if [ -f $CONFIG_YAML ];then 
 	rm -rf $CONFIG_YAML
 fi
+
 if [ $config_type == "sub" ];then 
 	cp $CONFIG_YAML_SUB $CONFIG_YAML
 elif [ $config_type == "upl" ];then 
@@ -18,9 +20,14 @@ elif [ $config_type == "cus" ];then
 	cp $CONFIG_YAML_CUS $CONFIG_YAML
 fi
 #=========================================================================================================================== 
-}
 
-select_config
+
+if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
+#===========================================================================================================================
+	uci set clash.config.mode="1" && uci commit clash
+#===========================================================================================================================	
+fi
+
 
 #===========================================================================================================================
 		mode=$(uci get clash.config.mode 2>/dev/null)

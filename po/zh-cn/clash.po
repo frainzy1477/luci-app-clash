@@ -1,3 +1,7 @@
+
+msgid "Log"
+msgstr "日志"
+
 msgid "Update Config"
 msgstr "更新配置"
 
@@ -208,9 +212,6 @@ msgstr "自定义DNS"
 msgid "Modify yaml DNS"
 msgstr "修改 DNS"
 
-msgid "Logs"
-msgstr "日志"
-
 msgid "Enable"
 msgstr "启用"
 
@@ -369,3 +370,66 @@ msgstr "配置类型"
 
 msgid "Select Configuration type"
 msgstr "选择配置类型”"
+
+msgid "Create Config"
+msgstr "一键生成配置文件"
+
+msgid "Create Config By One-Click Only Need Proxys"
+msgstr "一键生成配置文件功能只需要配置服务器节点信息"
+
+msgid "Proxy Groups(No Need Set when Config Create)"
+msgstr "策略组配置（使用一键生成配置文件功能时无需设置）"
+
+msgid "Proxys"
+msgstr "服务器节点"
+
+msgid "Edit Group"
+msgstr "编辑策略组配置"
+
+msgid "Group Type"
+msgstr "策略组类型"
+
+msgid "Choose The Operation Mode"
+msgstr "设置策略组挑选服务器节点的工作方式"
+
+msgid "Group Name"
+msgstr "策略组别名（请勿重名）"
+
+msgid "Test URL"
+msgstr "检测地址（URL）"
+
+msgid "Test Interval(s)"
+msgstr "检测频率（秒）"
+
+msgid "Select"
+msgstr "手动选择"
+
+msgid "URL-Test"
+msgstr "最低延迟"
+
+msgid "Fallback"
+msgstr "故障切换"
+
+msgid "Load-Balance"
+msgstr "负载均衡"
+
+msgid "Other Group"
+msgstr "包含其他策略组"
+
+msgid "Proxy Groups Must Exist In Rule"
+msgstr "添加的策略组必须存在规则创建"
+
+msgid "Proxy Groups"
+msgstr "添加到策略组"
+
+msgid "Rule"
+msgstr "规则"
+
+msgid "Custom Rule Url"
+msgstr "自定义规则URL"
+
+msgid "Download Rule"
+msgstr "下载规则"
+
+msgid "Insert your custom rule Url and click download"
+msgstr "输入自定义规则URL并单击下载"

@@ -10,9 +10,27 @@ local clash = "clash"
 
 
 m = Map("clash")
-s = m:section(TypedSection, "clash")
+s = m:section(TypedSection, "clash" , translate("Rule"))
 s.anonymous = true
 s.addremove=false
+
+o = s:option(Value, "rule_url")
+o.title = translate("Custom Rule Url")
+o.description = translate("Insert your custom rule Url and click download")
+o.rmempty = true
+
+o = s:option(Button,"rule_update")
+o.title = translate("Download Rule")
+o.inputtitle = translate("Download Rule")
+o.description = translate("Download Rule")
+o.inputstyle = "reload"
+o.write = function()
+  uci:commit("clash")
+  SYS.call("rm -rf /tmp/clash.log")
+  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.log 2>&1 &")
+  HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
+end
+
 
 local rule = "/usr/share/clash/custom_rule.yaml"
 sev = s:option(TextValue, "rule")
@@ -52,12 +70,13 @@ end
 
 
 
-s = k:section(TypedSection, "servers")
+
+s = k:section(TypedSection, "servers", translate("Proxys"))
 s.anonymous = true
 s.addremove = true
-s.sortable = false
+s.sortable = true
 s.template = "cbi/tblsection"
-s.extedit = luci.dispatcher.build_url("admin/services/clash/servers/%s")
+s.extedit = luci.dispatcher.build_url("admin/services/clash/servers-config/%s")
 function s.create(...)
 	local sid = TypedSection.create(...)
 	if sid then
@@ -65,6 +84,7 @@ function s.create(...)
 		return
 	end
 end
+
 
 o = s:option(DummyValue, "type", translate("Type"))
 function o.cfgvalue(...)
@@ -86,14 +106,37 @@ function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
+r = k:section(TypedSection, "groups", translate("Proxy Groups"))
+r.anonymous = true
+r.addremove = true
+r.sortable = true
+r.template = "cbi/tblsection"
+r.extedit = luci.dispatcher.build_url("admin/services/clash/groups/%s")
+function r.create(...)
+	local sid = TypedSection.create(...)
+	if sid then
+		luci.http.redirect(r.extedit % sid)
+		return
+	end
+end
+
+o = r:option(DummyValue, "type", translate("Group Type"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = r:option(DummyValue, "name", translate("Group Name"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
 
 local apply = luci.http.formvalue("cbi.apply")
-o:depends("enable_servers", "1")
 if apply then
         uci:set("clash", "enable_servers", "enable", 1)
         luci.sys.call("uci commit clash") 
-	SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
+	    SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
+		HTTP.redirect(DISP.build_url("admin", "services", "clash", "config", "cusconfig"))
 end
 
 return k, m
-
