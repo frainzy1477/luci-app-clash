@@ -26,7 +26,6 @@ o.description = translate("Download Rule")
 o.inputstyle = "reload"
 o.write = function()
   uci:commit("clash")
-  SYS.call("rm -rf /tmp/clash.log")
   SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.log 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
 end
