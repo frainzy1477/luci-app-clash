@@ -4,6 +4,13 @@ enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
 
 if [ "$enable_create" == "1" ];then
 
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+if [ $config_type == "cus" ];then 
+if pidof clash >/dev/null; then
+/etc/init.d/clash stop 2>/dev/null
+fi
+fi
+
 
 status=$(ps|grep -c /usr/share/clash/proxy.sh)
 [ "$status" -gt "3" ] && exit 0
@@ -327,11 +334,8 @@ cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
 
 rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
 
-config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ $config_type == "cus" ];then 
-if pidof clash >/dev/null; then
 /etc/init.d/clash restart 2>/dev/null
-fi
 fi
 fi
 rm -rf $SERVER_FILE

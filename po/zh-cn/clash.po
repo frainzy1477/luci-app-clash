@@ -439,3 +439,10 @@ msgstr "删除规则"
 
 msgid "Latency"
 msgstr "延迟"
+
+msgid "Delete Groups"
+msgstr "删除代理组"
+
+msgid "Perform this action to delete all proxy groups"
+msgstr "执行此操作以删除所有代理组"
+

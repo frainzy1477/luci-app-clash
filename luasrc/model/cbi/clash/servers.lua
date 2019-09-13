@@ -74,13 +74,22 @@ end
 
 
 
-
+o = s:option(Button,"Delete_Groups")
+o.title = translate("Delete Groups")
+o.inputtitle = translate("Delete Groups")
+o.description = translate("Perform this action to delete all proxy groups")
+o.inputstyle = "reset"
+o.write = function()
+  uci:delete_all("clash", "groups", function(s) return true end)
+  luci.sys.call("uci commit clash") 
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+end
 
 s = k:section(TypedSection, "servers", translate("Proxys"))
 s.anonymous = true
 s.addremove = true
 s.sortable = true
-s.template = "cbi/tblsection"
+s.template = "clash/tblsection"
 s.extedit = luci.dispatcher.build_url("admin/services/clash/servers-config/%s")
 function s.create(...)
 	local sid = TypedSection.create(...)
@@ -119,7 +128,7 @@ r = k:section(TypedSection, "groups", translate("Proxy Groups"))
 r.anonymous = true
 r.addremove = true
 r.sortable = true
-r.template = "cbi/tblsection"
+r.template = "clash/tblsection"
 r.extedit = luci.dispatcher.build_url("admin/services/clash/groups/%s")
 function r.create(...)
 	local sid = TypedSection.create(...)

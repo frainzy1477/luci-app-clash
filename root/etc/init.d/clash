@@ -181,7 +181,7 @@ yml_yaml(){
 subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
 if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML_OLD|awk '{print int($5/1024)}')" -ne 0 ];then
 	mv $CONFIG_YAML_OLD $CONFIG_YAML
-elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ] || [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
+elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ] || [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
 	rm -rf /tmp/clash.log
 	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
 fi
@@ -196,6 +196,7 @@ if pidof clash >/dev/null; then
 fi
 
 enable=$(uci get clash.config.enable 2>/dev/null)
+
 yml_yaml
 select_config
 lan=$(uci get clash.config.proxylan 2>/dev/null)
@@ -209,7 +210,8 @@ if [ ! -f /etc/clash/clash ]; then
 		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到 /etc/clash/clash 请，从"https://github.com/frainzy1477/clash/releases" , 下载然后安装Clash ipk" >> /tmp/clash.log
 	fi
 else
-if [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
+
+if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
 
 	
 	if [ $lan ]; then
