@@ -52,6 +52,7 @@ select_config(){
 #=========================================================================================================================== 
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 
+
 if [ $config_type == "sub" ];then 
 if [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_SUB $CONFIG_YAML
@@ -65,6 +66,7 @@ if [  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS|awk '{print int($5/10
 	cp $CONFIG_YAML_CUS $CONFIG_YAML
 fi
 fi
+
 #=========================================================================================================================== 
 }
 
@@ -182,12 +184,28 @@ rules(){
 
 yml_yaml(){
 #===========================================================================================================================
-subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
-if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ] || [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML_OLD|awk '{print int($5/1024)}')" -ne 0 ];then
+
+if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ];then
 	mv $CONFIG_YAML_OLD $CONFIG_YAML
-elif [ ! -f $CONFIG_YAML ] && [ $subscribe_url ] || [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
+
+elif [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML  ] && [  "$(ls -l $CONFIG_YAML_OLD|awk '{print int($5/1024)}')" -ne 0 ];then
+	mv $CONFIG_YAML_OLD $CONFIG_YAML
+fi
+#===========================================================================================================================
+}
+
+
+
+yml_sub(){
+subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
+#===========================================================================================================================
+if [ ! -f $CONFIG_YAML ] && [ $subscribe_url ];then 
 	rm -rf /tmp/clash.log
 	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
+elif [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
+	rm -rf /tmp/clash.log
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
+
 fi
 #===========================================================================================================================
 }
@@ -200,8 +218,8 @@ if pidof clash >/dev/null; then
 fi
 
 enable=$(uci get clash.config.enable 2>/dev/null)
-
 yml_yaml
+yml_sub
 select_config
 lan=$(uci get clash.config.proxylan 2>/dev/null)
 lanac=$(uci get clash.config.rejectlan 2>/dev/null)
@@ -214,7 +232,6 @@ if [ ! -f /etc/clash/clash ]; then
 		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到 /etc/clash/clash 请，从"https://github.com/frainzy1477/clash/releases" , 下载然后安装Clash ipk" >> /tmp/clash.log
 	fi
 else
-
 if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
 
 	
@@ -324,5 +341,3 @@ restart(){
 
 #=========================================================================================================================== 
 }
-
-
