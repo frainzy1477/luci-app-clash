@@ -93,7 +93,6 @@ o:depends("type", "vmess")
 
 
 o = s:option(ListValue, "obfs", translate("obfs-mode"))
-o.rmempty = false
 o.default = " "
 o:value(" ", translate("none"))
 o:value("tls")
@@ -102,7 +101,6 @@ o:value("websocket", translate("websocket (ws)"))
 o:depends("type", "ss")
 
 o = s:option(ListValue, "obfs_vmess", translate("obfs-mode"))
-o.rmempty = false
 o.default = "none"
 o:value("none")
 o:value("websocket", translate("websocket (ws)"))
@@ -115,14 +113,12 @@ o:depends("obfs", "tls")
 o:depends("obfs", "http")
 
 o = s:option(ListValue, "udp", translate("udp"))
-o.rmempty = false
 o.default = "false"
 o:value("true")
 o:value("false")
 o:depends("type", "ss")
 
 o = s:option(ListValue, "tls_custom", translate("tls"))
-o.rmempty = false
 o.default = "false"
 o:value("true")
 o:value("false")
