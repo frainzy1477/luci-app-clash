@@ -3,8 +3,10 @@ local SYS  = require "luci.sys"
 local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
-local uci = require("luci.model.uci").cursor()
 local fs = require "luci.clash"
+local d = require "luci.dispatcher"
+local sys = require "luci.sys"
+local uci = require "luci.model.uci".cursor()
 local m, s, o
 local clash = "clash"
 
@@ -15,6 +17,21 @@ s.anonymous = true
 s.addremove=false
 
 
+o = s:option(Value, "rule_url")
+o.title = translate("Custom Rule Url")
+o.description = translate("Insert your custom rule Url and click download")
+o.rmempty = true
+
+o = s:option(Button,"rule_update")
+o.title = translate("Download Rule")
+o.inputtitle = translate("Download Rule")
+o.description = translate("Download Rule")
+o.inputstyle = "reload"
+o.write = function()
+  uci:commit("clash")
+  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.log 2>&1 &")
+  HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
+end
 
 local rule = "/usr/share/clash/custom_rule.yaml"
 sev = s:option(TextValue, "rule")
@@ -26,6 +43,12 @@ sev.cfgvalue = function(self, section)
 end
 sev.write = function(self, section, value)
 	NXFS.writefile(rule, value:gsub("\r\n", "\n"))
+end
+
+o = s:option(Button,"del_rule")
+o.inputtitle = translate("Delete Rule")
+o.write = function()
+  SYS.call("rm -rf /usr/share/clash/custom_rule.yaml")
 end
 
 
@@ -90,6 +113,10 @@ function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
+o = s:option(DummyValue, "server" ,translate("Latency"))
+o.template="clash/ping"
+o.width="10%"
+
 r = k:section(TypedSection, "groups", translate("Proxy Groups"))
 r.anonymous = true
 r.addremove = true
@@ -119,7 +146,8 @@ local apply = luci.http.formvalue("cbi.apply")
 if apply then
         uci:set("clash", "enable_servers", "enable", 1)
         luci.sys.call("uci commit clash") 
-	    SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
+	SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
 end
 
+k:append(Template("clash/list"))
 return k, m

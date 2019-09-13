@@ -30,6 +30,7 @@ function index()
 	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 120).leaf = true
 	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 130).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
+	entry({"admin", "services", "clash", "ping"}, call("act_ping")).leaf=true
 
 	
 end
@@ -94,8 +95,8 @@ function check_status()
 		current_version = current_version(),
 		new_version = new_version(),
 		clash_core = clash_core(),
-		new_core_version = new_core_version(),
-		e_mode = e_mode()
+		new_core_version = new_core_version()
+		
 
 	})
 end
@@ -107,12 +108,19 @@ function action_status()
 		localip = localip(),
 		dash_port = dash_port(),
 		current_version = current_version(),
-		new_version = new_version(),
-		dash_pass = dash_pass(),
 		clash_core = clash_core(),
-		new_core_version = new_core_version(),
+		dash_pass = dash_pass(),
 		e_mode = e_mode()
 
 	})
 end
+
+function act_ping()
+	local e={}
+	e.index=luci.http.formvalue("index")
+	e.ping=luci.sys.exec("ping -c 1 -W 1 %q 2>&1 | grep -o 'time=[0-9]*.[0-9]' | awk -F '=' '{print$2}'"%luci.http.formvalue("domain"))
+	luci.http.prepare_content("application/json")
+	luci.http.write_json(e)
+end
+
 

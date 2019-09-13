@@ -433,3 +433,9 @@ msgstr "下载规则"
 
 msgid "Insert your custom rule Url and click download"
 msgstr "输入自定义规则URL并单击下载"
+
+msgid "Delete Rule"
+msgstr "删除规则"
+
+msgid "Latency"
+msgstr "延迟"

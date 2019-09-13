@@ -164,7 +164,8 @@ var HTTP = {
 			port.innerHTML = status.dash_port ? '<b><font color=green>'+status.dash_port+'</font> </b>' : '<em><b><font color=red><%:NOT SET%></font></b></em>';
 			secret.innerHTML = status.dash_pass ? '<b><font color=green>'+status.dash_pass+'</font> </b>' : '<em><b><font color=red><%:NOT SET%></font></b></em>';
 			emode.innerHTML = status.e_mode ? '<b><font color=green style="text-transform: uppercase;">'+status.e_mode+'</font> </b>' : '<b><font color=red><%:NO CONFIG%></font></b>';
-			
+			IP.getIpifyIP();
+			IP.getIpipnetIP();
 			HTTP.checker('www.baidu.com', '_baidu');
 			HTTP.checker('www.google.com', '_google');
 			HTTP.checker('www.youtube.com', '_youtube');
@@ -178,14 +179,11 @@ var HTTP = {
 
 	IP.getIpifyIP();
 	IP.getIpipnetIP();
+	HTTP.checker('www.baidu.com', '_baidu');
+	HTTP.checker('www.google.com', '_google');
+	HTTP.checker('www.youtube.com', '_youtube');
+	HTTP.checker('www.taobao.com', '_taobao');
 
-	XHR.poll(1, '<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
-		if ( x && x.status == 200 ) {
-			IP.getIpifyIP();
-			IP.getIpipnetIP();
-				
-		}
-	});
 
 	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {
