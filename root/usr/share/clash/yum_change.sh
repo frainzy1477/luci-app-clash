@@ -5,22 +5,22 @@ CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
 CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
 
 
-#=========================================================================================================================== 
-config_type=$(uci get clash.config.config_type 2>/dev/null)
-
-if [ -f $CONFIG_YAML ];then 
-	rm -rf $CONFIG_YAML
-fi
 
 if [ $config_type == "sub" ];then 
+if [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_SUB $CONFIG_YAML
+fi
 elif [ $config_type == "upl" ];then 
+if [  -f $CONFIG_YAML_UPL ] && [ "$(ls -l $CONFIG_YAML_UPL|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_UPL $CONFIG_YAML
+fi
 elif [ $config_type == "cus" ];then 
+if [  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_CUS $CONFIG_YAML
 fi
-#=========================================================================================================================== 
+fi
 
+if [  -f $CONFIG_YAML ];then
 
 if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
 #===========================================================================================================================
@@ -91,3 +91,4 @@ else
 		sed -i '/#=============/ d' $CONFIG_YAML
 fi
 #=========================================================================================================================== 
+fi

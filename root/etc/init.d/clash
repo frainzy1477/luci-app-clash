@@ -51,15 +51,19 @@ del_cron(){
 select_config(){
 #=========================================================================================================================== 
 config_type=$(uci get clash.config.config_type 2>/dev/null)
-if [ -f $CONFIG_YAML ];then 
-	rm -rf $CONFIG_YAML
-fi
+
 if [ $config_type == "sub" ];then 
+if [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_SUB $CONFIG_YAML
+fi
 elif [ $config_type == "upl" ];then 
+if [  -f $CONFIG_YAML_UPL ] && [ "$(ls -l $CONFIG_YAML_UPL|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_UPL $CONFIG_YAML
+fi
 elif [ $config_type == "cus" ];then 
+if [  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS|awk '{print int($5/1024)}')" -ne 0 ];then
 	cp $CONFIG_YAML_CUS $CONFIG_YAML
+fi
 fi
 #=========================================================================================================================== 
 }
