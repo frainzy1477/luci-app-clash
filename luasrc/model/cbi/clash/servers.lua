@@ -4,8 +4,6 @@ local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 local fs = require "luci.clash"
-local d = require "luci.dispatcher"
-local sys = require "luci.sys"
 local uci = require "luci.model.uci".cursor()
 local m, s, o
 local clash = "clash"
