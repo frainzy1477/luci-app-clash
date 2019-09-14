@@ -5,12 +5,13 @@ local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 local fs = require "luci.clash"
 local uci = require "luci.model.uci".cursor()
-local m, s, o
+local m, s, o, k
 local clash = "clash"
 
 
 m = Map("clash")
 s = m:section(TypedSection, "clash" , translate("Rule"))
+m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -51,11 +52,11 @@ end
 
 
 k = Map(clash)
---k.pageaction = false
 s = k:section(TypedSection, "clash")
 s.anonymous = true
 
-y = s:option(ListValue, "enable_servers", translate("Create Config"))
+y = s:option(ListValue, "enable_servers", translate("Status"))
+y.description = translate("enabled to create custom configuration")
 y.default = 0
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
@@ -77,7 +78,7 @@ end
 o = s:option(Button,"Delete_Groups")
 o.title = translate("Delete Groups")
 o.inputtitle = translate("Delete Groups")
-o.description = translate("Perform this action to delete all proxy groups")
+o.description = translate("Perform this action to delete all policy groups")
 o.inputstyle = "reset"
 o.write = function()
   uci:delete_all("clash", "groups", function(s) return true end)
@@ -85,7 +86,20 @@ o.write = function()
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
-s = k:section(TypedSection, "servers", translate("Proxys"))
+
+o = s:option(Button, "Apply")
+o.title = translate("Create Config")
+o.inputtitle = translate("Create Config")
+o.description = translate("Click to create custom server configuration")
+o.inputstyle = "apply"
+o.write = function()
+  uci:commit("clash")
+  luci.sys.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "servers"))
+end
+
+
+s = k:section(TypedSection, "servers", translate("Proxies"))
 s.anonymous = true
 s.addremove = true
 s.sortable = true
@@ -124,7 +138,7 @@ o = s:option(DummyValue, "server" ,translate("Latency"))
 o.template="clash/ping"
 o.width="10%"
 
-r = k:section(TypedSection, "groups", translate("Proxy Groups"))
+r = k:section(TypedSection, "groups", translate("Policy Groups"))
 r.anonymous = true
 r.addremove = true
 r.sortable = true

@@ -1,3 +1,11 @@
+msgid "enabled to create custom configuration"
+msgstr "已启用以创建自定义配置"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Click to create custom server configuration"
+msgstr "单击以创建自定义服务器配置"
 
 msgid "Log"
 msgstr "日志"
@@ -380,8 +388,8 @@ msgstr "一键生成配置文件功能只需要配置服务器节点信息"
 msgid "Proxy Groups(No Need Set when Config Create)"
 msgstr "策略组配置（使用一键生成配置文件功能时无需设置）"
 
-msgid "Proxys"
-msgstr "服务器节点"
+msgid "Proxies"
+msgstr "代理"
 
 msgid "Edit Group"
 msgstr "编辑策略组配置"
@@ -419,7 +427,7 @@ msgstr "包含其他策略组"
 msgid "Proxy Groups Must Exist In Rule"
 msgstr "添加的策略组必须存在规则创建"
 
-msgid "Proxy Groups"
+msgid "Policy Groups"
 msgstr "添加到策略组"
 
 msgid "Rule"
@@ -441,8 +449,7 @@ msgid "Latency"
 msgstr "延迟"
 
 msgid "Delete Groups"
-msgstr "删除代理组"
+msgstr "删除策略组"
 
-msgid "Perform this action to delete all proxy groups"
-msgstr "执行此操作以删除所有代理组"
-
+msgid "Perform this action to delete all policy groups"
+msgstr "执行此操作以删除所有策略组"

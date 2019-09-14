@@ -8,10 +8,8 @@ local uci = require("luci.model.uci").cursor()
 local fs = require "luci.clash"
 local http = luci.http
 
-ful = Form("upload", nil)
-ful.reset = false
-ful.submit = false
 
+ful = Form("upload", nil)
 sul =ful:section(SimpleSection, "", translate(""))
 o = sul:option(FileUpload, "")
 o.title = translate("Upload Config")
@@ -61,6 +59,7 @@ end
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
+m.pageaction = false
 s.anonymous = true
 s.addremove=false
 

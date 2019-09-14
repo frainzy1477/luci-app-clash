@@ -197,15 +197,17 @@ fi
 
 
 yml_sub(){
-subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
 #===========================================================================================================================
-if [ ! -f $CONFIG_YAML ] && [ $subscribe_url ];then 
+subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+if [ $config_type == "sub" ];then 
+if [ ! -f $CONFIG_YAML_SUB ] && [ $subscribe_url ];then 
 	rm -rf /tmp/clash.log
-	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
-elif [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log 	
+elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
 	rm -rf /tmp/clash.log
-	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
-
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log 	
+fi
 fi
 #===========================================================================================================================
 }
@@ -218,9 +220,13 @@ if pidof clash >/dev/null; then
 fi
 
 enable=$(uci get clash.config.enable 2>/dev/null)
+
 yml_yaml
+
 yml_sub
+
 select_config
+
 lan=$(uci get clash.config.proxylan 2>/dev/null)
 lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 
@@ -336,7 +342,7 @@ restart(){
 			stop 
 			start
 		else
-		    	start
+		    start
 		fi	
 
 #=========================================================================================================================== 
