@@ -8,12 +8,9 @@ local fs = require "luci.clash"
 local clash = "clash"
 
 
-ful = Form("upload", nil)
-ful.reset = false
-ful.submit = false
-
 m = Map("clash")
 s = m:section(TypedSection, "clash")
+m.pageaction = false
 s.anonymous = true
 
 o = s:option(ListValue, "config_type", translate("Config Type"))
@@ -95,5 +92,5 @@ o.write = function()
   SYS.call("/etc/init.d/clash stop >/dev/null 2>&1 &")
 end
 
-return m, ful
+return m
 

@@ -21,26 +21,11 @@ config clash 'config'
 	
 
 config groups
+	option name 'AdBlock'
+	option old_name 'AdBlock'
+	option old_name_cfg 'AdBlock'
 	option type 'select'
-	option name 'Proxy'
-	list other_group 'Auto-Url'
-	list other_group 'DIRECT'
-
-config groups
-	option name 'Auto-Url'
-	option old_name 'Auto-Url'
-	option old_name_cfg 'Auto-Url'
-	option test_url 'http://www.gstatic.com/generate_204'
-	option type 'url-test'
-	option test_interval '600'
-
-config groups
-	option old_name 'GlobalTV'
-	option old_name_cfg 'GlobalTV'
-	option type 'select'
-	option name 'GlobalTV'
-	list other_group 'Proxy'
-	list other_group 'DIRECT'
+	list other_group 'REJECT'
 
 config groups
 	option name 'AsianTV'
@@ -51,11 +36,39 @@ config groups
 	list other_group 'Proxy'
 
 config groups
-	option name 'AdBlock'
-	option old_name 'AdBlock'
-	option old_name_cfg 'AdBlock'
+	option old_name 'GlobalTV'
+	option old_name_cfg 'GlobalTV'
 	option type 'select'
-	list other_group 'REJECT'
+	option name 'GlobalTV'
+	list other_group 'Proxy'
+	list other_group 'DIRECT'	
+
+config groups
+	option type 'select'
+	option name 'Proxy'
+	list other_group 'LoadBalance'
+	list other_group 'UrlTest'
+
+
+config groups
+	option old_name 'UrlTest'
+	option old_name_cfg 'UrlTest'
+	option test_url 'http://www.gstatic.com/generate_204'
+	option type 'url-test'
+	option test_interval '600'
+	option name 'UrlTest'
+
+config groups
+	option type 'load-balance'
+	option name 'LoadBalance'
+	option test_url 'http://www.gstatic.com/generate_204'
+	option test_interval '300'
+
+
+
+
+
+
 
 
 

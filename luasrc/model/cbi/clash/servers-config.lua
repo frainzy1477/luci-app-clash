@@ -113,7 +113,6 @@ o:depends("obfs", "tls")
 o:depends("obfs", "http")
 
 o = s:option(ListValue, "udp", translate("udp"))
-o.default = "false"
 o:value("true")
 o:value("false")
 o:depends("type", "ss")
