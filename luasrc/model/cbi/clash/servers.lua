@@ -163,12 +163,5 @@ function o.cfgvalue(...)
 end
 
 
-local apply = luci.http.formvalue("cbi.apply")
-if apply then
-        uci:set("clash", "enable_servers", "enable", 1)
-        luci.sys.call("uci commit clash") 
-	SYS.call("sh /usr/share/clash/proxy.sh 2>&1 &")
-end
-
 k:append(Template("clash/list"))
 return k, m
