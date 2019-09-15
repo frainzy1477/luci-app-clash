@@ -4,9 +4,13 @@ local SYS  = require "luci.sys"
 local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
+local fs = require "luci.clash"
+local uci = require "luci.model.uci".cursor()
+
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
+m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -26,6 +30,7 @@ luci.ip.neighbors({ family = 4 }, function(entry)
        end
 end)
 o:depends("proxylan", 1)
+
 
 
 update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
@@ -60,9 +65,14 @@ end)
 o:depends("rejectlan", 1)
 
 
-local apply = luci.http.formvalue("cbi.apply")
-if apply then
-    luci.sys.call("uci commit clash")
+
+o = s:option(Button, "Apply")
+o.title = translate("Save & Apply")
+o.inputtitle = translate("Save & Apply")
+o.inputstyle = "apply"
+o.write = function()
+  uci:commit("clash")
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "access"))
 end
 
 return m

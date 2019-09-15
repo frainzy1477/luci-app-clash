@@ -7,6 +7,7 @@ local uci = require("luci.model.uci").cursor()
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
+m.pageaction = false
 s.anonymous = true
 
 o = s:option(Value, "http_port")
@@ -51,13 +52,20 @@ o:value("warning", "warning")
 o:value("error", "error")
 o:value("debug", "debug")
 
+o = s:option(Button, "Apply")
+o.title = translate("Save & Apply")
+o.inputtitle = translate("Save & Apply")
+o.inputstyle = "apply"
+o.write = function()
 local clash_conf = "/etc/clash/config.yaml"
 if NXFS.access(clash_conf) then
-local apply = luci.http.formvalue("cbi.apply")
-if apply then
-    luci.sys.call("uci commit clash") 
 	SYS.call("sh /usr/share/clash/yum_change.sh 2>&1 &")
 	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+  	uci:commit("clash")
+  	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "port"))
+else
+  	uci:commit("clash")
+  	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "port"))
 end
 end
 

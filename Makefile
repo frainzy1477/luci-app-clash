@@ -36,16 +36,50 @@ endef
 
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
+if [ -f "/etc/config/clash" ]; then
+	mv /etc/config/clash /etc/config/clash.bak
+fi
+
 if [ -f "/usr/lib/lua/luci/model/cbi/clash" ]; then
 	rm -rf /usr/lib/lua/luci/model/cbi/clash
-elif [ -f "/usr/lib/lua/luci/view/clash" ]; then
+fi	
+
+if [ -f "/usr/lib/lua/luci/view/clash" ]; then
 	rm -rf /usr/lib/lua/luci/view/clash
+fi
+
+if [  -f /usr/share/clash/config/sub/config.yaml ] && [ "$(ls -l /usr/share/clash/config/sub/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+	mv /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/config.bak
+fi
+
+if [  -f /usr/share/clash/config/upload/config.yaml ] && [ "$(ls -l /usr/share/clash/config/upload/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+	mv /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/config.bak
+fi
+ 
+if [  -f /usr/share/clash/config/custom/config.yaml ] && [ "$(ls -l /usr/share/clash/config/custom/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+	mv /usr/share/clash/config/custom/config.yaml /usr/share/clash/config/custom/config.bak
 fi
 endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 rm -rf /tmp/luci*
+
+if [ -f "/etc/config/clash.bak" ]; then
+	mv /etc/config/clash.bak /etc/config/clash
+fi
+
+if [  -f /usr/share/clash/config/sub/config.bak ];then
+	mv /usr/share/clash/config/sub/config.bak /usr/share/clash/config/sub/config.yaml
+fi
+
+if [  -f /usr/share/clash/config/upload/config.bak ];then
+	mv /usr/share/clash/config/upload/config.bak /usr/share/clash/config/upload/config.yaml
+fi
+ 
+if [  -f /usr/share/clash/config/custom/config.bak ];then
+	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml
+fi
 endef
 
 define Package/$(PKG_NAME)/install
