@@ -65,7 +65,7 @@
 - [clashX](https://github.com/yichengchen/clashX) : A rule based custom proxy with GUI for Mac base on clash
 - [ClashA](https://github.com/ccg2018/ClashA/tree/master) : An Android GUI for Clash
 - [KoolClash OpenWrt/LEDE](https://github.com/SukkaW/Koolshare-Clash/tree/master) : A rule based custom proxy for Koolshare OpenWrt/LEDE based on Clash
-- [OpenClash] (https://github.com/vernesong/OpenClash/tree/master) : Another Clash Client For OpenWrt
+- [OpenClash](https://github.com/vernesong/OpenClash/tree/master) : Another Clash Client For OpenWrt
 ## License
 
 Luci For Clash - OpenWrt is released under the GPL v3.0 License - see detailed [LICENSE](https://github.com/frainzy1477/luci-app-clash/blob/master/LICENSE) .
