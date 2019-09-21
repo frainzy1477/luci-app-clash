@@ -10,7 +10,6 @@
 		<tr><td width="50%"><span><%:Clash Client%></span></td><td id="_clash"><em><%:Collecting data...%></em></td> </tr>
 		<tr><td width="50%"><span><%:Clash Mode%></span></td><td id="_emode"><em><%:Collecting data...%></em></td> </tr>
 		<tr><td width="50%"><span><%:Clash Dashboard%></span></td><td id="_web"><em> <%:Collecting data...%> </em></td> </tr>
-		<tr><td width="50%"><span><%:Yacd Dashboard%></span></td><td id="_webb"><em> <%:Collecting data...%> </em></td> </tr>
 	</table>
 </fieldset>
 
@@ -26,9 +25,11 @@
 
 <fieldset class="cbi-section">
 	<table width="100%" cellspacing="10">
-		<tr><td class="align-left" width="50%"><span><%:Global IP%> </span>&nbsp;:&nbsp;<span id="ip-ipify"><font color=red><%:Checking...%></font></span> <span id="ip-ipify-ipip"></span></td>  <td class="align-right" width="25%">  <span><%:Google%></span>&nbsp;:&nbsp;<span id="_google"><em><%:Collecting data...%></em></span></td><td class="align-right"><%:Youtube%> </span>&nbsp;:&nbsp;<span id="_youtube"><em><%:Collecting data...%></em></span></td></tr>
-	    <!--<tr><td class="align-left" width="50%"><span><%:Global IP%> </span>&nbsp;:&nbsp;<span id="ip-gb"><font color=red><%:Checking...%></font></span> <span id="ip-geo"></span></td>  <td class="align-right" width="25%">  <span><%:Google%></span>&nbsp;:&nbsp;<span id="_google"><em><%:Collecting data...%></em></span></td><td class="align-right"><%:Youtube%> </span>&nbsp;:&nbsp;<span id="_youtube"><em><%:Collecting data...%></em></span></td></tr> -->   
-	    <tr><td class="align-left" width="50%"><span><%:Domestic IP%> </span>&nbsp;:&nbsp;<span id="d-ip"><font color=red><%:Checking...%></font></span></td>  <td class="align-right" width="25%"> <span><%:Baidu%></span>&nbsp;:&nbsp;<span  id="_baidu"><em><%:Collecting data...%></em></span></td> <td class="align-right"><%:Taobao%> </span>&nbsp;:&nbsp;<span id="_taobao"><em><%:Collecting data...%></em></span></td></tr>
+		<tr><td class="align-left" width="50%"><span><%:Global IP%> </span>&nbsp;:&nbsp;<span id="ip-ipify"><font color=red><%:Checking...%></font></span> <span id="ip-ipify-ipip"></span></td> <td  width="15%">  <span><%:Google%></span>&nbsp;:&nbsp;<span id="_google"><em><%:Collecting data...%></em></span></td><td   width="15%"><%:Youtube%> </span>&nbsp;:&nbsp;<span id="_youtube"><em><%:Collecting data...%></em></span></td><td  ><%:Github%> </span>&nbsp;:&nbsp;<span id="_github"><em><%:Collecting data...%></em></span></td></tr>	   
+	    <tr><td class="align-left" width="50%"><span><%:Domestic IP%> </span>&nbsp;:&nbsp;<span id="d-ip"><font color=red><%:Checking...%></font></span></td><td  width="15%"> <span><%:Baidu%></span>&nbsp;:&nbsp;<span  id="_baidu"><em><%:Collecting data...%></em></span></td> <td  width="15%"><%:Taobao%> </span>&nbsp;:&nbsp;<span id="_taobao"><em><%:Collecting data...%></em></span></td><td  ><%:Music.163%> </span>&nbsp;:&nbsp;<span id="_http-163"><em><%:Collecting data...%></em></span></td></tr>
+		
+
+	
 	</table>
 </fieldset>
 
@@ -102,8 +103,7 @@ let IP = {
            
 }
 
-//window.jQueryCallback = (data) => IP.IPSB(data);
-//IP.getIpipnetIP();			
+			
 var HTTP = {
 	checker: (domain, cbElID) => {
 		let img = new Image;
@@ -118,7 +118,7 @@ var HTTP = {
 		}
 		img.onload = () => {
 			clearTimeout(timeout);
-			document.getElementById(cbElID).innerHTML = '<b><font color=green><%:CONNECT OK%></font></b>'
+			document.getElementById(cbElID).innerHTML = '<b><font color=green><%:NORMAL%></font></b>'
 		}
 		img.src = `https://${domain}/favicon.ico?${+(new Date)}`
 	}
@@ -137,7 +137,6 @@ var HTTP = {
 	         var sbipScript= document.createElement("script");
 	         sbipScript.async = "async";
 	         sbipScript.src='https://api.skk.moe/network/parseIp/ipip';
-	         //sbipScript.src='https://ip.sb/addrinfo?callback=jQueryCallback';
 	         sbip.appendChild( sbipScript);
 
 
@@ -147,7 +146,6 @@ var HTTP = {
        	            setTimeout("Load()",1000*8);
 		   }
 	var web = document.getElementById('_web');
-	var webb = document.getElementById('_webb');
 	var clash = document.getElementById('_clash');
 	var ip = document.getElementById('_ip');
 	var port = document.getElementById('_port');
@@ -158,7 +156,6 @@ var HTTP = {
 	XHR.poll(1, '<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {
 			web.innerHTML = status.web ? '<a type="button" class="btn" style="background-color:black;padding: 5px;"  href="http://'+window.location.hostname+':'+status.dash_port+'/ui" target="_blank"/><b><font color=green><%:OPEN DASHBOARD%></font></b></a>' : '<b><font color=red><%:NOT RUNNING%></font></b>';
-			webb.innerHTML = status.web ? '<a type="button" class="btn" style="background-color:black;padding: 5px;"  href="http://'+window.location.hostname+'/clash" target="_blank"/><b><font color=green><%:OPEN DASHBOARD%></font></b></a>' : '<b><font color=red><%:NOT RUNNING%></font></b>';
 			clash.innerHTML = status.clash ? '<b><font color=green><%:RUNNING%></font> </b>' : '<b><font color=red><%:NOT RUNNING%></font></b>';
 			ip.innerHTML = status.localip ? '<b><font color=green>'+status.localip+'</font> </b>' : '<em><b><font color=red><%:NOT SET%></font></b></em>';
 			port.innerHTML = status.dash_port ? '<b><font color=green>'+status.dash_port+'</font> </b>' : '<em><b><font color=red><%:NOT SET%></font></b></em>';
@@ -170,6 +167,8 @@ var HTTP = {
 			HTTP.checker('www.google.com', '_google');
 			HTTP.checker('www.youtube.com', '_youtube');
 			HTTP.checker('www.taobao.com', '_taobao');
+			HTTP.checker('github.com', '_github');
+			HTTP.checker('s1.music.126.net/style', '_http-163');
 
 
 			
@@ -183,7 +182,8 @@ var HTTP = {
 	HTTP.checker('www.google.com', '_google');
 	HTTP.checker('www.youtube.com', '_youtube');
 	HTTP.checker('www.taobao.com', '_taobao');
-
+	HTTP.checker('github.com', '_github');
+	HTTP.checker('s1.music.126.net/style', '_http-163');
 
 	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {
@@ -197,5 +197,4 @@ var HTTP = {
 //]]></script>
 
 
-<!--<script type="application/javascript" src="https://ip.sb/addrinfo?callback=jQueryCallback"></script>-->
 

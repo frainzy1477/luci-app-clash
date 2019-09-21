@@ -10,7 +10,7 @@ config_type=$(uci get clash.config.config_type 2>/dev/null)
 CONFIG_YAML="/usr/share/clash/config/sub/config.yaml"
 CONFIG_YAML_TEMP="/etc/clash/server.yaml"
 CONFIG_YAML_RULE="/usr/share/clash/rule.yaml"
-
+ 
 
 if [ $config_type == "sub" ];then 
 	if pidof clash >/dev/null; then

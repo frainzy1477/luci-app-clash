@@ -31,6 +31,22 @@ o.datatype = "port"
 o.rmempty = false
 o.description = translate("Redir Port")
 
+
+o = s:option(ListValue, "allow_lan")
+o.title = translate("Allow Lan")
+o.default = true
+o:value("true", "true")
+o:value("false", "false")
+o.description = translate("Allow Lan")
+
+
+o = s:option(Value, "bind_addr")
+o.title = translate("Bind Address")
+o.rmempty = true
+o.description = translate("Bind Address")
+o:depends("allow_lan", "true")
+
+
 o = s:option(Value, "dash_port")
 o.title = translate("Dashboard Port")
 o.default = 9191

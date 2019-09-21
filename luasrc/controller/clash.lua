@@ -23,7 +23,7 @@ function index()
 	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 70)
 	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 80).leaf = true
 	entry({"admin", "services", "clash", "config", "subconfig"},cbi("clash/subconfig"),_("Subscribe Config"), 90).leaf = true
-	entry({"admin", "services", "clash", "config", "upconfig"},cbi("clash/upconfig"),_("Uploaded Config"), 100).leaf = true
+	entry({"admin", "services", "clash", "config", "upconfig"},form("clash/upconfig"),_("Uploaded Config"), 100).leaf = true
 	entry({"admin", "services", "clash", "config", "cusconfig"},cbi("clash/cusconfig"),_("Custom Config"), 110).leaf = true
 	
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true

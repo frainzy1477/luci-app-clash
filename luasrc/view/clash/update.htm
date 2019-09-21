@@ -4,7 +4,7 @@
 		<tr>
 			<th align="center"><%:App Name%></th>
 			<th align="center"><%:Version%></th>
-			<th align="center"><%:Check Update%></th>
+			<th align="center"><%:Check Update%></th> 
 											   
 		</tr>
 	</thead>
@@ -63,7 +63,7 @@ function version_check(btn)
 	
    else if(status.new_version==0)
    {
-	version_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-reset" value="<%:Error Occured | Return%>" onclick="return check_return(this)"/></center>';
+	version_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-reset" value="<%:Error Occured  |Return%>" onclick="return check_return(this)"/></center>';
   
 	}
 	else if(status.current_version >= status.new_version)

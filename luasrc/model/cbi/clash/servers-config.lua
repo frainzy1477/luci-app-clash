@@ -1,5 +1,3 @@
--- Copyright (C) 2017 yushi studio <ywb94@qq.com> github.com/ywb94
--- Licensed to the public under the GNU General Public License v3.
 
 local m, s, o
 local clash = "clash"
@@ -14,13 +12,7 @@ local uuid = luci.sys.exec("cat /proc/sys/kernel/random/uuid")
 local server_table = {}
 
 local encrypt_methods_ss = {
-	-- aead
-	"AEAD_AES_128_GCM",
-	"AEAD_AES_192_GCM",
-	"AEAD_AES_256_GCM",
-	"AEAD_CHACHA20_POLY1305",
-	
-	-- stream
+
 	"rc4-md5",
 	"aes-128-cfb",
 	"aes-192-cfb",
@@ -33,6 +25,7 @@ local encrypt_methods_ss = {
 	"aes-256-gcm",
 	"chacha20",
 	"chacha20-ietf",
+	"xchacha20",
 	"chacha20-ietf-poly1305",
 	"xchacha20-ietf-poly1305",
 }

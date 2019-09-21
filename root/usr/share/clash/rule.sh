@@ -20,3 +20,4 @@ status=$(egrep '^ {0,}Rule:' /tmp/Rule)
 		mv /tmp/test /usr/share/clash/custom_rule.yaml
 	fi
 fi
+ 

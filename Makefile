@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.1.0
+PKG_VERSION:=1.1.1
 PKG_MAINTAINER:=frainzy1477
 
 
@@ -12,7 +12,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
 	TITLE:=LuCI app for clash
-	DEPENDS:=+luci +luci-base +wget +iptables +dnsmasq-full +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
+	DEPENDS:=+luci +luci-base +wget +iptables +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef
@@ -36,16 +36,29 @@ endef
 
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
+
 if [ -f "/etc/config/clash" ]; then
 	mv /etc/config/clash /etc/config/clash.bak
 fi
 
-if [ -f "/usr/lib/lua/luci/model/cbi/clash" ]; then
+if [ -d "/usr/lib/lua/luci/model/cbi/clash" ]; then
 	rm -rf /usr/lib/lua/luci/model/cbi/clash
 fi	
 
-if [ -f "/usr/lib/lua/luci/view/clash" ]; then
+if [ -d "/usr/lib/lua/luci/view/clash" ]; then
 	rm -rf /usr/lib/lua/luci/view/clash
+fi
+
+if [ -f /usr/share/clash/new_core_version ]; then
+	rm -rf /usr/share/clash/new_core_version
+fi
+
+if [ -f /usr/share/clash/new_luci_version ]; then
+	rm -rf /usr/share/clash/new_luci_version
+fi
+
+if [  -d /usr/share/clash/web ]; then
+	rm -rf /usr/share/clash/web
 fi
 
 if [  -f /usr/share/clash/config/sub/config.yaml ] && [ "$(ls -l /usr/share/clash/config/sub/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
@@ -92,7 +105,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/clash
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/usr/share/clash
-	$(INSTALL_DIR) $(1)/usr/share/clash/web
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/img
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/js
@@ -125,13 +137,11 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/rule.sh $(1)/usr/share/clash/
 
 
-	
-	$(INSTALL_BIN) ./root/usr/share/clash/web/* $(1)/usr/share/clash/web
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.71cb9fd91422722c5ceb.css $(1)/usr/share/clash/dashboard/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.557c7e0375c2286ea607.css $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/img/33343e6117c37aaef8886179007ba6b5.png $(1)/usr/share/clash/dashboard/img/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.71cb9fd91422722c5ceb.min.js $(1)/usr/share/clash/dashboard/js/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.71cb9fd91422722c5ceb.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.557c7e0375c2286ea607.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.557c7e0375c2286ea607.min.js $(1)/usr/share/clash/dashboard/js/
         
 	$(INSTALL_DATA) ./luasrc/clash.lua $(1)/usr/lib/lua/luci/
 	$(INSTALL_DATA) ./luasrc/controller/*.lua $(1)/usr/lib/lua/luci/controller/

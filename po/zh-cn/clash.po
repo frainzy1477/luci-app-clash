@@ -1,3 +1,9 @@
+msgid "Allow Lan"
+msgstr "允许局域网"
+
+msgid "Bind Address"
+msgstr "绑定地址"
+
 msgid "enabled to create custom configuration"
 msgstr "已启用以创建自定义配置"
 
@@ -164,19 +170,25 @@ msgid "Google"
 msgstr "谷歌网"
 
 msgid "Youtube"
-msgstr "Youtube网"
+msgstr "Youtube"
 
 msgid "Baidu"
 msgstr "百度网"
 
+msgid "Github"
+msgstr "Github"
+
+msgid "Music.163"
+msgstr "网易云音乐"
+
 msgid "Taobao"
 msgstr "淘宝网"
 
-msgid "CONNECT OK"
-msgstr "连接正常"
+msgid "NORMAL"
+msgstr "正常"
 
 msgid "TIMEOUT"
-msgstr "连接超时"
+msgstr "超时"
 
 msgid "NOT SET"
 msgstr "未设置"

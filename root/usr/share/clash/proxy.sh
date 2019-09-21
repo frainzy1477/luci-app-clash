@@ -23,7 +23,7 @@ Proxy_Group="/tmp/Proxy_Group"
 GROUP_FILE="/tmp/groups.yaml"
 CONFIG_FILE="/tmp/y_groups"
 CFG_FILE="/etc/config/clash"
-
+ 
 
 servers_set()
 {

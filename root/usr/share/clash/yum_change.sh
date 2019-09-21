@@ -27,7 +27,7 @@ if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enha
 	uci set clash.config.mode="1" && uci commit clash
 #===========================================================================================================================	
 fi
-
+ 
 
 #===========================================================================================================================
 		mode=$(uci get clash.config.mode 2>/dev/null)
@@ -36,6 +36,8 @@ fi
 		http_port=$(uci get clash.config.http_port 2>/dev/null)
 		socks_port=$(uci get clash.config.socks_port 2>/dev/null)
 		dash_port=$(uci get clash.config.dash_port 2>/dev/null)
+		bind_addr=$(uci get clash.config.bind_addr 2>/dev/null)
+		allow_lan=$(uci get clash.config.allow_lan 2>/dev/null)
 		log_level=$(uci get clash.config.level 2>/dev/null)
 		subtype=$(uci get clash.config.subcri 2>/dev/null)
 				
@@ -51,14 +53,19 @@ if [ $mode -eq 1 ];  then
 		sed -i "1i\port: ${http_port}" $CONFIG_YAML
 		sed -i "2i\socks-port: ${socks_port}" $CONFIG_YAML
 		sed -i "3i\redir-port: ${redir_port}" $CONFIG_YAML
-		sed -i "4i\allow-lan: true" $CONFIG_YAML
-		sed -i "5i\mode: Rule" $CONFIG_YAML
-		sed -i "6i\log-level: ${log_level}" $CONFIG_YAML
-		sed -i "7i\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML
-		sed -i "8i\secret: '${da_password}'" $CONFIG_YAML
-		sed -i "9i\external-ui: "/usr/share/clash/dashboard"" $CONFIG_YAML
-		sed -i "10i\ " $CONFIG_YAML
+		sed -i "4i\allow-lan: ${allow_lan}" $CONFIG_YAML
+		if [ $allow_lan == "true" ];  then	
+		sed -i "5i\bind-address: '${bind_addr}'" $CONFIG_YAML
+		else
+		sed -i "5i\#bind-address: '${bind_addr}'" $CONFIG_YAML
+		fi
+		sed -i "6i\mode: Rule" $CONFIG_YAML
+		sed -i "7i\log-level: ${log_level}" $CONFIG_YAML
+		sed -i "8i\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML
+		sed -i "9i\secret: '${da_password}'" $CONFIG_YAML
+		sed -i "10i\external-ui: "/usr/share/clash/dashboard"" $CONFIG_YAML
 		sed -i "11i\ " $CONFIG_YAML
+		sed -i "12i\ " $CONFIG_YAML
 		sed -i '/#=============/ d' $CONFIG_YAML		
 else
 		if [ $subtype == "v2rayn2clash" ];then
@@ -80,14 +87,19 @@ else
 		sed -i "1i\port: ${http_port}" $CONFIG_YAML
 		sed -i "2i\socks-port: ${socks_port}" $CONFIG_YAML
 		sed -i "3i\redir-port: ${redir_port}" $CONFIG_YAML
-		sed -i "4i\allow-lan: true" $CONFIG_YAML
-		sed -i "5i\mode: Rule" $CONFIG_YAML
-		sed -i "6i\log-level: ${log_level}" $CONFIG_YAML
-		sed -i "7i\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML
-		sed -i "8i\secret: '${da_password}'" $CONFIG_YAML
-		sed -i "9i\external-ui: "/usr/share/clash/dashboard"" $CONFIG_YAML
-		sed -i "10i\ " $CONFIG_YAML
+		sed -i "4i\allow-lan: ${allow_lan}" $CONFIG_YAML
+		if [ $allow_lan == "true" ];  then	
+		sed -i "5i\bind-address: '${bind_addr}'" $CONFIG_YAML
+		else
+		sed -i "5i\#bind-address: '${bind_addr}'" $CONFIG_YAML
+		fi
+		sed -i "6i\mode: Rule" $CONFIG_YAML
+		sed -i "7i\log-level: ${log_level}" $CONFIG_YAML
+		sed -i "8i\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML
+		sed -i "9i\secret: '${da_password}'" $CONFIG_YAML
+		sed -i "10i\external-ui: "/usr/share/clash/dashboard"" $CONFIG_YAML
 		sed -i "11i\ " $CONFIG_YAML
+		sed -i "12i\ " $CONFIG_YAML
 		sed -i '/#=============/ d' $CONFIG_YAML
 fi
 #=========================================================================================================================== 

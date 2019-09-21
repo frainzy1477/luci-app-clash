@@ -13,7 +13,7 @@ cfg_groups_set()
       return
    fi
    
-   
+    
    if [ "$name" != "$old_name_cfg" ]; then
       sed -i "s/\'${old_name_cfg}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
       sed -i "s/old_name \'${name}\'/old_name \'${old_name}\'/g" $CFG_FILE 2>/dev/null
