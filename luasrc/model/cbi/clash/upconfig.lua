@@ -10,6 +10,8 @@ local http = luci.http
 
 
 ful = SimpleForm("upload", nil)
+ful.reset = false
+ful.submit = false
 sul =ful:section(SimpleSection, "", translate(""))
 o = sul:option(FileUpload, "")
 o.title = translate("Upload Config")
