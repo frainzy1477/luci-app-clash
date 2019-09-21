@@ -9,7 +9,7 @@ local fs = require "luci.clash"
 local http = luci.http
 
 
-ful = Form("upload", nil)
+ful = SimpleForm("upload", nil)
 sul =ful:section(SimpleSection, "", translate(""))
 o = sul:option(FileUpload, "")
 o.title = translate("Upload Config")
