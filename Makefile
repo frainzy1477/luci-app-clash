@@ -105,6 +105,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/clash
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/usr/share/
+	$(INSTALL_DIR) $(1)/usr/share/clash
 	$(INSTALL_DIR) $(1)/usr/share/clash/yac
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/img
