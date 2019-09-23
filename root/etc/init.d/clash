@@ -257,6 +257,8 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	yml_dns_change
 	
     nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &	
+	
+	ln -s /usr/share/clash/yac /www/clash
 	  		
 	uci commit firewall	
 	/etc/init.d/firewall restart >/dev/null 2>&1
@@ -318,6 +320,8 @@ lang=$(uci get luci.main.lang 2>/dev/null)
     
   	  	del_cron
 
+		rm -rf /www/clash 2> /dev/null
+		
 	 	rm -rf /tmp/clash.log
 		
 		if [ $lang == "en" ];then

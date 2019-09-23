@@ -57,7 +57,7 @@ if [ $mode -eq 1 ];  then
 		if [ $allow_lan == "true" ];  then	
 		sed -i "5i\bind-address: '${bind_addr}'" $CONFIG_YAML
 		else
-		sed -i "5i\#bind-address: '${bind_addr}'" $CONFIG_YAML
+		sed -i "5i\#bind-address: " $CONFIG_YAML
 		fi
 		sed -i "6i\mode: Rule" $CONFIG_YAML
 		sed -i "7i\log-level: ${log_level}" $CONFIG_YAML
@@ -91,7 +91,7 @@ else
 		if [ $allow_lan == "true" ];  then	
 		sed -i "5i\bind-address: '${bind_addr}'" $CONFIG_YAML
 		else
-		sed -i "5i\#bind-address: '${bind_addr}'" $CONFIG_YAML
+		sed -i "5i\#bind-address: " $CONFIG_YAML
 		fi
 		sed -i "6i\mode: Rule" $CONFIG_YAML
 		sed -i "7i\log-level: ${log_level}" $CONFIG_YAML

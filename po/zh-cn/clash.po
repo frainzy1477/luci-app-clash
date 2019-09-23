@@ -1,6 +1,9 @@
 msgid "Allow Lan"
 msgstr "允许局域网"
 
+msgid "Bind All IP Addresses"
+msgstr "绑定所有IP地址"
+
 msgid "Bind Address"
 msgstr "绑定地址"
 
@@ -130,8 +133,8 @@ msgstr "在DHCP和DNS设置自定义DNS转发"
 msgid "Proxy Lan IP"
 msgstr "走代理的局域网IP"
 
-msgid "Only selected IPs will be proxied if enabled"
-msgstr "如果启用，仅选择IP只走代理"
+msgid "Only selected IPs will be proxied if enabled. fake-ip mode not supportted"
+msgstr "如果启用，仅选择IP只走代理,不支持fake-ip模式"
 
 msgid "Proxy Lan List"
 msgstr "走代理的IP列表"
@@ -142,7 +145,7 @@ msgstr "选择IP只走代理"
 msgid "Bypass Lan IP"
 msgstr "不走代理的局域网IP"
 
-msgid "Selected IPs will not be proxied if enabled. fake-ip mode does not support"
+msgid "Selected IPs will not be proxied if enabled. fake-ip mode not supportted"
 msgstr "如果启用，仅选择IP只不走代理,不支持fake-ip模式"
 
 msgid "Bypass Lan List"

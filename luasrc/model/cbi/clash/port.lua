@@ -35,16 +35,28 @@ o.description = translate("Redir Port")
 o = s:option(ListValue, "allow_lan")
 o.title = translate("Allow Lan")
 o.default = true
+o.rmempty = false
 o:value("true", "true")
 o:value("false", "false")
 o.description = translate("Allow Lan")
 
 
-o = s:option(Value, "bind_addr")
+o = s:option(ListValue, "bind_addr")
 o.title = translate("Bind Address")
-o.rmempty = true
+o:value("*",  translate("Bind All IP Addresses"))
+luci.ip.neighbors({ family = 4 }, function(entry)
+       if entry.reachable then
+               o:value(entry.dest:string())
+       end
+end)
+luci.ip.neighbors({ family = 6 }, function(entry)
+       if entry.reachable then
+               o:value(entry.dest:string())
+       end
+end)
 o.description = translate("Bind Address")
 o:depends("allow_lan", "true")
+
 
 
 o = s:option(Value, "dash_port")
