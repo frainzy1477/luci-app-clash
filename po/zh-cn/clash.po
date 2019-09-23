@@ -214,7 +214,7 @@ msgstr "打开外部控制"
 msgid "Clash Dashboard"
 msgstr "Clash外部控制"
 
-msgid "Yacd Dashboard"
+msgid "Yac Dashboard"
 msgstr "Yacd外部控制"
 
 msgid "Client"
