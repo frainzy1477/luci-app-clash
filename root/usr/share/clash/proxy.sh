@@ -164,7 +164,7 @@ EOF
 
   if [ ! -z "$custom_host" ]; then
 cat >> "$SERVER_FILE" <<-EOF
-    host: "$custom_host"
+    host: $custom_host
 EOF
   fi
 
