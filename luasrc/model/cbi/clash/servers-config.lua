@@ -130,6 +130,11 @@ o.rmempty = true
 o:depends("obfs", "websocket")
 o:depends("obfs_vmess", "websocket")
 
+o = s:option(ListValue, "mux", translate("Mux"))
+o.default = "false"
+o:value("true")
+o:value("false")
+o:depends("obfs", "websocket")
 
 o = s:option(Value, "custom", translate("headers"))
 o.rmempty = true

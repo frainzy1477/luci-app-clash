@@ -28,7 +28,7 @@ end
 o = s:option(Button,"log")
 o.inputtitle = translate("Clear Logs")
 o.write = function()
-  SYS.call('echo "" > /tmp/clash.log')
+  SYS.call('echo "" > /tmp/clash.log 2>&1 &')
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
 

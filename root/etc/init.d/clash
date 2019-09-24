@@ -215,6 +215,11 @@ fi
 #===========================================================================================================================
 }
 
+custom_list() {
+	(/usr/share/clash/list.sh && sleep 2 >/dev/null 2>&1) &
+}
+
+
 start(){
 lang=$(uci get luci.main.lang 2>/dev/null)
 #=========================================================================================================================== 
@@ -267,6 +272,8 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	
 	killall -1 dnsmasq
 	
+	custom_list
+	
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 	
 	if pidof clash >/dev/null; then
@@ -316,6 +323,14 @@ lang=$(uci get luci.main.lang 2>/dev/null)
   	  	uci commit firewall
 	  	/etc/init.d/firewall restart >/dev/null 2>&1
 	
+		if [  -d /tmp/dnsmasq.clash ];then 
+		 rm -rf /tmp/dnsmasq.clash
+		fi
+
+		if [  -f /tmp/dnsmasq.d/custom_list.conf ];then 
+		  rm -rf /tmp/dnsmasq.d/custom_list.conf
+		fi
+
   	  	/etc/init.d/dnsmasq restart >/dev/null 2>&1
     
   	  	del_cron

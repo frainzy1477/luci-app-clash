@@ -32,7 +32,7 @@ end
 o = s:option(Button,"configrm")
 o.inputtitle = translate("Delete Config")
 o.write = function()
-  SYS.call("rm -rf /usr/share/clash/config/sub/config.yaml")
+  SYS.call("rm -rf /usr/share/clash/config/sub/config.yaml 2>&1 &")
 end
 
 

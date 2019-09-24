@@ -42,6 +42,7 @@ servers_set()
    config_get "custom" "$section" "custom" ""
    config_get "custom_host" "$section" "custom_host" ""
    config_get "tls" "$section" "tls" ""
+   config_get "mux" "$section" "mux" ""
    config_get "tls_custom" "$section" "tls_custom" ""
    config_get "skip_cert_verify" "$section" "skip_cert_verify" ""
    config_get "path" "$section" "path" ""
@@ -87,6 +88,10 @@ servers_set()
    
    if [ ! -z "$host" ]; then
       host="host: $host"
+   fi
+   
+   if [ ! -z "$mux" ]; then
+      muxx="mux: $mux"
    fi
    
    if [ ! -z "$custom" ] && [ "$type" = "vmess" ]; then
@@ -156,11 +161,6 @@ cat >> "$SERVER_FILE" <<-EOF
 EOF
   fi
 
-  if [ ! -z "$path" ]; then
-cat >> "$SERVER_FILE" <<-EOF
-    $paths
-EOF
-  fi
 
   if [ ! -z "$custom_host" ]; then
 cat >> "$SERVER_FILE" <<-EOF
@@ -168,6 +168,18 @@ cat >> "$SERVER_FILE" <<-EOF
 EOF
   fi
 
+    if [ ! -z "$path" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+    $paths
+EOF
+  fi
+  
+      if [ "$mux" = "true" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+    $muxx
+EOF
+  fi
+  
   if [ ! -z "$custom" ]; then
 cat >> "$SERVER_FILE" <<-EOF
     headers:

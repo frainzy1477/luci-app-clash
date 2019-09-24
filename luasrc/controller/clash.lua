@@ -13,22 +13,23 @@ function index()
 	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 30)
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 30).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 40).leaf = true
-	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 50).leaf = true
+	entry({"admin", "services", "clash", "settings", "list"},cbi("clash/list"),_("Custom List"), 50).leaf = true
+	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 60).leaf = true
 	
 	
-	entry({"admin", "services", "clash", "servers"},cbi("clash/servers"),_("Custom"), 60).leaf = true
+	entry({"admin", "services", "clash", "servers"},cbi("clash/servers"),_("Custom"), 70).leaf = true
     entry({"admin", "services", "clash", "servers-config"},cbi("clash/servers-config"), nil).leaf = true
     entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
 	
-	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 70)
-	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 80).leaf = true
-	entry({"admin", "services", "clash", "config", "subconfig"},cbi("clash/subconfig"),_("Subscribe Config"), 90).leaf = true
-	entry({"admin", "services", "clash", "config", "upconfig"},form("clash/upconfig"),_("Uploaded Config"), 100).leaf = true
-	entry({"admin", "services", "clash", "config", "cusconfig"},cbi("clash/cusconfig"),_("Custom Config"), 110).leaf = true
+	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 80)
+	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 90).leaf = true
+	entry({"admin", "services", "clash", "config", "subconfig"},cbi("clash/subconfig"),_("Subscribe Config"), 100).leaf = true
+	entry({"admin", "services", "clash", "config", "upconfig"},form("clash/upconfig"),_("Uploaded Config"), 110).leaf = true
+	entry({"admin", "services", "clash", "config", "cusconfig"},cbi("clash/cusconfig"),_("Custom Config"), 120).leaf = true
 	
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
-	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 120).leaf = true
-	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 130).leaf = true
+	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 130).leaf = true
+	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 140).leaf = true
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 	entry({"admin", "services", "clash", "ping"}, call("act_ping")).leaf=true
 

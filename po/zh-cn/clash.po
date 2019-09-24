@@ -1,3 +1,12 @@
+msgid "Custom List DNS"
+msgstr "自定义列表DNS"
+
+msgid "Apply Custom List"
+msgstr "应用自定义列表"
+
+msgid "Custom List"
+msgstr "自定义列表"
+
 msgid "Allow Lan"
 msgstr "允许局域网"
 

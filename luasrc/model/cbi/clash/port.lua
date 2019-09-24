@@ -41,7 +41,7 @@ o:value("false", "false")
 o.description = translate("Allow Lan")
 
 
-o = s:option(ListValue, "bind_addr")
+o = s:option(Value, "bind_addr")
 o.title = translate("Bind Address")
 o:value("*",  translate("Bind All IP Addresses"))
 luci.ip.neighbors({ family = 4 }, function(entry)

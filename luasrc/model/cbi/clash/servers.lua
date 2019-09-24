@@ -103,7 +103,7 @@ s = k:section(TypedSection, "servers", translate("Proxies"))
 s.anonymous = true
 s.addremove = true
 s.sortable = true
-s.template = "clash/tblsection"
+s.template = "cbi/tblsection"
 s.extedit = luci.dispatcher.build_url("admin/services/clash/servers-config/%s")
 function s.create(...)
 	local sid = TypedSection.create(...)
