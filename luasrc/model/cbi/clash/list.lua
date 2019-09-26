@@ -14,7 +14,7 @@ m.pageaction = false
 s.anonymous = true
 
 
-y = s:option(ListValue, "enable_list", translate("Status"))
+y = s:option(ListValue, "cus_list", translate("Status"))
 y.default = 0
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
@@ -29,7 +29,7 @@ o:value("4.2.2.1", "4.2.2.1")
 o:value("4.2.2.2", "4.2.2.2")
 o:value("4.2.2.3", "4.2.2.3")
 o:value("4.2.2.4", "4.2.2.4")
-o:depends("enable_list", "1")
+o:depends("cus_list", "1")
 
 
 o = s:option(Button, "Apply")
