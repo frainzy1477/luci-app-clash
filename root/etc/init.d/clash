@@ -322,14 +322,6 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 	
   	  	uci commit firewall
 	  	/etc/init.d/firewall restart >/dev/null 2>&1
-	
-		if [  -d /tmp/dnsmasq.clash ];then 
-		 rm -rf /tmp/dnsmasq.clash
-		fi
-
-		if [  -f /tmp/dnsmasq.d/custom_list.conf ];then 
-		  rm -rf /tmp/dnsmasq.d/custom_list.conf
-		fi
 
   	  	/etc/init.d/dnsmasq restart >/dev/null 2>&1
     

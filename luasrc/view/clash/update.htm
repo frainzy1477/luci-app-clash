@@ -104,7 +104,7 @@ function download_update(btn)
 XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
         btn.disabled = true;
         btn.value    = '<%:Download%>';
-        url='https://github.com/frainzy1477/luci-app-clash/releases/tag/v'+status.new_version+'';
+        url='https://github.com/frainzy1477/luci-app-clash/releases/download/v'+status.new_version+'/luci-app-clash_'+status.new_version+'-1_all.ipk';
         window.open(url);
         btn.disabled = false;
         return false;

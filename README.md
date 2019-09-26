@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.3">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.1.3-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.5">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.1.5-blue.svg">
   </a>
   
   </p>
@@ -19,13 +19,13 @@
 
 - Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.4) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.3)
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.5)
 
 - cd /tmp
 
 - opkg install clash_0.15.4_x86_64.ipk
 
-- opkg install luci-app-clash_1.1.3_all.ipk
+- opkg install luci-app-clash_1.1.5-1_all.ipk
 
 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
@@ -75,37 +75,4 @@ IP Query / Website Access Check based on  knowledge from  [@SukkaW - MyIP](https
 [Clash Dashboard](https://github.com/Dreamacro/clash-dashboard)
 
 [Yet Another Clash Dashboard](https://github.com/haishanh/yacd)
-
-
-
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/1.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/2.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/3.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/4.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/5.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/6.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/7.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/8.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/9.png">
-</p>
-<p align="center">
-    <img src="https://github.com/frainzy1477/luci-app-clash/raw/master/preview/10.png">
-</p>
 
