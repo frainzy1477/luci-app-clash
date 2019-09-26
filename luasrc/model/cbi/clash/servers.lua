@@ -55,7 +55,7 @@ k = Map(clash)
 s = k:section(TypedSection, "clash")
 s.anonymous = true
 
-y = s:option(Flag, "enable_servers", translate("Status"))
+y = s:option(Flag, "cus_servers", translate("Status"))
 y.description = translate("enabled to create custom configuration")
 y.default = 0
 y.rmempty = false
