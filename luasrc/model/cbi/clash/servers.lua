@@ -11,7 +11,7 @@ local clash = "clash"
 
 m = Map("clash")
 s = m:section(TypedSection, "clash" , translate("Rule"))
-m.pageaction = false
+--m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -55,12 +55,10 @@ k = Map(clash)
 s = k:section(TypedSection, "clash")
 s.anonymous = true
 
-y = s:option(ListValue, "enable_servers", translate("Status"))
+y = s:option(Flag, "enable_servers", translate("Status"))
 y.description = translate("enabled to create custom configuration")
 y.default = 0
-y:value("0", translate("disabled"))
-y:value("1", translate("enabled"))
-
+y.rmempty = false
 
 o = s:option(Button,"Delete_Severs")
 o.title = translate("Delete Severs")
@@ -69,7 +67,7 @@ o.description = translate("Perform this action to delete all servers")
 o.inputstyle = "reset"
 o.write = function()
   uci:delete_all("clash", "servers", function(s) return true end)
-  luci.sys.call("uci commit clash") 
+  uci:commit("clash") 
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
@@ -82,21 +80,11 @@ o.description = translate("Perform this action to delete all policy groups")
 o.inputstyle = "reset"
 o.write = function()
   uci:delete_all("clash", "groups", function(s) return true end)
-  luci.sys.call("uci commit clash") 
+  uci:commit("clash")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
 
-o = s:option(Button, "Apply")
-o.title = translate("Create Config")
-o.inputtitle = translate("Create Config")
-o.description = translate("Click to create custom server configuration")
-o.inputstyle = "apply"
-o.write = function()
-  uci:commit("clash")
-  luci.sys.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "servers"))
-end
 
 
 s = k:section(TypedSection, "servers", translate("Proxies"))
@@ -157,6 +145,7 @@ function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
+
 o = r:option(DummyValue, "name", translate("Group Name"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
@@ -164,4 +153,13 @@ end
 
 
 k:append(Template("clash/list"))
+
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+	uci:commit("clash")
+	if luci.sys.call("pidof clash >/dev/null") == 0 then
+	SYS.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
+	end
+end
+
 return k, m

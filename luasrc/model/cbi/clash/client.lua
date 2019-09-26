@@ -10,8 +10,14 @@ local clash = "clash"
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
-m.pageaction = false
+--m.pageaction = false
 s.anonymous = true
+
+o = s:option(Flag, "enable", translate("Enable"))
+o.default = 0
+o.rmempty = false
+o.description = translate("Enable")
+
 
 o = s:option(ListValue, "config_type", translate("Config Type"))
 o.default = "sub"
@@ -19,6 +25,7 @@ o:value("sub", translate("Subscription Config"))
 o:value("upl", translate("Uploaded Config"))
 o:value("cus", translate("Custom Config"))
 o.description = translate("Select Configuration type")
+o:depends("enable", "1")
 
 o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.description = translate("Auto Update Server subscription")
@@ -63,33 +70,18 @@ o.inputstyle = "reload"
 o.write = function()
   os.execute("sed -i '/enable/d' /etc/config/clash")
   uci:commit("clash")
-  SYS.call("rm -rf /tmp/clash.log")
+  SYS.call("rm -rf /tmp/clash.log >/dev/null 2>&1 &")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "client"))
 end
 
 
-o = s:option(Button,"enable")
-o.title = translate("Start Client")
-o.inputtitle = translate("Start Client")
-o.description = translate("Enable/Start/Restart Client")
-o.inputstyle = "apply"
-o.write = function()
-  uci:set("clash", "config", "enable", 1)
-  luci.sys.call("uci commit clash")
-  SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
-end
 
 
-o = s:option(Button,"disable")
-o.title = translate("Stop Client")
-o.inputtitle = translate("Stop Client")
-o.description = translate("Disable/Stop Client")
-o.inputstyle = "reset"
-o.write = function()
-  uci:set("clash", "config", "enable", 0)
-  luci.sys.call("uci commit clash")
-  SYS.call("/etc/init.d/clash stop >/dev/null 2>&1 &")
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+    uci:commit("clash")
+	os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
 end
 
 return m

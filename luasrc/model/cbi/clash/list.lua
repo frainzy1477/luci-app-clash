@@ -10,7 +10,7 @@ local clash = "clash"
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
-m.pageaction = false
+--m.pageaction = false
 s.anonymous = true
 
 
@@ -32,19 +32,6 @@ o:value("4.2.2.4", "4.2.2.4")
 o:depends("enable_list", "1")
 
 
-o = s:option(Button, "Apply")
-o.title = translate("Apply Custom List")
-o.inputtitle = translate("Apply Custom List")
-o.inputstyle = "apply"
-o.write = function()
-  uci:commit("clash")
-  --SYS.call("sh /usr/share/clash/list.sh 2>&1 &")
-  if luci.sys.call("pidof clash >/dev/null") == 0 then
-   SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
-   end
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "settings" , "list"))
-end
-
 
 local conffile = "/usr/share/clash/server.list"
 sev = s:option(TextValue, "conffile")
@@ -57,5 +44,14 @@ sev.write = function(self, section, value)
 	NXFS.writefile(conffile, value:gsub("\r\n", "\n"))
 end
 
+
+
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+	uci:commit("clash")
+	if luci.sys.call("pidof clash >/dev/null") == 0 then
+	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+	end
+end
 
 return m

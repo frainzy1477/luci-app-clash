@@ -8,7 +8,7 @@ local uci = require("luci.model.uci").cursor()
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
-m.pageaction = false
+--m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -41,25 +41,18 @@ o.description = translate("NB: press ENTER to create a blank line at the end of 
 o:depends("mode", 1)
 
 
-
-o = s:option(Button, "Apply")
-o.title = translate("Save & Apply")
-o.inputtitle = translate("Save & Apply")
-o.inputstyle = "apply"
-o.write = function()
 local clash_conf = "/etc/clash/config.yaml"
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
 if NXFS.access(clash_conf) then
 	uci:commit("clash")
 	SYS.call("sh /usr/share/clash/yum_change.sh 2>&1 &")
 	if luci.sys.call("pidof clash >/dev/null") == 0 then
 	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
 	end
-  	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "dns"))
-else
-  	uci:commit("clash")
-  	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "dns"))
 end
 end
+
 
 return m
 
