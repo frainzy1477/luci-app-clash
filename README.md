@@ -23,7 +23,7 @@
 
 - cd /tmp
 
-- opkg install clash_0.15.4_x86_64.ipk
+- opkg install clash_0.15.5_x86_64.ipk
 
 - opkg install luci-app-clash_1.1.6-1_all.ipk
 
