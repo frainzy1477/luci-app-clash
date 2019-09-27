@@ -94,7 +94,7 @@ o.description = translate("Click to create custom server configuration")
 o.inputstyle = "apply"
 o.write = function()
   uci:commit("clash")
-  luci.sys.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
+  luci.sys.call("sh /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "servers"))
 end
 

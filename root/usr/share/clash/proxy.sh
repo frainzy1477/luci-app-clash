@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 . /lib/functions.sh
-enable_create=$(uci get clash.config.enable_servers 2>/dev/null)
+enable_create=$(uci get clash.config.cus_servers 2>/dev/null)
 
 if [ "$enable_create" == "1" ];then
 
