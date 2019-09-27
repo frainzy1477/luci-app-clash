@@ -157,9 +157,8 @@ k:append(Template("clash/list"))
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
 	uci:commit("clash")
-	if luci.sys.call("pidof clash >/dev/null") == 0 then
-	SYS.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
-	end
+	SYS.call("sleep 2")
+	SYS.call("sh /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
 end
 
 return k, m
