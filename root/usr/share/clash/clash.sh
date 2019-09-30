@@ -12,7 +12,7 @@ CONFIG_YAML_TEMP="/etc/clash/server.yaml"
 CONFIG_YAML_RULE="/usr/share/clash/rule.yaml"
  
 
-if [ $config_type == "sub" ];then 
+
 	if pidof clash >/dev/null; then
 		if [ $subtype == "clash" ];then
 			wget --no-check-certificate --user-agent="Clash/OpenWRT" $subscribe_url -O 2>&1 >1 $CONFIG_YAML
@@ -30,9 +30,9 @@ if [ $config_type == "sub" ];then
 			wget --no-check-certificate --user-agent="Clash/OpenWRT" $urlsurge.$subscribe_url -O 2>&1 >1 $CONFIG_YAML
 		fi
 		rm -rf $CONFIG_YAML_TEMP 2>/dev/null
-		uci set clash.config.enable=1 2>/dev/null
-		uci commit clash 2> /dev/null
+		if [ $config_type == "sub" ];then 
 		/etc/init.d/clash restart 2>/dev/null
+		fi
 	else
 		if [ $subtype == "clash" ];then
 			wget --no-check-certificate --user-agent="Clash/OpenWRT" $subscribe_url -O 2>&1 >1 $CONFIG_YAML
@@ -51,7 +51,6 @@ if [ $config_type == "sub" ];then
 		fi
 		rm -rf $CONFIG_YAML_TEMP 2>/dev/null
 	fi
-fi
 
 
 

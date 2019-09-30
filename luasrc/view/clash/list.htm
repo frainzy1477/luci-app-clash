@@ -15,6 +15,16 @@ local dsp = require "luci.dispatcher"
 				pings[result.index].innerHTML = (result.ping ? result.ping : "--") + " ms";
 			}
 		);
+		
+		XHR.poll(10,'<%=luci.dispatcher.build_url("admin", "services", "clash", "ping")%>',{
+		
+				index: i,
+				domain: pings[i].getAttribute("hint")
+			},
+			function(x, result) {
+				pings[result.index].innerHTML = (result.ping ? result.ping : "--") + " ms";
+			}
+		);
 	}
 	//]]>
 </script>

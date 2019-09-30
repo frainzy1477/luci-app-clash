@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.1.6
+PKG_VERSION:=1.1.7
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
 
@@ -19,7 +19,7 @@ define Package/luci-app-clash
 endef
 
 define Package/luci-app-clash/description
-	LuCI configuration for clash.
+	Luci Interface for clash.
 endef
 
 
@@ -37,6 +37,13 @@ endef
 
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
+if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
+	rm -rf /tmp/dnsmasq.d/custom_list.conf
+fi
+
+if [ -d "/tmp/dnsmasq.clash" ]; then
+	rm -rf /tmp/dnsmasq.clash
+fi
 
 if [ -f "/etc/config/clash" ]; then
 	mv /etc/config/clash /etc/config/clash.bak
@@ -128,6 +135,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/clash-watchdog.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/ipdb.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/get_proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash/

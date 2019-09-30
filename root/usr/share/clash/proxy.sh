@@ -23,7 +23,7 @@ Proxy_Group="/tmp/Proxy_Group"
 GROUP_FILE="/tmp/groups.yaml"
 CONFIG_FILE="/tmp/y_groups"
 CFG_FILE="/etc/config/clash"
- 
+DNS_FILE="/usr/share/clash/dns.yaml" 
 
 servers_set()
 {
@@ -88,6 +88,8 @@ servers_set()
    
    if [ "$obfs_vmess" = "websocket" ]; then
       	obfs_vmesss=", network: ws"
+   else	
+		obfs_vmesss=" "
    fi   
    
    if [ ! -z "$host" ]; then
@@ -98,10 +100,14 @@ servers_set()
       custom=", ws-headers: { Host: $custom }"
    fi
    
-   if [ "$tls" = "true" ] && [ "$type" = "vmess" ]; then
+   if [ "$tls" ]; then
       tlss=", tls: $tls"
-   elif [ "$tls" = "true" ]; then
-      tlss=", tls: $tls"
+   elif [ ! "$tls" ]; then
+	  tlss=""
+   elif [ "$tls" = "true" ] && [ "$type" = "http" ]; then
+	  tls_hs=", tls: $tls" 
+   elif [ "$tls" = "true" ] && [ "$type" = "socks5" ]; then
+	  tls_hs=", tls: $tls"	  
    fi
    
    if [ ! -z "$path" ]; then
@@ -114,8 +120,8 @@ servers_set()
 
    if [ "$skip_cert_verify" = "true" ] && [ "$type" != "ss" ]; then
       skip_cert_verifys=", skip-cert-verify: $skip_cert_verify"
-   elif [ "$skip_cert_verify" = "true" ]; then
-      skip_cert_verifys=", skip-cert-verify: $skip_cert_verify"
+  elif [ ! "$skip_cert_verify" ]; then
+      skip_cert_verifys=""	  
    fi
 
    
@@ -157,7 +163,7 @@ EOF
   fi
    if [ "$skip_cert_verify" = "true" ] && [ "$type" = "ss" ]; then
 cat >> "$SERVER_FILE" <<-EOF
-    skip_cert_verifys: true
+    skip_cert_verify: true
 EOF
   fi
 
@@ -193,7 +199,7 @@ EOF
    fi
    
    if [ "$type" = "socks5" ] || [ "$type" = "http" ]; then
-      echo "- { name: \"$name\", type: $type, server: $server, port: $port, username: $auth_name, password: $auth_pass$skip_cert_verify$tls }" >>$SERVER_FILE
+      echo "- { name: \"$name\", type: $type, server: $server, port: $port, username: $auth_name, password: $auth_pass$skip_cert_verify$tls_hs }" >>$SERVER_FILE
    fi
 }
 
@@ -255,7 +261,7 @@ yml_groups_set()
    echo "- name: $name" >>$GROUP_FILE
    echo "  type: $type" >>$GROUP_FILE
 
-   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ]; then
+   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ]; then
       echo "  proxies:" >>$GROUP_FILE
       cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
@@ -298,49 +304,47 @@ redir_port=$(uci get clash.config.redir_port 2>/dev/null)
 http_port=$(uci get clash.config.http_port 2>/dev/null)
 socks_port=$(uci get clash.config.socks_port 2>/dev/null)
 dash_port=$(uci get clash.config.dash_port 2>/dev/null)
+bind_addr=$(uci get clash.config.bind_addr 2>/dev/null)
+allow_lan=$(uci get clash.config.allow_lan 2>/dev/null)
 log_level=$(uci get clash.config.level 2>/dev/null)
-			
-cat >> "$TEMP_FILE" <<-EOF		
-	port: ${http_port}
-	socks-port: ${socks_port}
-	redir-port: ${redir_port}
-	allow-lan: true
-	mode: Rule
-	log-level: ${log_level}
-	external-controller: 0.0.0.0:${dash_port}
-	secret: '${da_password}'
-	external-ui: "/usr/share/clash/dashboard"
-				
-	#experimental:
-	#  ignore-resolve-fail: true
+subtype=$(uci get clash.config.subcri 2>/dev/null)
 
-	#local SOCKS5/HTTP(S) server
-	#authentication:
-	# - "user1:pass1"
-	# - "user2:pass2"
-
-	dns:
-	 enable: true
-	 listen: 0.0.0.0:5300
-	 enhanced-mode: fake-ip
-	 fake-ip-range: 198.18.0.1/24
-	 # hosts:
-	 #   '*.clash.dev': 127.0.0.1
-	 #   'alpha.clash.dev': '::1'
-	 nameserver: 
-	  - 101.132.183.99
-	  - 8.8.8.8
-	  - 119.29.29.29 
-	  - 114.114.114.114
-	  - 114.114.115.115    
-	  - tls://dns.rubyfish.cn:853
-	  - https://1.1.1.1/dns-query 	 
- 
+		
+cat >> "$TEMP_FILE" <<-EOF
+#config-start-here
 EOF
+
+		sed -i "1i\port: ${http_port}" $TEMP_FILE
+		sed -i "2i\socks-port: ${socks_port}" $TEMP_FILE
+		sed -i "3i\redir-port: ${redir_port}" $TEMP_FILE
+		sed -i "4i\allow-lan: ${allow_lan}" $TEMP_FILE
+		if [ $allow_lan == "true" ];  then	
+		sed -i "5i\bind-address: '${bind_addr}'" $TEMP_FILE
+		else
+		sed -i "5i\#bind-address: " $TEMP_FILE
+		fi
+		sed -i "6i\mode: Rule" $TEMP_FILE
+		sed -i "7i\log-level: ${log_level}" $TEMP_FILE
+		sed -i "8i\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE
+		sed -i "9i\secret: '${da_password}'" $TEMP_FILE
+		sed -i "10i\external-ui: "/usr/share/clash/dashboard"" $TEMP_FILE
+		sed -i "11i\ " $TEMP_FILE
+		sed -i "12i\ " $TEMP_FILE
+		sed -i '/#config-start-here/ d' $TEMP_FILE
+
+		
+cat $DNS_FILE >> $TEMP_FILE  2>/dev/null
 
 cat $SERVER_FILE >> $TEMP_FILE  2>/dev/null
 
 cat $GROUP_FILE >> $TEMP_FILE 2>/dev/null
+
+if [ -f $CONFIG_YAML ];then
+	rm -rf $CONFIG_YAML
+fi
+
+sed -i "1i\ " $CONFIG_YAML_RULE
+sed -i "2i\ " $CONFIG_YAML_RULE
 
 cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
 

@@ -17,7 +17,7 @@ s.addremove=false
 md = s:option(Flag, "proxylan", translate("Proxy Lan IP"))
 md.default = 1
 md.rmempty = false
-md.description = translate("Only selected IPs will be proxied if enabled. fake-ip mode not supportted")
+md.description = translate("Only selected IPs will be proxied if enabled. fake-ip mode not supported")
 md:depends("rejectlan", 0)
 
 
@@ -50,7 +50,7 @@ end
 md = s:option(Flag, "rejectlan", translate("Bypass Lan IP"))
 md.default = 1
 md.rmempty = false
-md.description = translate("Selected IPs will not be proxied if enabled. fake-ip mode not supportted")
+md.description = translate("Selected IPs will not be proxied if enabled. fake-ip mode not supported")
 md:depends("proxylan", 0)
 
 
