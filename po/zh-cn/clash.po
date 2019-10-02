@@ -1,3 +1,18 @@
+msgid "Obfs"
+msgstr "混淆"
+
+msgid "Obfs Param"
+msgstr "混淆参数"
+
+msgid "Protocol"
+msgstr "协议"
+
+msgid "Protocol Param"
+msgstr "协议参数"
+
+msgid "Servers"
+msgstr "服务器"
+
 msgid "Custom List DNS"
 msgstr "自定义列表DNS"
 
@@ -344,7 +359,7 @@ msgid "Server Address"
 msgstr "服务器地址"
 
 msgid "Server Port"
-msgstr "服务器端口"
+msgstr "端口"
 
 msgid "Edit Server"
 msgstr "编辑服务器配置"
@@ -499,5 +514,4 @@ msgstr "从哪读取自定义节点"
 msgid "Select from which configuration custom server should be loaded from"
 msgstr "选择从哪个配置文件读取自定义节点"
 
-msgid "Servers"
-msgstr "服务器"
+

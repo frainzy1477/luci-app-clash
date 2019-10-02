@@ -37,6 +37,50 @@ local securitys = {
     "chacha20-poly1305"
 }
 
+local encrypt_methods_ssr = {
+
+	"aes-128-cfb",
+	"aes-192-cfb",
+	"aes-256-cfb",
+	"aes-128-ctr",
+	"aes-192-ctr",
+	"aes-256-ctr",
+	"aes-128-ofb",
+	"aes-192-ofb",
+	"aes-256-ofb",
+	"des-cfb",
+	"bf-cfb",
+	"cast5-cfb",
+	"rc4-md5",
+	"chacha20",
+	"chacha20-ietf",
+	"salsa20",
+	"camellia-128-cfb",
+	"camellia-192-cfb",
+	"camellia-256-cfb",
+	"idea-cfb",
+	"rc2-cfb",
+	"seed-cfb",
+}
+
+
+local protocol_ssr = {
+
+	"origin",
+	"auth_sha1_v4",
+	"auth_aes128_md5",
+	"auth_aes128_sha1",
+}
+
+
+local obfs_ssr_list = {
+
+	"plain",
+	"http_simple",
+	"http_post",
+	"tls1.2_ticket_auth",
+}
+
 m = Map(clash, translate("Edit Server"))
 m.redirect = luci.dispatcher.build_url("admin/services/clash/servers")
 if m.uci:get(clash, sid) ~= "servers" then
@@ -51,6 +95,7 @@ s.addremove   = false
 
 o = s:option(ListValue, "type", translate("Server Node Type"))
 o:value("ss", translate("Shadowsocks"))
+o:value("ssr", translate("ShadowsocksR"))
 o:value("vmess", translate("Vmess"))
 o:value("socks5", translate("Socks5"))
 o:value("http", translate("HTTP(S)"))
@@ -73,11 +118,36 @@ o = s:option(Value, "password", translate("Password"))
 o.password = true
 o.rmempty = true
 o:depends("type", "ss")
+o:depends("type", "ssr")
 
 o = s:option(ListValue, "cipher", translate("Encrypt Method"))
 for _, v in ipairs(encrypt_methods_ss) do o:value(v) end
 o.rmempty = true
 o:depends("type", "ss")
+
+o = s:option(ListValue, "cipher_ssr", translate("Encrypt Method"))
+for _, v in ipairs(encrypt_methods_ssr) do o:value(v) end
+o.rmempty = true
+o:depends("type", "ssr")
+
+o = s:option(ListValue, "protocol", translate("Protocol"))
+for _, v in ipairs(protocol_ssr) do o:value(v) end
+o.rmempty = true
+o:depends("type", "ssr")
+
+o = s:option(Value, "protocolparam", translate("Protocol Param"))
+o.rmempty = true
+o:depends("type", "ssr")
+
+o = s:option(ListValue, "obfs_ssr", translate("Obfs"))
+for _, v in ipairs(obfs_ssr_list) do o:value(v) end
+o.rmempty = true
+o:depends("type", "ssr")
+
+o = s:option(Value, "obfsparam", translate("Obfs Param"))
+o.rmempty = true
+o:depends("type", "ssr")
+
 
 o = s:option(ListValue, "securitys", translate("Encrypt Method"))
 for _, v in ipairs(securitys) do o:value(v, v:upper()) end

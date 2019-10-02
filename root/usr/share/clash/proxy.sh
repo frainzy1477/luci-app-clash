@@ -12,8 +12,6 @@ fi
 fi
 
 
-status=$(ps|grep -c /usr/share/clash/proxy.sh)
-[ "$status" -gt "3" ] && exit 0
 
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
@@ -50,11 +48,40 @@ servers_set()
    config_get "auth_name" "$section" "auth_name" ""
    config_get "auth_pass" "$section" "auth_pass" ""
    config_get "mux" "$section" "mux" ""
+   config_get "protocol" "$section" "protocol" ""
+   config_get "protocolparam" "$section" "protocolparam" ""
+   config_get "obfsparam" "$section" "obfsparam" ""
+   config_get "obfs_ssr" "$section" "obfs_ssr" ""
+   config_get "cipher_ssr" "$section" "cipher_ssr" ""
    
 	
    if [ -z "$type" ]; then
       return
    fi
+   
+	if [ ! -z $protocolparam ];then
+	  pro_param=", protocolparam: $protocolparam"
+	else
+	  pro_param=", protocolparam: ''"	 
+	fi
+
+	if [ ! -z $protocol ];then
+	  protol=", protocol: $protocol"
+	else
+	  protol=", protocol: origin"	 
+	fi
+	
+	if [ ! -z $obfs_ssr ];then
+	 ssr_obfs=", obfs: $obfs_ssr"
+	else
+	 ssr_obfs=", obfs: plain"
+	fi
+	
+	if [ ! -z $obfsparam ];then
+	 obfs_param=", obfsparam: $obfsparam"
+	else
+	 obfs_param=", obfsparam: ''"
+	fi 
    
    if [ -z "$server" ]; then
       return
@@ -201,6 +228,10 @@ EOF
    if [ "$type" = "socks5" ] || [ "$type" = "http" ]; then
       echo "- { name: \"$name\", type: $type, server: $server, port: $port, username: $auth_name, password: $auth_pass$skip_cert_verify$tls_hs }" >>$SERVER_FILE
    fi
+   
+    if [ "$type" = "ssr" ]; then
+      echo "- { name: \"$name\", type: $type, server: $server, port: $port, cipher: $cipher_ssr, password: "$password"$protol$pro_param$ssr_obfs$obfs_param}" >>$SERVER_FILE
+    fi
 }
 
 config_load clash
@@ -261,12 +292,12 @@ yml_groups_set()
    echo "- name: $name" >>$GROUP_FILE
    echo "  type: $type" >>$GROUP_FILE
 
-   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ]; then
+  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ]; then
       echo "  proxies:" >>$GROUP_FILE
       cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
       echo "  proxies:" >>$GROUP_FILE
-   fi   
+   fi       
  
    if [ "$name" != "$old_name" ]; then
       sed -i "s/,${old_name}$/,${name}#d/g" $CONFIG_FILE 2>/dev/null
@@ -344,7 +375,6 @@ if [ -f $CONFIG_YAML ];then
 fi
 
 sed -i "1i\ " $CONFIG_YAML_RULE
-sed -i "2i\ " $CONFIG_YAML_RULE
 
 cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
 
@@ -356,3 +386,4 @@ fi
 fi
 rm -rf $SERVER_FILE
 fi
+

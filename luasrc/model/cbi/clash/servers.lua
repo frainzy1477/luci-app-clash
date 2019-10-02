@@ -108,7 +108,6 @@ o.description = translate("Update Config")
 o.inputstyle = "reload"
 o.write = function()
   --os.execute("sed -i '/enable/d' /etc/config/clash")
-  --SYS.call("rm -rf /tmp/clash.log >/dev/null 2>&1 &")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
 end
@@ -184,7 +183,7 @@ o.inputstyle = "apply"
 o.write = function()
   k.uci:delete_all("clash", "servers", function(s) return true end)
   k.uci:commit("clash")
-  luci.sys.call("sh /usr/share/clash/get_proxy.sh 2>/dev/null &")
+  luci.sys.call("sh /usr/share/clash/get_proxy.sh >/dev/null 2>&1 &")
   SYS.call("sleep 2")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
@@ -279,8 +278,8 @@ k:append(Template("clash/list"))
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
 	uci:commit("clash")
-	SYS.call("sleep 1")
 	SYS.call("sh /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
 end
 
 return kr, k, m
+

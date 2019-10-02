@@ -60,15 +60,15 @@ config_type=$(uci get clash.config.config_type 2>/dev/null)
 
 if [ $config_type == "sub" ];then 
 if [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB|awk '{print int($5/1024)}')" -ne 0 ];then
-	cp $CONFIG_YAML_SUB $CONFIG_YAML
+	cp $CONFIG_YAML_SUB $CONFIG_YAML 2>/dev/null
 fi
 elif [ $config_type == "upl" ];then 
 if [  -f $CONFIG_YAML_UPL ] && [ "$(ls -l $CONFIG_YAML_UPL|awk '{print int($5/1024)}')" -ne 0 ];then
-	cp $CONFIG_YAML_UPL $CONFIG_YAML
+	cp $CONFIG_YAML_UPL $CONFIG_YAML 2>/dev/null
 fi
 elif [ $config_type == "cus" ];then 
 if [  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS|awk '{print int($5/1024)}')" -ne 0 ];then
-	cp $CONFIG_YAML_CUS $CONFIG_YAML
+	cp $CONFIG_YAML_CUS $CONFIG_YAML 2>/dev/null
 fi
 fi
 
@@ -79,7 +79,7 @@ fi
 
 yml_change() {
 #=========================================================================================================================== 
-	sh /usr/share/clash/yum_change.sh >/dev/null 2>&1
+	sh /usr/share/clash/yum_change.sh 2>/dev/null
 #=========================================================================================================================== 
 }
 
@@ -104,6 +104,7 @@ yml_dns_change(){
 	          uci add_list dhcp.@dnsmasq[0].server=127.0.0.1#5300 >/dev/null 2>&1
 	          uci delete dhcp.@dnsmasq[0].resolvfile
 	          uci set dhcp.@dnsmasq[0].noresolv=1
+	          uci set dhcp.@dnsmasq[0].cachesize=0
 	          uci commit dhcp
 	    else
 		  dns_serve1=$(uci get dhcp.@dnsmasq[0].server 2>/dev/null)
@@ -113,6 +114,7 @@ yml_dns_change(){
 	          uci add_list dhcp.@dnsmasq[0].server=127.0.0.1#$dns_port >/dev/null 2>&1 
 	          uci delete dhcp.@dnsmasq[0].resolvfile
 	          uci set dhcp.@dnsmasq[0].noresolv=1
+		  uci set dhcp.@dnsmasq[0].cachesize=0
 	          uci commit dhcp
 	   fi
 	fi
@@ -192,10 +194,10 @@ yml_yaml(){
 #===========================================================================================================================
 
 if [ -f $CONFIG_YAML_OLD ] && [ ! -f $CONFIG_YAML ];then
-	mv $CONFIG_YAML_OLD $CONFIG_YAML
+	mv $CONFIG_YAML_OLD $CONFIG_YAML 2>/dev/null
 
 elif [ -f $CONFIG_YAML_OLD ] && [ -f $CONFIG_YAML  ] && [  "$(ls -l $CONFIG_YAML_OLD|awk '{print int($5/1024)}')" -ne 0 ];then
-	mv $CONFIG_YAML_OLD $CONFIG_YAML
+	mv $CONFIG_YAML_OLD $CONFIG_YAML 2>/dev/null
 fi
 #===========================================================================================================================
 }
@@ -209,17 +211,17 @@ config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ $config_type == "sub" ];then 
 if [ ! -f $CONFIG_YAML_SUB ] && [ $subscribe_url ];then 
 	rm -rf /tmp/clash.log
-	sh /usr/share/clash/clash.sh >>/tmp/clash.log 	
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
 elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5/1024)}')" -eq 0 ] && [ $subscribe_url ];then
 	rm -rf /tmp/clash.log
-	sh /usr/share/clash/clash.sh >>/tmp/clash.log 	
+	sh /usr/share/clash/clash.sh >>/tmp/clash.log 
 fi
 fi
 #===========================================================================================================================
 }
 
 custom_list() {
-	(/usr/share/clash/list.sh && sleep 2 >/dev/null 2>&1) &
+	sh /usr/share/clash/list.sh  >/dev/null 2>&1
 }
 
 
@@ -232,16 +234,16 @@ fi
 
 enable=$(uci get clash.config.enable 2>/dev/null)
 
-yml_yaml
-
-yml_sub
-
-select_config
-
 lan=$(uci get clash.config.proxylan 2>/dev/null)
 lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 
 if [ $enable -eq 1 ]; then
+yml_yaml >/dev/null 2>&1
+
+yml_sub >/dev/null 2>&1
+
+select_config >/dev/null 2>&1
+
 if [ ! -f /etc/clash/clash ]; then
 	if [ $lang == "en" ];then
 		echo "$(date "+%Y-%m-%d %H:%M:%S") - /etc/clash/clash not found, from "https://github.com/frainzy1477/clash/releases" , download and install clash ipk  " >> /tmp/clash.log
@@ -260,9 +262,9 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		reject_access >/dev/null 2>&1
 	fi
 
-   	yml_change
+   	yml_change >/dev/null 2>&1
 
-	yml_dns_change
+	yml_dns_change >/dev/null 2>&1
 	
     nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &	
 	
@@ -273,9 +275,9 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		
 	rules >/dev/null 2>&1
 	
-	killall -1 dnsmasq
+	killall -1 dnsmasq >/dev/null 2>&1
 	
-	custom_list
+	custom_list >/dev/null 2>&1
 	
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 	
@@ -321,18 +323,18 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		
 		kill -9 `pidof clash|sed "s/$//g"` 2>/dev/null
 
-	   	revert_dns
+	   	revert_dns >/dev/null 2>&1
 	
   	  	uci commit firewall
 	  	/etc/init.d/firewall restart >/dev/null 2>&1
 	
   	  	/etc/init.d/dnsmasq restart >/dev/null 2>&1
     
-  	  	del_cron
+  	  	del_cron >/dev/null 2>&1
 
-		rm -rf /www/clash 2> /dev/null
+		rm -rf /www/clash >/dev/null 2>&1
 		
-	 	rm -rf /tmp/clash.log
+	 	rm -rf /tmp/clash.log >/dev/null 2>&1
 		
 		if [ $lang == "en" ];then
 			echo "$(date "+%Y-%m-%d %H:%M:%S") - CLIENT IS DISABLED " >> /tmp/clash.log
@@ -349,11 +351,12 @@ restart(){
 #=========================================================================================================================== 
 
 		if pidof clash >/dev/null; then
-			stop 
-			start
+			stop  >/dev/null 2>&1
+			start >/dev/null 2>&1
 		else
-		    start
+		    start >/dev/null 2>&1
 		fi	
 
 #=========================================================================================================================== 
 }
+

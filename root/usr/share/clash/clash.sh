@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 subscribe_url=$(uci get clash.config.subscribe_url 2>/dev/null)
 subtype=$(uci get clash.config.subcri 2>/dev/null)
 urlv2ray=$(uci get clash.config.v2ray 2>/dev/null)

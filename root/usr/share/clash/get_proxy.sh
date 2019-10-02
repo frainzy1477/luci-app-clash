@@ -1,11 +1,17 @@
-#!/bin/bash
+#!/bin/bash /etc/rc.common
 . /lib/functions.sh
 
 load_from=$(uci get clash.config.loadservers 2>/dev/null)
 if [ "$load_from" == "sub" ];then 
-        load="/usr/share/clash/config/sub/config.yaml"	
+	cp /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/upload.yml
+	sed  '/Proxy Group:/,$d' /usr/share/clash/config/sub/upload.yml >>/usr/share/clash/config/sub/proxy.yml              
+        load="/usr/share/clash/config/sub/proxy.yml"
+	
 elif [ "$load_from" == "upl" ];then
-	load="/usr/share/clash/config/upload/config.yaml"
+	cp /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/upload.yml
+	sed  '/Proxy Group:/,$d' /usr/share/clash/config/upload/upload.yml >>/usr/share/clash/config/upload/proxy.yml              
+        load="/usr/share/clash/config/upload/proxy.yml"
+
 fi
 
 awk '/^ {0,}Proxy:/,/^ {0,}Proxy Group:/{print}' $load 2>/dev/null |sed 's/\"//g' 2>/dev/null |sed "s/\'//g" 2>/dev/null |sed 's/\t/ /g' 2>/dev/null >/tmp/yaml_proxy.yaml 2>&1
@@ -50,6 +56,12 @@ do
    cipher="$(cfg_get "cipher:")"
    #password
    password="$(cfg_get "password:")"
+   #protocol
+   protocol="$(cfg_get "protocol:")"
+   #protocolparam
+   protocolparam="$(cfg_get "protocolparam:")"
+   #obfsparam
+   obfsparam="$(cfg_get "obfsparam:")"
    #udp
    udp="$(cfg_get "udp:")"
    #plugin:
@@ -100,15 +112,32 @@ do
    ${uci_set}port="$port"
    if [ "$server_type" = "vmess" ]; then
       ${uci_set}securitys="$cipher"
-   else
+   elif [ "$server_type" = "ss" ]; then
       ${uci_set}cipher="$cipher"
+   elif [ "$server_type" = "ssr" ]; then
+      ${uci_set}cipher_ssr="$cipher"  
    fi
    ${uci_set}udp="$udp"
-   ${uci_set}obfs="$obfs"
+   
+   ${uci_set}protocol="$protocol"
+   ${uci_set}protocolparam="$protocolparam"
+
+   if [ "$server_type" = "ss" ]; then
+      ${uci_set}obfs="$obfs"
+   elif [ "$server_type" = "ssr" ]; then
+      ${uci_set}obfs_ssr="$obfs"
+   fi
+   ${uci_set}obfsparam="$obfsparam"
    ${uci_set}host="$obfs_host"
+
    [ -z "$obfs" ] && ${uci_set}obfs="$mode"
-   [ -z "$mode" ] && [ ! -z "$network" ] && ${uci_set}obfs_vmess="websocket"
-   [ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
+
+   if [ "$server_type" = "vmess" ]; then
+
+	   [ -z "$mode" ] && [ ! -z "$network" ] && ${uci_set}obfs_vmess="websocket"
+	   
+	   [ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
+   fi
    [ -z "$obfs_host" ] && ${uci_set}host="$host"
    if [ $tls ];then 
    ${uci_set}tls="$tls"
@@ -143,4 +172,19 @@ sleep 3
 uci commit clash
 rm -rf /tmp/servers.yaml 2>/dev/null
 rm -rf /tmp/yaml_proxy.yaml 2>/dev/null
+
+if [ -f /usr/share/clash/config/upload/upload.yml ];then
+rm -rf /usr/share/clash/config/upload/upload.yml
+fi
+if [ -f /usr/share/clash/config/upload/proxy.yml ];then 
+rm -rf /usr/share/clash/config/upload/proxy.yml
+fi
+
+if [ -f /usr/share/clash/config/sub/upload.yml ];then
+rm -rf /usr/share/clash/config/sub/upload.yml
+fi
+if [ -f /usr/share/clash/config/sub/proxy.yml ];then 
+rm -rf /usr/share/clash/config/sub/proxy.yml
+fi
+
 

@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.1.7
+PKG_VERSION:=1.1.8
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
 
@@ -37,70 +37,80 @@ endef
 
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
+
+if pidof clash >/dev/null; then
+	/etc/init.d/clash stop >/dev/null 2>&1	
+fi
+
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
-	rm -rf /tmp/dnsmasq.d/custom_list.conf
+	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null
 fi
 
 if [ -d "/tmp/dnsmasq.clash" ]; then
-	rm -rf /tmp/dnsmasq.clash
+	rm -rf /tmp/dnsmasq.clash 2>/dev/null
 fi
 
 if [ -f "/etc/config/clash" ]; then
-	mv /etc/config/clash /etc/config/clash.bak
+	mv /etc/config/clash /etc/config/clash.bak 2>/dev/null
 fi
 
 if [ -d "/usr/lib/lua/luci/model/cbi/clash" ]; then
-	rm -rf /usr/lib/lua/luci/model/cbi/clash
+	rm -rf /usr/lib/lua/luci/model/cbi/clash 2>/dev/null
 fi	
 
 if [ -d "/usr/lib/lua/luci/view/clash" ]; then
-	rm -rf /usr/lib/lua/luci/view/clash
+	rm -rf /usr/lib/lua/luci/view/clash 2>/dev/null
 fi
 
 if [ -f /usr/share/clash/new_core_version ]; then
-	rm -rf /usr/share/clash/new_core_version
+	rm -rf /usr/share/clash/new_core_version 2>/dev/null
 fi
 
 if [ -f /usr/share/clash/new_luci_version ]; then
-	rm -rf /usr/share/clash/new_luci_version
+	rm -rf /usr/share/clash/new_luci_version 2>/dev/null
 fi
 
 if [  -d /usr/share/clash/web ]; then
-	rm -rf /usr/share/clash/web
+	rm -rf /usr/share/clash/web 2>/dev/null
 fi
 
 if [  -f /usr/share/clash/config/sub/config.yaml ] && [ "$(ls -l /usr/share/clash/config/sub/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/config.bak
+	mv /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/config.bak 2>/dev/null
 fi
 
 if [  -f /usr/share/clash/config/upload/config.yaml ] && [ "$(ls -l /usr/share/clash/config/upload/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/config.bak
+	mv /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/config.bak 2>/dev/null
 fi
  
 if [  -f /usr/share/clash/config/custom/config.yaml ] && [ "$(ls -l /usr/share/clash/config/custom/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/custom/config.yaml /usr/share/clash/config/custom/config.bak
+	mv /usr/share/clash/config/custom/config.yaml /usr/share/clash/config/custom/config.bak 2>/dev/null
 fi
+
+
+
 endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-rm -rf /tmp/luci*
+rm -rf /tmp/luci*  
 
 if [ -f "/etc/config/clash.bak" ]; then
-	mv /etc/config/clash.bak /etc/config/clash
+	mv /etc/config/clash.bak /etc/config/clash 2>/dev/null
 fi
 
 if [  -f /usr/share/clash/config/sub/config.bak ];then
-	mv /usr/share/clash/config/sub/config.bak /usr/share/clash/config/sub/config.yaml
+	mv /usr/share/clash/config/sub/config.bak /usr/share/clash/config/sub/config.yaml 2>/dev/null
 fi
 
 if [  -f /usr/share/clash/config/upload/config.bak ];then
-	mv /usr/share/clash/config/upload/config.bak /usr/share/clash/config/upload/config.yaml
+	mv /usr/share/clash/config/upload/config.bak /usr/share/clash/config/upload/config.yaml 2>/dev/null
 fi
  
 if [  -f /usr/share/clash/config/custom/config.bak ];then
-	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml
+	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml 2>/dev/null
 fi
+
+ /etc/init.d/clash stop 2>/dev/null
 endef
 
 define Package/$(PKG_NAME)/install
@@ -151,10 +161,10 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_BIN) ./root/usr/share/clash/yac/* $(1)/usr/share/clash/yac/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.557c7e0375c2286ea607.css $(1)/usr/share/clash/dashboard/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.170828c7fe0d9a5948a7.css $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/img/33343e6117c37aaef8886179007ba6b5.png $(1)/usr/share/clash/dashboard/img/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.557c7e0375c2286ea607.min.js $(1)/usr/share/clash/dashboard/js/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.557c7e0375c2286ea607.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.170828c7fe0d9a5948a7.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.170828c7fe0d9a5948a7.min.js $(1)/usr/share/clash/dashboard/js/
         
 	$(INSTALL_DATA) ./luasrc/clash.lua $(1)/usr/lib/lua/luci/
 	$(INSTALL_DATA) ./luasrc/controller/*.lua $(1)/usr/lib/lua/luci/controller/
