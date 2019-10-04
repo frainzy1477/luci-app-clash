@@ -1,7 +1,7 @@
-include $(TOPDIR)/rules.mk
+include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.1.8
+PKG_VERSION:=1.2.0
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
 
@@ -13,7 +13,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
 	TITLE:=LuCI app for clash
-	DEPENDS:=+luci +luci-base +wget +iptables +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
+	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef
@@ -39,7 +39,9 @@ define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
 if pidof clash >/dev/null; then
-	/etc/init.d/clash stop >/dev/null 2>&1	
+	/etc/init.d/clash stop >/dev/null 2>&1
+	uci set clash.config.enable=0 >/dev/null 2>&1
+        uci commit clash >/dev/null 2>&1	
 fi
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
@@ -148,7 +150,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/get_proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
-	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/custom_rule.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/luci_version $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/check_luci_version.sh $(1)/usr/share/clash/
@@ -157,6 +158,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/groups.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/rule.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/list.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/v2ssr.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/server.list $(1)/usr/share/clash/
 
 	$(INSTALL_BIN) ./root/usr/share/clash/yac/* $(1)/usr/share/clash/yac/
@@ -176,4 +178,4 @@ endef
 
 
 
-$(eval $(call BuildPackage,luci-app-clash))
+$(eval $(call BuildPackage,$(PKG_NAME)))

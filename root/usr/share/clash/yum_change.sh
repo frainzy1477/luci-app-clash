@@ -68,21 +68,7 @@ if [ $mode -eq 1 ];  then
 		sed -i "12i\ " $CONFIG_YAML
 		sed -i '/#=============/ d' $CONFIG_YAML		
 else
-		if [ $subtype == "v2rayn2clash" ];then
-		sed -i "/Proxy:/i\#clash-openwrt" $CONFIG_YAML
-                sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML
-		sed -i "/#=============/a\ " $CONFIG_YAML
-		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML		
-		mv $CONFIG_YAML /etc/clash/dns.yaml
-		cat /usr/share/clash/dns.yaml /etc/clash/dns.yaml > $CONFIG_YAML 
-		rm -rf /etc/clash/dns.yaml
 
-		else
-
-		sed -i "/dns:/i\#clash-openwrt" $CONFIG_YAML
-               sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML
-		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML
-		fi
 
 		sed -i "1i\port: ${http_port}" $CONFIG_YAML
 		sed -i "2i\socks-port: ${socks_port}" $CONFIG_YAML

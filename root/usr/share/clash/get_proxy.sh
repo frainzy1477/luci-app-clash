@@ -1,17 +1,11 @@
-#!/bin/bash /etc/rc.common
+#!/bin/sh /etc/rc.common
 . /lib/functions.sh
 
 load_from=$(uci get clash.config.loadservers 2>/dev/null)
 if [ "$load_from" == "sub" ];then 
-	cp /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/upload.yml
-	sed  '/Proxy Group:/,$d' /usr/share/clash/config/sub/upload.yml >>/usr/share/clash/config/sub/proxy.yml              
-        load="/usr/share/clash/config/sub/proxy.yml"
-	
+        load="/usr/share/clash/config/sub/config.yaml"	
 elif [ "$load_from" == "upl" ];then
-	cp /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/upload.yml
-	sed  '/Proxy Group:/,$d' /usr/share/clash/config/upload/upload.yml >>/usr/share/clash/config/upload/proxy.yml              
-        load="/usr/share/clash/config/upload/proxy.yml"
-
+	load="/usr/share/clash/config/upload/config.yaml"
 fi
 
 awk '/^ {0,}Proxy:/,/^ {0,}Proxy Group:/{print}' $load 2>/dev/null |sed 's/\"//g' 2>/dev/null |sed "s/\'//g" 2>/dev/null |sed 's/\t/ /g' 2>/dev/null >/tmp/yaml_proxy.yaml 2>&1
@@ -26,6 +20,7 @@ cfg_get()
 {
 	echo "$(grep "$1" $single_server 2>/dev/null |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed 's/ \{0,\}\}\{0,\}$//g' 2>/dev/null)"
 }
+
 
 for n in $line
 do
@@ -98,7 +93,10 @@ do
    network="$(cfg_get "network:")"
    #username
    username="$(cfg_get "username:")"
-   
+   #custom_host
+   custom_host="$(cfg_get "host:")"
+   #tls_custom:
+   tls_custom="$(cfg_get "tls:")"
    
    name=clash
    uci_name_tmp=$(uci add $name servers)
@@ -127,64 +125,57 @@ do
    elif [ "$server_type" = "ssr" ]; then
       ${uci_set}obfs_ssr="$obfs"
    fi
+    ${uci_set}custom_host="$custom_host"
+
+	
+    ${uci_set}tls_custom="$tls_custom"
+
    ${uci_set}obfsparam="$obfsparam"
+
    ${uci_set}host="$obfs_host"
 
    [ -z "$obfs" ] && ${uci_set}obfs="$mode"
 
    if [ "$server_type" = "vmess" ]; then
 
-	   [ -z "$mode" ] && [ ! -z "$network" ] && ${uci_set}obfs_vmess="websocket"
+	[ -z "$mode" ] && [ ! -z "$network" ] && ${uci_set}obfs_vmess="websocket"
 	   
-	   [ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
+	[ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
    fi
+
    [ -z "$obfs_host" ] && ${uci_set}host="$host"
-   if [ $tls ];then 
+
+   if [ $tls ] && [ "$server_type" != "ss" ];then 
    ${uci_set}tls="$tls"
    fi
-   if [ $verify ];then
+
+   if [ $verify ] && [ "$server_type" != "ssr" ];then
    ${uci_set}skip_cert_verify="$verify"
    fi
+
    ${uci_set}path="$path"
    [ -z "$path" ] && ${uci_set}path="$ws_path"
    ${uci_set}mux="$mux"
    ${uci_set}custom="$headers"
    [ -z "$headers" ] && ${uci_set}custom="$Host"
     
-	if [ "$server_type" = "vmess" ]; then
+   if [ "$server_type" = "vmess" ]; then
     #v2ray
     ${uci_set}alterId="$alterId"
     ${uci_set}uuid="$uuid"
-	fi
+   fi
 	
-	if [ "$server_type" = "socks5" ] || [ "$server_type" = "http" ]; then
+   if [ "$server_type" = "socks5" ] || [ "$server_type" = "http" ]; then
      ${uci_set}auth_name="$username"
      ${uci_set}auth_pass="$password"
-  else
+   else
      ${uci_set}password="$password"
-	fi
+   fi
 	
-
 done
 
-sleep 3
+sleep 2
 
 uci commit clash
 rm -rf /tmp/servers.yaml 2>/dev/null
 rm -rf /tmp/yaml_proxy.yaml 2>/dev/null
-
-if [ -f /usr/share/clash/config/upload/upload.yml ];then
-rm -rf /usr/share/clash/config/upload/upload.yml
-fi
-if [ -f /usr/share/clash/config/upload/proxy.yml ];then 
-rm -rf /usr/share/clash/config/upload/proxy.yml
-fi
-
-if [ -f /usr/share/clash/config/sub/upload.yml ];then
-rm -rf /usr/share/clash/config/sub/upload.yml
-fi
-if [ -f /usr/share/clash/config/sub/proxy.yml ];then 
-rm -rf /usr/share/clash/config/sub/proxy.yml
-fi
-
-

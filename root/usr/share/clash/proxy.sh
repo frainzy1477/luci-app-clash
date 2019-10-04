@@ -60,12 +60,12 @@ servers_set()
    fi
    
 	if [ ! -z $protocolparam ];then
-	  pro_param=", protocolparam: $protocolparam"
+	  pro_param=", protocolparam: $protocolparam"	
 	else
-	  pro_param=", protocolparam: ''"	 
+	  pro_param=", protocolparam: ''" 
 	fi
 
-	if [ ! -z $protocol ];then
+	if [ ! -z $protocol ] && [ "$type" = "ssr" ];then
 	  protol=", protocol: $protocol"
 	else
 	  protol=", protocol: origin"	 
@@ -79,8 +79,8 @@ servers_set()
 	
 	if [ ! -z $obfsparam ];then
 	 obfs_param=", obfsparam: $obfsparam"
-	else
-	 obfs_param=", obfsparam: ''"
+         else
+	obfs_param=", obfsparam: ''"
 	fi 
    
    if [ -z "$server" ]; then
@@ -103,20 +103,16 @@ servers_set()
       udpp=", udp: $udp"
    fi
    
-   if [ "$obfs" != "none" ]; then
+   if [ "$obfs" != "none" ] && [ "$type" = "ss" ]; then
       if [ "$obfs" = "websocket" ]; then
          obfss="plugin: v2ray-plugin"
       else
          obfss="plugin: obfs"
       fi
-   else
-      obfs=""
    fi
    
-   if [ "$obfs_vmess" = "websocket" ]; then
+   if [ "$obfs_vmess" = "websocket" ] && [ "$type" = "vmess" ]; then
       	obfs_vmesss=", network: ws"
-   else	
-		obfs_vmesss=" "
    fi   
    
    if [ ! -z "$host" ]; then
@@ -127,10 +123,8 @@ servers_set()
       custom=", ws-headers: { Host: $custom }"
    fi
    
-   if [ "$tls" ]; then
+   if [ "$tls" = "true" ] && [ "$type" = "vmess" ]; then
       tlss=", tls: $tls"
-   elif [ ! "$tls" ]; then
-	  tlss=""
    elif [ "$tls" = "true" ] && [ "$type" = "http" ]; then
 	  tls_hs=", tls: $tls" 
    elif [ "$tls" = "true" ] && [ "$type" = "socks5" ]; then
@@ -374,7 +368,7 @@ if [ -f $CONFIG_YAML ];then
 	rm -rf $CONFIG_YAML
 fi
 
-sed -i "1i\ " $CONFIG_YAML_RULE
+#sed -i "1i\ " $CONFIG_YAML_RULE
 
 cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
 

@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.8">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.1.8-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.0">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.2.0-blue.svg">
   </a>
   
   </p>
@@ -19,13 +19,13 @@
 
 - Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.5) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.8)
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.0)
 
 - cd /tmp
 
 - opkg install clash_0.15.5_x86_64.ipk
 
-- opkg install luci-app-clash_1.1.8-2_all.ipk
+- opkg install luci-app-clash_1.2.0-2_all.ipk
 
 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
@@ -34,6 +34,7 @@
 
 
 ## Features
+
 - Support Manually config upload (config.yaml / config.yml)
 - GeoIP Database Update
 - Iptables udp redirect
@@ -42,13 +43,16 @@
 - Bypass Lan IP(Client IP) that can't go through Proxy
 - DNS Forwarding
 - Ping Custom proxy servers
-- Create Custom Config (Support SSR)
-- Create Custom Config From Uploaded or Subscription config (Support SSR)
+- Create v2ray2clash & ssr2clash config from subscription url
+- Create Custom Config (Support SS/V2/SSR)
+- Create Custom Config From Uploaded or Subscription config (Support SS/V2/SSR)
+
 ## Dependency
 
 - bash
 - coreutils
 - coreutils-nohup
+- coreutils-base64
 - ipset
 - iptables
 - luci

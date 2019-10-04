@@ -51,8 +51,6 @@ o.write = function()
 end
 
 
-
-
 kr = Map(clash)
 s = kr:section(TypedSection, "clash", translate("Subscription Config"))
 s.anonymous = true
@@ -84,22 +82,22 @@ o.description = translate("Daily Server subscription update time")
 o = s:option(ListValue, "subcri", translate("Subcription Type"))
 o.default = clash
 o:value("clash", translate("clash"))
-o:value("v2rayn2clash", translate("v2rayn2clash"))
---o:value("surge2clash", translate("surge2clash"))
-o.description = translate("Select Subcription Type, enter only your subcription url without https://tgbot.lbyczf.com/*?")
+o:value("v2ssr2clash", translate("v2ssr2clash"))
+o.description = translate("Select Subcription Type")
 
 
 
-md = s:option(Flag, "cusrule", translate("Enabled Custom Rule"))
-md.default = 1
-md.description = translate("Enabled Custom Rule")
-md:depends("subcri", 'v2rayn2clash')
-
-
-o = s:option(Value, "subscribe_url")
+o = s:option(Value, "subscribe_url_clash")
 o.title = translate("Subcription Url")
-o.description = translate("Server Subscription Address")
+o.description = translate("Clash Subscription Address")
 o.rmempty = true
+o:depends("subcri", 'clash')
+
+o = s:option(DynamicList, "subscribe_url")
+o.title = translate("Subcription Url")
+o.description = translate("V2/SSR Subscription Address")
+o.rmempty = true
+o:depends("subcri", 'v2ssr2clash')
 
 o = s:option(Button,"update")
 o.title = translate("Update Subcription")
@@ -107,12 +105,25 @@ o.inputtitle = translate("Update")
 o.description = translate("Update Config")
 o.inputstyle = "reload"
 o.write = function()
-  --os.execute("sed -i '/enable/d' /etc/config/clash")
+  kr.uci:commit("clash")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
-  HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
+  SYS.call("sleep 1")
+  HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
+o:depends("subcri", 'clash')
 
-
+o = s:option(Button,"updatee")
+o.title = translate("Update Subcription")
+o.inputtitle = translate("Update")
+o.description = translate("Update Config")
+o.inputstyle = "reload"
+o.write = function()
+  kr.uci:commit("clash")
+  luci.sys.call("bash /usr/share/clash/v2ssr.sh >>/tmp/clash.log 2>&1 &")
+    SYS.call("sleep 1")
+  HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
+end
+o:depends("subcri", 'v2ssr2clash')
 
 
 k = Map(clash)
@@ -122,6 +133,7 @@ sul =k:section(TypedSection, "clash", translate("Upload Config"))
 sul.anonymous = true
 sul.addremove=false
 o = sul:option(FileUpload, "")
+o.description = translate("NB: Only upload file with name config.yml or config.yaml")
 o.title = translate("  ")
 o.template = "clash/clash_upload"
 um = sul:option(DummyValue, "", nil)

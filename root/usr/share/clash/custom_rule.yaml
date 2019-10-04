@@ -1,5 +1,5 @@
- 
- 
+
+
 Rule:
 # (GlobalTV)
 # > ABC
@@ -1508,10 +1508,9 @@ Rule:
 - IP-CIDR,202.160.128.0/22,🔑Proxy
 - IP-CIDR,209.237.192.0/19,🔑Proxy
 
-
+#- SRC-IP-CIDR,192.168.1.201/32,DIRECT
 #- DST-PORT,80,DIRECT
 #- DST-PORT,443,DIRECT
-# GeoIP China
-- GEOIP,CN,DIRECT
 
+- GEOIP,CN,DIRECT
 - MATCH,🔑Proxy

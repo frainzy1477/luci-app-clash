@@ -73,8 +73,8 @@ msgstr "启用"
 msgid "Subcription Type"
 msgstr "服务器订阅类型"
 
-msgid "Select Subcription Type, enter only your subcription url without https://tgbot.lbyczf.com/*?"
-msgstr "选择服务器订阅类型,输入服务器订阅不要带https://tgbot.lbyczf.com/*?"
+msgid "Select Subcription Type"
+msgstr "选择服务器订阅类型"
 
 msgid "disabled"
 msgstr "停用"
@@ -299,7 +299,7 @@ msgid "Upload Config"
 msgstr "上传配置"
 
 msgid "NB: Only upload file with name config.yml or config.yaml"
-msgstr "注意：仅上载名为config.yml或config.yaml的文件"
+msgstr "注意：上载config.yml或config.yaml的文件"
 
 msgid "Subcription Url"
 msgstr "订阅URL"
@@ -318,6 +318,12 @@ msgstr "使用中的配置"
 
 msgid "Server Subscription Address"
 msgstr "服务器订阅地址"
+
+msgid "Clash Subscription Address"
+msgstr "Clash订阅地址"
+
+msgid "V2/SSR Subscription Address"
+msgstr "V2/SSR订阅地址"
 
 msgid "Changes to config file must be made from source"
 msgstr "必须从源文件更改配置文件"
