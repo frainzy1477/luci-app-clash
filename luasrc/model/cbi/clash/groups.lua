@@ -30,6 +30,8 @@ o:value("load-balance", translate("Load-Balance"))
 
 o = s:option(Value, "name", translate("Group Name"))
 o.rmempty = false
+o.description = translate("Do not edit Policy Group with Group Name Proxy or 🔑Proxy and it's other policy group")
+
 
 o = s:option(Value, "test_url", translate("Test URL"))
 o.default = "http://www.gstatic.com/generate_204"
@@ -47,6 +49,12 @@ o:depends("type", "load-balance")
 
 o = s:option(DynamicList, "other_group", translate("Other Group"))
 o.description = translate("Proxy Groups Must Exist In Rule")
+uci:foreach("clash", "servers",
+		function(s)
+		  if s.name ~= "" and s.name ~= nil and s.name ~= m.uci:get(clash, sid, "name") then
+			   o:value(s.name)
+			end
+		end)
 uci:foreach("clash", "groups",
 		function(s)
 		  if s.name ~= "" and s.name ~= nil and s.name ~= m.uci:get(clash, sid, "name") then

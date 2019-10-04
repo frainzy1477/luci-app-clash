@@ -250,7 +250,11 @@ set_groups()
 set_other_groups()
 {
 
+   if [ "${1}" = "DIRECT" ]||[ "${1}" = "REJECT" ];then
    echo "    - ${1}" >>$GROUP_FILE
+   else
+   echo "    - \"${1}\"" >>$GROUP_FILE
+   fi
 
 }
 
