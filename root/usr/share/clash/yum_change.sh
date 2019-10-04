@@ -69,6 +69,9 @@ if [ $mode -eq 1 ];  then
 		sed -i '/#=============/ d' $CONFIG_YAML		
 else
 
+		sed -i "/dns:/i\#clash-openwrt" $CONFIG_YAML
+                sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML
+		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML
 
 		sed -i "1i\port: ${http_port}" $CONFIG_YAML
 		sed -i "2i\socks-port: ${socks_port}" $CONFIG_YAML
