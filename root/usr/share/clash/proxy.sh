@@ -38,7 +38,6 @@ servers_set()
    config_get "obfs_vmess" "$section" "obfs_vmess" ""
    config_get "host" "$section" "host" ""
    config_get "custom" "$section" "custom" ""
-   config_get "custom_host" "$section" "custom_host" ""
    config_get "tls" "$section" "tls" ""
    config_get "tls_custom" "$section" "tls_custom" ""
    config_get "skip_cert_verify" "$section" "skip_cert_verify" ""
@@ -59,25 +58,25 @@ servers_set()
       return
    fi
    
-	if [ ! -z $protocolparam ];then
+	if [ ! -z "$protocolparam" ];then
 	  pro_param=", protocolparam: $protocolparam"	
 	else
 	  pro_param=", protocolparam: ''" 
 	fi
 
-	if [ ! -z $protocol ] && [ "$type" = "ssr" ];then
+	if [ ! -z "$protocol" ] && [ "$type" = "ssr" ];then
 	  protol=", protocol: $protocol"
 	else
 	  protol=", protocol: origin"	 
 	fi
 	
-	if [ ! -z $obfs_ssr ];then
+	if [ ! -z "$obfs_ssr" ];then
 	 ssr_obfs=", obfs: $obfs_ssr"
 	else
 	 ssr_obfs=", obfs: plain"
 	fi
 	
-	if [ ! -z $obfsparam ];then
+	if [ ! -z "$obfsparam" ];then
 	 obfs_param=", obfsparam: $obfsparam"
          else
 	obfs_param=", obfsparam: ''"
@@ -115,9 +114,7 @@ servers_set()
       	obfs_vmesss=", network: ws"
    fi   
    
-   if [ ! -z "$host" ]; then
-      host="host: $host"
-   fi
+
    
    if [ ! -z "$custom" ] && [ "$type" = "vmess" ]; then
       custom=", ws-headers: { Host: $custom }"
@@ -162,21 +159,20 @@ cat >> "$SERVER_FILE" <<-EOF
   udp: $udp
 EOF
   fi
-  if [ ! -z "$obfss" ] && [ ! "$host" ]; then
+  if [ ! -z "$obfss" ]; then
 cat >> "$SERVER_FILE" <<-EOF
   $obfss
   plugin-opts:
     mode: $obfs
 EOF
   fi
-  if [ ! -z "$obfss" ] && [ "$host" ]; then
+  
+   if [ "$host" ]; then
 cat >> "$SERVER_FILE" <<-EOF
-  $obfss
-  plugin-opts:
-    mode: $obfs
-    $host
+    host: $host
 EOF
-  fi
+  fi 
+  
   if [ "$tls_custom" = "true" ] && [ "$type" = "ss" ]; then
 cat >> "$SERVER_FILE" <<-EOF
     tls: true
@@ -185,13 +181,6 @@ EOF
    if [ "$skip_cert_verify" = "true" ] && [ "$type" = "ss" ]; then
 cat >> "$SERVER_FILE" <<-EOF
     skip_cert_verify: true
-EOF
-  fi
-
-
-  if [ ! -z "$custom_host" ]; then
-cat >> "$SERVER_FILE" <<-EOF
-    host: $custom_host
 EOF
   fi
 

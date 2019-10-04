@@ -93,8 +93,6 @@ do
    network="$(cfg_get "network:")"
    #username
    username="$(cfg_get "username:")"
-   #custom_host
-   custom_host="$(cfg_get "host:")"
    #tls_custom:
    tls_custom="$(cfg_get "tls:")"
    
@@ -125,14 +123,15 @@ do
    elif [ "$server_type" = "ssr" ]; then
       ${uci_set}obfs_ssr="$obfs"
    fi
-    ${uci_set}custom_host="$custom_host"
-
+  
 	
     ${uci_set}tls_custom="$tls_custom"
 
    ${uci_set}obfsparam="$obfsparam"
 
+  
    ${uci_set}host="$obfs_host"
+   
 
    [ -z "$obfs" ] && ${uci_set}obfs="$mode"
 
@@ -157,6 +156,7 @@ do
    [ -z "$path" ] && ${uci_set}path="$ws_path"
    ${uci_set}mux="$mux"
    ${uci_set}custom="$headers"
+   
    [ -z "$headers" ] && ${uci_set}custom="$Host"
     
    if [ "$server_type" = "vmess" ]; then

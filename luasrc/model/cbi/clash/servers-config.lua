@@ -169,11 +169,13 @@ o:value("none")
 o:value("websocket", translate("websocket (ws)"))
 o:depends("type", "vmess")
 
-o = s:option(Value, "host", translate("obfs-hosts"))
+o = s:option(Value, "host", translate("hosts"))
 o.datatype = "host"
 o.rmempty = true
 o:depends("obfs", "tls")
 o:depends("obfs", "http")
+o:depends("obfs", "websocket")
+
 
 o = s:option(ListValue, "udp", translate("udp"))
 o:value("true")
@@ -186,10 +188,6 @@ o:value("true")
 o:value("false")
 o:depends("obfs", "websocket")
 
-
-o = s:option(Value, "custom_host", translate("host"))
-o.rmempty = true
-o:depends("obfs", "websocket")
 
 
 -- [[ WS部分 ]]--
