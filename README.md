@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.0">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.2.0-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.1">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.2.1-blue.svg">
   </a>
   
   </p>
@@ -19,13 +19,13 @@
 
 - Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.5) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.0)
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.1)
 
 - cd /tmp
 
 - opkg install clash_0.15.5_x86_64.ipk
 
-- opkg install luci-app-clash_1.2.0-2_all.ipk
+- opkg install luci-app-clash_1.2.1-2_all.ipk
 
 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)

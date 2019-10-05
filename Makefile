@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.2.0
+PKG_VERSION:=1.2.1
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
 
@@ -38,11 +38,6 @@ endef
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
-if pidof clash >/dev/null; then
-	/etc/init.d/clash stop >/dev/null 2>&1
-	uci set clash.config.enable=0 >/dev/null 2>&1
-        uci commit clash >/dev/null 2>&1	
-fi
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
 	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null
@@ -112,7 +107,6 @@ if [  -f /usr/share/clash/config/custom/config.bak ];then
 	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml 2>/dev/null
 fi
 
- /etc/init.d/clash stop 2>/dev/null
 endef
 
 define Package/$(PKG_NAME)/install

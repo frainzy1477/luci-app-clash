@@ -30,7 +30,7 @@ o:value("load-balance", translate("Load-Balance"))
 
 o = s:option(Value, "name", translate("Group Name"))
 o.rmempty = false
-o.description = translate("Do not edit Policy Group with Group Name Proxy or 🔑Proxy and it's other policy group")
+o.description = translate("Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group")
 
 
 o = s:option(Value, "test_url", translate("Test URL"))

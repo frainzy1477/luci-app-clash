@@ -222,8 +222,8 @@ config_foreach servers_set "servers"
 
 if [ "$(ls -l $SERVER_FILE|awk '{print $5}')" -ne 0 ]; then
 
-sed -i "1i\   " $SERVER_FILE
-sed -i "2i\Proxy:" $SERVER_FILE
+sed -i "1i\   " $SERVER_FILE 2>/dev/null 
+sed -i "2i\Proxy:" $SERVER_FILE 2>/dev/null 
 
 egrep '^ {0,}-' $SERVER_FILE |grep name: |awk -F 'name: ' '{print $2}' |sed 's/,.*//' >$Proxy_Group 2>&1
 sed -i "s/^ \{0,\}/    - /" $Proxy_Group 2>/dev/null 
@@ -242,7 +242,7 @@ set_groups()
 {
 
 	if [ "$1" = "$3" ]; then
-	   echo "    - \"${2}\"" >>$GROUP_FILE
+	   echo "    - \"${2}\"" >>$GROUP_FILE 2>/dev/null 
 	fi
 
 }
@@ -251,9 +251,9 @@ set_other_groups()
 {
 
    if [ "${1}" = "DIRECT" ]||[ "${1}" = "REJECT" ];then
-   echo "    - ${1}" >>$GROUP_FILE
+   echo "    - ${1}" >>$GROUP_FILE 2>/dev/null 
    else
-   echo "    - \"${1}\"" >>$GROUP_FILE
+   echo "    - \"${1}\"" >>$GROUP_FILE 2>/dev/null 
    fi
 
 }
@@ -276,14 +276,14 @@ yml_groups_set()
       return
    fi
    
-   echo "- name: $name" >>$GROUP_FILE
-   echo "  type: $type" >>$GROUP_FILE
+   echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
+   echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
 
-  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ]; then
-      echo "  proxies:" >>$GROUP_FILE
+  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ] || [ "$name" == "proxy" ] ; then
+      echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
       cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
-      echo "  proxies:" >>$GROUP_FILE
+      echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
    fi       
  
    if [ "$name" != "$old_name" ]; then
@@ -297,10 +297,10 @@ yml_groups_set()
    config_foreach yml_servers_add "servers" "$name" 
    
    [ ! -z "$test_url" ] && {
-   	echo "  url: $test_url" >>$GROUP_FILE
+   	echo "  url: $test_url" >>$GROUP_FILE 2>/dev/null 
    }
    [ ! -z "$test_interval" ] && {
-   echo "  interval: \"$test_interval\"" >>$GROUP_FILE
+   echo "  interval: \"$test_interval\"" >>$GROUP_FILE 2>/dev/null 
    }
 }
 
@@ -310,8 +310,8 @@ config_foreach yml_groups_set "groups"
 
 
 if [ "$(ls -l $GROUP_FILE|awk '{print $5}')" -ne 0 ]; then
-sed -i "1i\  " $GROUP_FILE
-sed -i "2i\Proxy Group:" $GROUP_FILE
+sed -i "1i\  " $GROUP_FILE 2>/dev/null 
+sed -i "2i\Proxy Group:" $GROUP_FILE 2>/dev/null 
 fi
 
 
@@ -332,23 +332,27 @@ cat >> "$TEMP_FILE" <<-EOF
 #config-start-here
 EOF
 
-		sed -i "1i\port: ${http_port}" $TEMP_FILE
-		sed -i "2i\socks-port: ${socks_port}" $TEMP_FILE
-		sed -i "3i\redir-port: ${redir_port}" $TEMP_FILE
-		sed -i "4i\allow-lan: ${allow_lan}" $TEMP_FILE
-		if [ $allow_lan == "true" ];  then	
-		sed -i "5i\bind-address: '${bind_addr}'" $TEMP_FILE
+		sed -i "1i\port: ${http_port}" $TEMP_FILE 2>/dev/null
+		sed -i "/port: ${http_port}/a\socks-port: ${socks_port}" $TEMP_FILE 2>/dev/null 
+		sed -i "/socks-port: ${socks_port}/a\redir-port: ${redir_port}" $TEMP_FILE 2>/dev/null 
+		sed -i "/redir-port: ${redir_port}/a\allow-lan: ${allow_lan}" $TEMP_FILE 2>/dev/null 
+		if [ $allow_lan == "true" ];  then
+		sed -i "/allow-lan: ${allow_lan}/a\bind-address: \"${bind_addr}\"" $TEMP_FILE 2>/dev/null 
+		sed -i "/bind-address: \"${bind_addr}\"/a\mode: Rule" $TEMP_FILE 2>/dev/null
+		sed -i "/mode: Rule/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
+		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE 2>/dev/null 
+		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $TEMP_FILE 2>/dev/null 
+		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $TEMP_FILE 2>/dev/null 
+		sed -i "external-ui: \"/usr/share/clash/dashboard\"/a\  " $TEMP_FILE 2>/dev/null 
+		sed -i "   /a\   " $TEMP_FILE 2>/dev/null
 		else
-		sed -i "5i\#bind-address: " $TEMP_FILE
+		sed -i "/allow-lan: ${allow_lan}/a\mode: Rule" $TEMP_FILE 2>/dev/null
+		sed -i "/mode: Rule/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
+		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE 2>/dev/null 
+		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $TEMP_FILE 2>/dev/null 
+		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $TEMP_FILE 2>/dev/null 
 		fi
-		sed -i "6i\mode: Rule" $TEMP_FILE
-		sed -i "7i\log-level: ${log_level}" $TEMP_FILE
-		sed -i "8i\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE
-		sed -i "9i\secret: '${da_password}'" $TEMP_FILE
-		sed -i "10i\external-ui: "/usr/share/clash/dashboard"" $TEMP_FILE
-		sed -i "11i\ " $TEMP_FILE
-		sed -i "12i\ " $TEMP_FILE
-		sed -i '/#config-start-here/ d' $TEMP_FILE
+		sed -i '/#config-start-here/ d' $TEMP_FILE 2>/dev/null
 
 		
 cat $DNS_FILE >> $TEMP_FILE  2>/dev/null
@@ -361,9 +365,9 @@ if [ -f $CONFIG_YAML ];then
 	rm -rf $CONFIG_YAML
 fi
 
-#sed -i "1i\ " $CONFIG_YAML_RULE
+cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML 2>/dev/null
 
-cat $TEMP_FILE $CONFIG_YAML_RULE > $CONFIG_YAML
+sed -i "/Rule:/i\     " $CONFIG_YAML 2>/dev/null
 
 rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
 
