@@ -69,8 +69,7 @@ if [ $mode -eq 1 ];  then
 		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML 2>/dev/null 
 		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $CONFIG_YAML 2>/dev/null 
 		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $CONFIG_YAML 2>/dev/null 
-		sed -i "external-ui: \"/usr/share/clash/dashboard\"/a\   " $CONFIG_YAML 2>/dev/null
-		sed -i "   /a\   " $CONFIG_YAML 2>/dev/null 
+		
 		fi
 		sed -i '/#=============/ d' $CONFIG_YAML 2>/dev/null	
 		if [ ! -z "$(grep "^experimental:" $CONFIG_YAML)" ]; then
@@ -105,8 +104,7 @@ else
 		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $CONFIG_YAML 2>/dev/null 
 		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $CONFIG_YAML 2>/dev/null 
 		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $CONFIG_YAML 2>/dev/null 
-		sed -i "external-ui: \"/usr/share/clash/dashboard\"/a\  " $CONFIG_YAML 2>/dev/null 
-		sed -i "   /a\   " $CONFIG_YAML 2>/dev/null
+		
 		else
 		sed -i "/allow-lan: ${allow_lan}/a\mode: Rule" $CONFIG_YAML 2>/dev/null
 		sed -i "/mode: Rule/a\log-level: ${log_level}" $CONFIG_YAML 2>/dev/null 

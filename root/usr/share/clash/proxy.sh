@@ -1,8 +1,6 @@
 #!/bin/sh /etc/rc.common
 . /lib/functions.sh
-enable_create=$(uci get clash.config.cus_servers 2>/dev/null)
 
-if [ "$enable_create" == "1" ];then
 
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ $config_type == "cus" ];then 
@@ -52,7 +50,8 @@ servers_set()
    config_get "obfsparam" "$section" "obfsparam" ""
    config_get "obfs_ssr" "$section" "obfs_ssr" ""
    config_get "cipher_ssr" "$section" "cipher_ssr" ""
-   
+   config_get "psk" "$section" "psk" ""
+   config_get "obfs_snell" "$section" "obfs_snell" ""
 	
    if [ -z "$type" ]; then
       return
@@ -88,6 +87,9 @@ servers_set()
 
    if [ ! -z "$mux" ]; then
       muxx="mux: $mux"
+   fi
+   if [ "$obfs_snell" = "none" ]; then
+      obfs_snell=""
    fi
    
    if [ -z "$name" ]; then
@@ -215,6 +217,24 @@ EOF
     if [ "$type" = "ssr" ]; then
       echo "- { name: \"$name\", type: $type, server: $server, port: $port, cipher: $cipher_ssr, password: "$password"$protol$pro_param$ssr_obfs$obfs_param}" >>$SERVER_FILE
     fi
+
+   if [ "$type" = "snell" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+- name: "$name"
+  type: $type
+  server: $server
+  port: $port
+  psk: $psk
+EOF
+  if [ ! -z "$obfs_snell" ] && [ ! -z "$host" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+  obfs-opts:
+    mode: $obfs_snell
+    $host
+EOF
+  fi
+   fi
+
 }
 
 config_load clash
@@ -279,7 +299,7 @@ yml_groups_set()
    echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
 
-  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ] || [ "$name" == "proxy" ] ; then
+  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ] || [ "$name" == "proxy" ] || [ "$name" == "PROXY" ] ; then
       echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
       cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
@@ -376,5 +396,5 @@ if [ $config_type == "cus" ];then
 fi
 fi
 rm -rf $SERVER_FILE
-fi
+
 

@@ -99,6 +99,7 @@ o:value("ssr", translate("ShadowsocksR"))
 o:value("vmess", translate("Vmess"))
 o:value("socks5", translate("Socks5"))
 o:value("http", translate("HTTP(S)"))
+o:value("snell", translate("Snell"))
 
 o.description = translate("Using incorrect encryption mothod may causes service fail to start")
 
@@ -119,6 +120,10 @@ o.password = true
 o.rmempty = true
 o:depends("type", "ss")
 o:depends("type", "ssr")
+
+o = s:option(Value, "psk", translate("Psk"))
+o.rmempty = true
+o:depends("type", "snell")
 
 o = s:option(ListValue, "cipher", translate("Encrypt Method"))
 for _, v in ipairs(encrypt_methods_ss) do o:value(v) end
@@ -143,6 +148,14 @@ o = s:option(ListValue, "obfs_ssr", translate("Obfs"))
 for _, v in ipairs(obfs_ssr_list) do o:value(v) end
 o.rmempty = true
 o:depends("type", "ssr")
+
+o = s:option(ListValue, "obfs_snell", translate("obfs-mode"))
+o.rmempty = true
+o.default = "none"
+o:value("none")
+o:value("tls")
+o:value("http")
+o:depends("type", "snell")
 
 o = s:option(Value, "obfsparam", translate("Obfs Param"))
 o.rmempty = true
@@ -175,7 +188,8 @@ o.rmempty = true
 o:depends("obfs", "tls")
 o:depends("obfs", "http")
 o:depends("obfs", "websocket")
-
+o:depends("obfs_snell", "tls")
+o:depends("obfs_snell", "http")
 
 o = s:option(ListValue, "udp", translate("udp"))
 o:value("true")
