@@ -17,13 +17,13 @@
   
  ## Usage
 
-- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.6) .
+- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.16.0) .
 
 - Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.2)
 
 - cd /tmp
 
-- opkg install clash_0.15.6_x86_64.ipk
+- opkg install clash_0.16.0_x86_64.ipk
 
 - opkg install luci-app-clash_1.2.2-2_all.ipk
 
