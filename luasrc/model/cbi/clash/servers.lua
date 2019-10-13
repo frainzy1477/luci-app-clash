@@ -56,11 +56,11 @@ s = kr:section(TypedSection, "clash", translate("Subscription Config"))
 s.anonymous = true
 
 
---o = s:option(ListValue, "loadservers", translate("Load Config From"))
---o.default = sub
---o:value("sub", translate("Subscription Config"))
---o:value("upl", translate("Upload Config"))
---o.description = translate("Select from which configuration custom server should be loaded from")
+o = s:option(ListValue, "loadservers", translate("Load Config From"))
+o.default = sub
+o:value("sub", translate("Subscription Config"))
+o:value("upl", translate("Upload Config"))
+o.description = translate("Select from which configuration custom server should be loaded from")
 
 
 o = s:option(Flag, "auto_update", translate("Auto Update"))
@@ -159,8 +159,8 @@ http.setfilehandler(
 			if NXFS.access(clash_conf) then
 				  SYS.call("mv /usr/share/clash/config/upload/config.yml /usr/share/clash/config/upload/config.yaml >/dev/null 2>&1 &")
 			end
-			SYS.call("sh /usr/share/clash/upl.sh >/dev/null 2>&1 &")
-			SYS.call("sleep 5")
+			--SYS.call("sh /usr/share/clash/upl.sh >/dev/null 2>&1 &")
+			--SYS.call("sleep 5")
 			um.value = translate("File saved to") .. ' "/usr/share/clash/config/upload/"'
 			
 		end
@@ -181,24 +181,22 @@ end
 
 
 
---local t = {
---    {Load_Config, Delete_Severs, Delete_Groups}
---}
 local t = {
-    {Delete_Severs, Delete_Groups}
+    {Load_Config, Delete_Severs, Delete_Groups}
 }
+
 b = k:section(Table, t)
 
---o = b:option(Button,"Load_Config")
---o.inputtitle = translate("Load Servers")
---o.inputstyle = "apply"
---o.write = function()
---  k.uci:delete_all("clash", "servers", function(s) return true end)
--- k.uci:commit("clash")
---  luci.sys.call("sh /usr/share/clash/get_proxy.sh >/dev/null 2>&1 &")
--- SYS.call("sleep 2")
--- luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
---end
+o = b:option(Button,"Load_Config")
+o.inputtitle = translate("Load Servers")
+o.inputstyle = "apply"
+o.write = function()
+  k.uci:delete_all("clash", "servers", function(s) return true end)
+ k.uci:commit("clash")
+  luci.sys.call("sh /usr/share/clash/get_proxy.sh >/dev/null 2>&1 &")
+ SYS.call("sleep 2")
+ luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+end
 
 o = b:option(Button,"Delete_Severs")
 o.inputtitle = translate("Delete Severs")
