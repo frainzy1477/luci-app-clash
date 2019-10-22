@@ -24,6 +24,7 @@ revert_dns() {
 	fi
 	uci set dhcp.@dnsmasq[0].resolvfile=/tmp/resolv.conf.auto
 	uci set dhcp.@dnsmasq[0].noresolv=0
+	uci delete dhcp.@dnsmasq[0].cachesize
 	uci commit dhcp
 #=========================================================================================================================== 	
 }

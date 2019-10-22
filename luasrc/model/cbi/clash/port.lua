@@ -84,7 +84,7 @@ local clash_conf = "/etc/clash/config.yaml"
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
 if NXFS.access(clash_conf) then
-	uci:commit("clash")
+	m.uci:commit("clash")
 	SYS.call("sh /usr/share/clash/yum_change.sh 2>&1 &")
 	if luci.sys.call("pidof clash >/dev/null") == 0 then
 	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")

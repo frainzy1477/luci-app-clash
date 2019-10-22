@@ -1108,6 +1108,8 @@ Rule:
 - DOMAIN-SUFFIX,jiji.com,🔑Proxy
 - DOMAIN-SUFFIX,jinx.com,🔑Proxy
 - DOMAIN-SUFFIX,jkforum.net,🔑Proxy
+- DOMAIN-SUFFIX,cloudflare.com,🔑Proxy
+- DOMAIN-KEYWORD,cloudflare,🔑Proxy
 - DOMAIN-SUFFIX,joinmastodon.org,🔑Proxy
 - DOMAIN-SUFFIX,kakao.com,🔑Proxy
 - DOMAIN-SUFFIX,lihkg.com,🔑Proxy

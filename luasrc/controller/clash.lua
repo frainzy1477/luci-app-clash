@@ -61,6 +61,10 @@ local function check_core()
 	return luci.sys.exec("sh /usr/share/clash/check_core_version.sh")
 end
 
+local function check_clashr_core()
+	return luci.sys.exec("sh /usr/share/clash/check_clashr_core_version.sh")
+end
+
 local function current_version()
 	return luci.sys.exec("sed -n 1p /usr/share/clash/luci_version")
 end
@@ -73,10 +77,18 @@ local function new_core_version()
 	return luci.sys.exec("sed -n 1p /usr/share/clash/new_core_version")
 end
 
+local function new_clashr_core_version()
+	return luci.sys.exec("sed -n 1p /usr/share/clash/new_clashr_core_version")
+end
+
 local function e_mode()
 	return luci.sys.exec("egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}'")
 end
 
+
+local function app()
+	return luci.sys.exec("opkg list-installed |grep clashr |awk -F '- ' '{print $1}'")
+end
 
 local function clash_core()
 	if nixio.fs.access("/usr/share/clash/core_version") then
@@ -92,8 +104,11 @@ function check_status()
 		check_version = check_version(),
 		check_core = check_core(),
 		current_version = current_version(),
+		check_clashr_core = check_clashr_core(),
 		new_version = new_version(),
+		new_clashr_core_version = new_clashr_core_version(),
 		clash_core = clash_core(),
+		app = app(),
 		new_core_version = new_core_version()
 		
 
@@ -106,6 +121,7 @@ function action_status()
 		clash = is_running(),
 		localip = localip(),
 		dash_port = dash_port(),
+		app = app(),
 		current_version = current_version(),
 		clash_core = clash_core(),
 		dash_pass = dash_pass(),

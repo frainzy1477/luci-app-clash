@@ -69,8 +69,8 @@ o.rmempty = true
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-    uci:commit(clash, sid) 
-	sys.call("/usr/share/clash/groups.sh start")
+    m.uci:commit(clash, sid) 
+    sys.call("/usr/share/clash/groups.sh start")
 end
 
 return m

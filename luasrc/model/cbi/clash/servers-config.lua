@@ -270,4 +270,9 @@ o:depends("type", "vmess")
 o:depends("type", "socks5")
 o:depends("type", "http")
 
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+  m.uci:commit("clash")
+end
+
 return m

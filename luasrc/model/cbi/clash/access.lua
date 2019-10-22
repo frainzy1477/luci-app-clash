@@ -68,7 +68,7 @@ o:depends("rejectlan", 1)
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-	uci:commit("clash")
+	m.uci:commit("clash")
 	if luci.sys.call("pidof clash >/dev/null") == 0 then
 	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
 	end

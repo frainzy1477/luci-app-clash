@@ -68,7 +68,7 @@ do
    #obfs-host:
    obfs_host="$(cfg_get "obfs-host:")"
    #psk:
-   obfs="$(cfg_get "psk:")"
+   psk="$(cfg_get "psk:")"
    #mode:
    mode="$(cfg_get "mode:")"
    #tls:
@@ -144,9 +144,9 @@ do
 	[ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
    fi
    ${uci_set}obfs_snell="$mode"
-      [ -z "$obfs" ] && [ "$server_type" != "snell" ] && ${uci_set}obfs="$mode"
-      [ -z "$mode" ] && [ "$server_type" != "snell" ] && ${uci_set}obfs="none"
-      [ -z "$mode" ] && ${uci_set}obfs_snell="none"
+   [ -z "$obfs" ] && ${uci_set}obfs="$mode"
+   [ -z "$obfs" ] && [ -z "$mode" ] && ${uci_set}obfs="none"
+   [ -z "$mode" ] && ${uci_set}obfs_snell="none"
    [ -z "$obfs_host" ] && ${uci_set}host="$host"
 
    if [ $tls ] && [ "$server_type" != "ss" ];then 

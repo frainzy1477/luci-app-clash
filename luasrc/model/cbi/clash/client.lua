@@ -29,8 +29,8 @@ o.description = translate("Select Configuration type")
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-    uci:commit("clash")
-	os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
+    m.uci:commit("clash")
+    os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
 end
 
 return m
