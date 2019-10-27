@@ -33,7 +33,7 @@ function index()
 
 	
 end
-
+ 
 local function dash_port()
 	return luci.sys.exec("uci get clash.config.dash_port 2>/dev/null")
 end

@@ -27,7 +27,6 @@
 
 - opkg install luci-app-clash_1.2.4-2_all.ipk
 
-
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
 - [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)

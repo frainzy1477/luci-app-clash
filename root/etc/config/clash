@@ -21,7 +21,6 @@ config clash 'config'
 	option config_type 'sub'
 	option loadservers 'sub'
 	
-
 config groups
 	option old_name '❌AdBlock'
 	option old_name_cfg '❌AdBlock'
