@@ -272,6 +272,8 @@ set_other_groups()
 
    if [ "${1}" = "DIRECT" ]||[ "${1}" = "REJECT" ];then
    echo "    - ${1}" >>$GROUP_FILE 2>/dev/null 
+   elif [ "${1}" = "ALL" ];then
+   cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
    echo "    - \"${1}\"" >>$GROUP_FILE 2>/dev/null 
    fi
@@ -299,7 +301,7 @@ yml_groups_set()
    echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
 
-  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$name" == "Proxy" ] || [ "$name" == "🔑Proxy" ] || [ "$name" == "proxy" ] || [ "$name" == "PROXY" ] ; then
+  if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] ; then
       echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
       cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else

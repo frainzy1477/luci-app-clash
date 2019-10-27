@@ -523,4 +523,11 @@ msgstr "从哪读取自定义节点"
 msgid "Select from which configuration custom server should be loaded from"
 msgstr "选择从哪个配置文件读取自定义节点"
 
+msgid "All Servers"
+msgstr "所有节点"
 
+msgid "clash"
+msgstr "下载clash"
+
+msgid "clashr"
+msgstr "下载clashr"
