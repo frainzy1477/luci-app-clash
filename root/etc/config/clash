@@ -10,6 +10,7 @@ config clash 'config'
 	option auto_update_time '0'
 	option level 'info'
 	option proxylan '0'
+	option core '1'
 	option allow_lan 'true'
 	option bind_addr '*'
 	option rejectlan '0'
@@ -21,6 +22,7 @@ config clash 'config'
 	option config_type 'sub'
 	option loadservers 'sub'
 	
+
 config groups
 	option old_name '❌AdBlock'
 	option old_name_cfg '❌AdBlock'

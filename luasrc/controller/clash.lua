@@ -33,7 +33,7 @@ function index()
 
 	
 end
- 
+
 local function dash_port()
 	return luci.sys.exec("uci get clash.config.dash_port 2>/dev/null")
 end
@@ -86,10 +86,6 @@ local function e_mode()
 end
 
 
-local function app()
-	return luci.sys.exec("opkg list-installed |grep clashr |awk -F '- ' '{print $1}'")
-end
-
 local function clash_core()
 	if nixio.fs.access("/usr/share/clash/core_version") then
 		return luci.sys.exec("sed -n 1p /usr/share/clash/core_version")
@@ -97,6 +93,15 @@ local function clash_core()
 		return "0"
 	end
 end
+
+local function clashr_core()
+	if nixio.fs.access("/usr/share/clash/corer_version") then
+		return luci.sys.exec("sed -n 1p /usr/share/clash/corer_version")
+	else
+		return "0"
+	end
+end
+
 
 function check_status()
 	luci.http.prepare_content("application/json")
@@ -108,7 +113,7 @@ function check_status()
 		new_version = new_version(),
 		new_clashr_core_version = new_clashr_core_version(),
 		clash_core = clash_core(),
-		app = app(),
+		clashr_core = clashr_core(),
 		new_core_version = new_core_version()
 		
 
@@ -121,9 +126,9 @@ function action_status()
 		clash = is_running(),
 		localip = localip(),
 		dash_port = dash_port(),
-		app = app(),
 		current_version = current_version(),
 		clash_core = clash_core(),
+		clashr_core = clashr_core(),
 		dash_pass = dash_pass(),
 		e_mode = e_mode()
 

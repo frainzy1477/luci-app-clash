@@ -1,4 +1,4 @@
- 
+
 INSTALL = install
 PREFIX  = /usr/bin
 

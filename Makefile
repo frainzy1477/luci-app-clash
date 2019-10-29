@@ -1,9 +1,10 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.2.4
+PKG_VERSION:=1.2.5
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
+
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -62,6 +63,10 @@ if [ -f /usr/share/clash/new_core_version ]; then
 	rm -rf /usr/share/clash/new_core_version 2>/dev/null
 fi
 
+if [ -f /usr/share/clash/new_clashr_core_version ]; then
+	rm -rf /usr/share/clash/new_clashr_core_version 2>/dev/null
+fi
+
 if [ -f /usr/share/clash/new_luci_version ]; then
 	rm -rf /usr/share/clash/new_luci_version 2>/dev/null
 fi
@@ -104,6 +109,10 @@ fi
  
 if [  -f /usr/share/clash/config/custom/config.bak ];then
 	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml 2>/dev/null
+fi
+
+if [ "$(-f "/etc/clash/clash" || -f "/etc/clash/clashr")" ] && [ -f "/etc/init.d/clash" ]; then
+	/etc/init.d/clash disabled 2>/dev/null
 fi
 
 endef
@@ -158,10 +167,10 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_BIN) ./root/usr/share/clash/yac/* $(1)/usr/share/clash/yac/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.170828c7fe0d9a5948a7.css $(1)/usr/share/clash/dashboard/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.529ab1b714459e504fa4.css $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/img/33343e6117c37aaef8886179007ba6b5.png $(1)/usr/share/clash/dashboard/img/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.170828c7fe0d9a5948a7.min.js $(1)/usr/share/clash/dashboard/js/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.170828c7fe0d9a5948a7.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.529ab1b714459e504fa4.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.529ab1b714459e504fa4.min.js $(1)/usr/share/clash/dashboard/js/
         
 	$(INSTALL_DATA) ./luasrc/clash.lua $(1)/usr/lib/lua/luci/
 	$(INSTALL_DATA) ./luasrc/controller/*.lua $(1)/usr/lib/lua/luci/controller/

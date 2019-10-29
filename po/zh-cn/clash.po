@@ -1,3 +1,5 @@
+msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
+msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
 
 msgid "Obfs"
 msgstr "混淆"
@@ -524,8 +526,8 @@ msgstr "选择从哪个配置文件读取自定义节点"
 msgid "All Servers"
 msgstr "所有节点"
 
-msgid "clash"
-msgstr "下载clash"
+msgid "Core"
+msgstr "内核"
 
-msgid "clashr"
-msgstr "下载clashr"
+msgid "Select core, clashr support ssr while clash does not."
+msgstr "选择内核clash不支持ssr, clashr支持ssr"

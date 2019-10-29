@@ -5,6 +5,7 @@ STOP=15
 
 
 CLASH="/etc/clash/clash"
+CLASHR="/usr/bin/clash"
 CLASH_CONFIG="/etc/clash"
 CRON_FILE="/etc/crontabs/root"
 CONFIG_YAML="/etc/clash/config.yaml"
@@ -13,8 +14,10 @@ CONFIG_YAML_OLD="/etc/clash/config.yml"
 CONFIG_YAML_SUB="/usr/share/clash/config/sub/config.yaml"
 CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
 CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
-
-
+CUSLIST="/tmp/dnsmasq.d/custom_list.conf"
+CUSLITT="/tmp/dnsmasq.clash"
+CUSLISTV="/var/dnsmasq.d/custom_list.conf"
+CUSLITTV="/var/dnsmasq.clash"
 
 revert_dns() {
 #=========================================================================================================================== 
@@ -26,6 +29,7 @@ revert_dns() {
 	uci set dhcp.@dnsmasq[0].noresolv=0
 	uci delete dhcp.@dnsmasq[0].cachesize
 	uci commit dhcp
+	rm -rf $CUSLIST $CUSLITT  $CUSLISTV $CUSLITTV 2>/dev/null
 #=========================================================================================================================== 	
 }
 
@@ -244,7 +248,7 @@ if pidof clash >/dev/null; then
 fi
 
 enable=$(uci get clash.config.enable 2>/dev/null)
-
+core=$(uci get clash.config.core 2>/dev/null)
 lan=$(uci get clash.config.proxylan 2>/dev/null)
 lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 
@@ -255,14 +259,14 @@ yml_sub >/dev/null 2>&1
 
 select_config >/dev/null 2>&1
 
-if [ ! -f /etc/clash/clash ]; then
+if [ ! -f /etc/clash/clash ] && [ ! -f /etc/clash/clashr ]; then
 	if [ $lang == "en" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S") - /etc/clash/clash not found, from "https://github.com/frainzy1477/clash/releases" , download and install clash ipk  " >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S") - clash/clashr core not found,  download and install clash/clashr ipk  " >> /tmp/clash.log
 	elif [ $lang == "zh_cn" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到 /etc/clash/clash 请，从"https://github.com/frainzy1477/clash/releases" , 下载然后安装Clash ipk" >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到clash/clashr内核,请下载然后安装clash/clashr ipk" >> /tmp/clash.log
 	fi
 else
-if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] && [ -f /etc/clash/clash ]; then
+if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
 
 	
 	if [ $lan ]; then
@@ -277,7 +281,11 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 
 	yml_dns_change >/dev/null 2>&1
 	
-    nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &	
+        if [ $core -eq 1 ];then
+        nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &	
+	elif [ $core -eq 2 ];then
+        nohup $CLASHR -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &
+	fi
 	
 	ln -s /usr/share/clash/yac /www/clash
 	  		
