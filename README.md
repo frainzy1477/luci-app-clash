@@ -8,25 +8,26 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.6">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.1.6-blue.svg">
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.5">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.2.5-blue.svg">
   </a>
   
   </p>
-  
+
   
  ## Usage
 
-- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.15.5) .
+- Download and install clash ipk for openwrt [Download Clash ipk](https://github.com/frainzy1477/clash/releases/tag/v0.16.2) .
 
-- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.1.6)
+- Download and install clashr ipk for openwrt [Download Clashr ipk](https://github.com/frainzy1477/clashr/releases/tag/v0.16.2) .
+
+- Also Download and install luci for clash ipk  [Download Luci for Clash ipk](https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.2.5)
 
 - cd /tmp
 
-- opkg install clash_0.15.5_x86_64.ipk
+- opkg install luci-app-clash_1.2.5-1_all.ipk
 
-- opkg install luci-app-clash_1.1.6-1_all.ipk
-
+- opkg install luci-app-clash_1.2.5-2_all.ipk
 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
@@ -34,8 +35,8 @@
 
 
 ## Features
-- Support sspanel Server subscription
-- Support Manually config upload (config.yaml)
+
+- Support Manually config upload (config.yaml / config.yml)
 - GeoIP Database Update
 - Iptables udp redirect
 - IP Query / Website Access Check
@@ -43,12 +44,16 @@
 - Bypass Lan IP(Client IP) that can't go through Proxy
 - DNS Forwarding
 - Ping Custom proxy servers
+- Create v2ray & ssr clash config from subscription url
+- Create Custom Clash Config
+
 
 ## Dependency
 
 - bash
 - coreutils
 - coreutils-nohup
+- coreutils-base64
 - ipset
 - iptables
 - luci
@@ -75,4 +80,3 @@ IP Query / Website Access Check based on  knowledge from  [@SukkaW - MyIP](https
 [Clash Dashboard](https://github.com/Dreamacro/clash-dashboard)
 
 [Yet Another Clash Dashboard](https://github.com/haishanh/yacd)
-

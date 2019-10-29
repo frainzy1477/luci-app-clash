@@ -1,3 +1,5 @@
+
+
 experimental:
   ignore-resolve-fail: true
 
@@ -11,18 +13,18 @@ experimental:
 dns:
  enable: true
  listen: 0.0.0.0:5300
- enhanced-mode: fake-ip
- fake-ip-range: 198.18.0.1/24
+ enhanced-mode: redir-host
  nameserver: 
   - 119.29.29.29 
   - 114.114.114.114    
   - tls://dns.rubyfish.cn:853
   - https://dns.google/dns-query
   - https://1.1.1.1/dns-query
-#fallback:
-# - tcp://1.1.1.1
-# - tcp://8.8.8.8
-#fallback-filter:
-#  geoip: true
-#  ipcidr:
-#    - 240.0.0.0/4 
+fallback:
+  - tls://dns.rubyfish.cn:853
+  - tcp://1.1.1.1
+  - tcp://8.8.8.8
+fallback-filter:
+  geoip: true
+  ipcidr:
+    - 240.0.0.0/4 

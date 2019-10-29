@@ -37,7 +37,7 @@ o.title = translate("Apply Custom List")
 o.inputtitle = translate("Apply Custom List")
 o.inputstyle = "apply"
 o.write = function()
-  uci:commit("clash")
+  m.uci:commit("clash")
   --SYS.call("sh /usr/share/clash/list.sh 2>&1 &")
   if luci.sys.call("pidof clash >/dev/null") == 0 then
    SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
@@ -56,6 +56,5 @@ end
 sev.write = function(self, section, value)
 	NXFS.writefile(conffile, value:gsub("\r\n", "\n"))
 end
-
 
 return m

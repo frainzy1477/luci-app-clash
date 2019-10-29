@@ -17,7 +17,7 @@ s.addremove=false
 md = s:option(Flag, "proxylan", translate("Proxy Lan IP"))
 md.default = 1
 md.rmempty = false
-md.description = translate("Only selected IPs will be proxied if enabled. fake-ip mode not supportted")
+md.description = translate("Only selected IPs will be proxied if enabled. fake-ip mode not supported")
 md:depends("rejectlan", 0)
 
 
@@ -50,7 +50,7 @@ end
 md = s:option(Flag, "rejectlan", translate("Bypass Lan IP"))
 md.default = 1
 md.rmempty = false
-md.description = translate("Selected IPs will not be proxied if enabled. fake-ip mode not supportted")
+md.description = translate("Selected IPs will not be proxied if enabled. fake-ip mode not supported")
 md:depends("proxylan", 0)
 
 
@@ -66,12 +66,14 @@ o:depends("rejectlan", 1)
 
 
 
+
+
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
 o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
-  uci:commit("clash")
+  m.uci:commit("clash")
   if luci.sys.call("pidof clash >/dev/null") == 0 then
   SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
   end

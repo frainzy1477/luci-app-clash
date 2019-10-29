@@ -2,14 +2,15 @@ config clash 'config'
 	option redir_port '7892'
 	option http_port '7890'
 	option socks_port '7891'
-	option mode '0'
+	option mode '1'
 	option enable '0'
-	option dash_port '9191'
+	option dash_port '9090'
 	option dash_pass '123456'
 	option auto_update '0'	
 	option auto_update_time '0'
 	option level 'info'
 	option proxylan '0'
+	option core '1'
 	option allow_lan 'true'
 	option bind_addr '*'
 	option rejectlan '0'
@@ -17,63 +18,51 @@ config clash 'config'
 	option subcri 'clash'
 	option cus_list '1'
 	option custom_dns '114.114.114.114'
-	option v2ray 'https://tgbot.lbyczf.com/v2rayn2clash?url='
-	option surge 'https://tgbot.lbyczf.com/surge2clash?url='
 	option cusrule '0'
-	option cus_servers '1'
 	option config_type 'sub'
+	option loadservers 'sub'
 	
 
 config groups
-	option name 'AdBlock'
-	option old_name 'AdBlock'
-	option old_name_cfg 'AdBlock'
+	option old_name '❌AdBlock'
+	option old_name_cfg '❌AdBlock'
 	option type 'select'
 	list other_group 'REJECT'
+	option name '❌AdBlock'
 
 config groups
-	option name 'AsianTV'
-	option old_name 'AsianTV'
-	option old_name_cfg 'AsianTV'
+	option old_name '🖥️AsianTV'
+	option old_name_cfg '🖥️AsianTV'
 	option type 'select'
+	option name '🖥️AsianTV'
 	list other_group 'DIRECT'
-	list other_group 'Proxy'
+	list other_group '🔑Proxy'
 
 config groups
-	option old_name 'GlobalTV'
-	option old_name_cfg 'GlobalTV'
+	option old_name '📺GlobalTV'
+	option old_name_cfg '📺GlobalTV'
 	option type 'select'
-	option name 'GlobalTV'
-	list other_group 'Proxy'
-	list other_group 'DIRECT'	
+	option name '📺GlobalTV'
+	list other_group 'ALL'
 
 config groups
 	option type 'select'
-	option name 'Proxy'
-	list other_group 'LoadBalance'
-	list other_group 'UrlTest'
-
+	option name '🔑Proxy'
+	list other_group 'ALL'
+	list other_group '⚙️LoadBalance'
+	list other_group '✈️UrlTest'
 
 config groups
-	option old_name 'UrlTest'
-	option old_name_cfg 'UrlTest'
+	option old_name '✈️UrlTest'
+	option old_name_cfg '✈️UrlTest'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option type 'url-test'
 	option test_interval '600'
-	option name 'UrlTest'
+	option name '✈️UrlTest'
 
 config groups
 	option type 'load-balance'
-	option name 'LoadBalance'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '300'
-
-
-
-
-
-
-
-
-
+	option name '⚙️LoadBalance'
 

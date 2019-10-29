@@ -41,7 +41,6 @@ o.description = translate("NB: press ENTER to create a blank line at the end of 
 o:depends("mode", 1)
 
 
-
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
 o.inputtitle = translate("Save & Apply")
@@ -60,6 +59,7 @@ else
   	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "dns"))
 end
 end
+
 
 return m
 

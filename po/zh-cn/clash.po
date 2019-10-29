@@ -1,3 +1,21 @@
+msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
+msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
+
+msgid "Obfs"
+msgstr "混淆"
+
+msgid "Obfs Param"
+msgstr "混淆参数"
+
+msgid "Protocol"
+msgstr "协议"
+
+msgid "Protocol Param"
+msgstr "协议参数"
+
+msgid "Servers"
+msgstr "服务器"
+
 msgid "Custom List DNS"
 msgstr "自定义列表DNS"
 
@@ -58,8 +76,8 @@ msgstr "启用"
 msgid "Subcription Type"
 msgstr "服务器订阅类型"
 
-msgid "Select Subcription Type, enter only your subcription url without https://tgbot.lbyczf.com/*?"
-msgstr "选择服务器订阅类型,输入服务器订阅不要带https://tgbot.lbyczf.com/*?"
+msgid "Select Subcription Type"
+msgstr "选择服务器订阅类型"
 
 msgid "disabled"
 msgstr "停用"
@@ -142,7 +160,7 @@ msgstr "在DHCP和DNS设置自定义DNS转发"
 msgid "Proxy Lan IP"
 msgstr "走代理的局域网IP"
 
-msgid "Only selected IPs will be proxied if enabled. fake-ip mode not supportted"
+msgid "Only selected IPs will be proxied if enabled. fake-ip mode not supported"
 msgstr "如果启用，仅选择IP只走代理,不支持fake-ip模式"
 
 msgid "Proxy Lan List"
@@ -154,7 +172,7 @@ msgstr "选择IP只走代理"
 msgid "Bypass Lan IP"
 msgstr "不走代理的局域网IP"
 
-msgid "Selected IPs will not be proxied if enabled. fake-ip mode not supportted"
+msgid "Selected IPs will not be proxied if enabled. fake-ip mode not supported"
 msgstr "如果启用，仅选择IP只不走代理,不支持fake-ip模式"
 
 msgid "Bypass Lan List"
@@ -284,7 +302,7 @@ msgid "Upload Config"
 msgstr "上传配置"
 
 msgid "NB: Only upload file with name config.yml or config.yaml"
-msgstr "注意：仅上载名为config.yml或config.yaml的文件"
+msgstr "注意：上载config.yml或config.yaml的文件"
 
 msgid "Subcription Url"
 msgstr "订阅URL"
@@ -304,11 +322,17 @@ msgstr "使用中的配置"
 msgid "Server Subscription Address"
 msgstr "服务器订阅地址"
 
+msgid "Clash Subscription Address"
+msgstr "Clash订阅地址"
+
+msgid "V2/SSR Subscription Address"
+msgstr "V2/SSR订阅地址"
+
 msgid "Changes to config file must be made from source"
 msgstr "必须从源文件更改配置文件"
 
 msgid "Servers"
-msgstr "自定义节点"
+msgstr "订阅&服务器"
 
 msgid "Enable to create custom config.yaml. Note that this will overide any configuration you already have"
 msgstr "启用以创建自定义config.yaml。注意，这会覆盖/etc/clash/config.yaml"
@@ -331,6 +355,9 @@ msgstr "执行此操作以生成新配置"
 msgid "Delete Severs"
 msgstr "清空节点"
 
+msgid "Load Servers"
+msgstr "读取节点"
+
 msgid "Type"
 msgstr "节点类型"
 
@@ -341,7 +368,7 @@ msgid "Server Address"
 msgstr "服务器地址"
 
 msgid "Server Port"
-msgstr "服务器端口"
+msgstr "端口"
 
 msgid "Edit Server"
 msgstr "编辑服务器配置"
@@ -477,3 +504,31 @@ msgstr "删除策略组"
 
 msgid "Perform this action to delete all policy groups"
 msgstr "执行此操作以删除所有策略组"
+
+msgid "Upload Config"
+msgstr "上传配置文件"
+
+msgid "Upload"
+msgstr "上传"
+
+msgid "File saved to"
+msgstr "文件已成功上传到"
+
+msgid "upload file error."
+msgstr "文件上传失败"
+
+msgid "Load Config From"
+msgstr "从哪读取自定义节点"
+
+msgid "Select from which configuration custom server should be loaded from"
+msgstr "选择从哪个配置文件读取自定义节点"
+
+msgid "All Servers"
+msgstr "所有节点"
+
+msgid "Core"
+msgstr "内核"
+
+msgid "Select core, clashr support ssr while clash does not."
+msgstr "选择内核clash不支持ssr, clashr支持ssr"
+
