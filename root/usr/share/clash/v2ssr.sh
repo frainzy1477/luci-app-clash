@@ -622,9 +622,11 @@ servers_set()
       fi
    fi
    
-   if [ "$obfs_vmess" = "websocket" ] && [ "$type" = "vmess" ]; then
+   if [ "$obfs_vmess" = "none" ] && [ "$type" = "vmess" ]; then
+      	obfs_vmesss=""
+   elif [ "$obfs_vmess" != "none" ] && [ "$type" = "vmess" ]; then 
       	obfs_vmesss=", network: ws"
-   fi   
+   fi  
    
 
    
@@ -632,11 +634,13 @@ servers_set()
       custom=", ws-headers: { Host: $custom }"
    fi
    
-   if [ "$tls" = "true" ] && [ "$type" = "vmess" ]; then
+   if [ ! "$tls" ] && [ "$type" = "vmess" ]; then
+       tlss=""
+   elif [ "$tls" ] && [ "$type" = "vmess" ]; then
       tlss=", tls: $tls"
-   elif [ "$tls" = "true" ] && [ "$type" = "http" ]; then
+   elif [ "$tls" ] && [ "$type" = "http" ]; then
 	  tls_hs=", tls: $tls" 
-   elif [ "$tls" = "true" ] && [ "$type" = "socks5" ]; then
+   elif [ "$tls" ] && [ "$type" = "socks5" ]; then
 	  tls_hs=", tls: $tls"	  
    fi
    

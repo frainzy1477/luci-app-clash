@@ -91,7 +91,7 @@ o:depends("subcri", 'clash')
 
 o = s:option(DynamicList, "subscribe_url")
 o.title = translate("Subcription Url")
-o.description = translate("V2/SSR Subscription Address")
+o.description = translate("V2/SSR Subscription Address, Only input your subscription address without any api conversion url")
 o.rmempty = true
 o:depends("subcri", 'v2ssr2clash')
 
@@ -103,7 +103,7 @@ o.inputstyle = "reload"
 o.write = function()
   kr.uci:commit("clash")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
-  SYS.call("sleep 1")
+  SYS.call("sleep 2")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
 o:depends("subcri", 'clash')
@@ -114,9 +114,10 @@ o.inputtitle = translate("Update")
 o.description = translate("Update Config")
 o.inputstyle = "reload"
 o.write = function()
+  kr.uci:delete_all("clash", "servers", function(s) return true end)
   kr.uci:commit("clash")
   luci.sys.call("bash /usr/share/clash/v2ssr.sh >>/tmp/clash.log 2>&1 &")
-    SYS.call("sleep 1")
+    SYS.call("sleep 2")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
 o:depends("subcri", 'v2ssr2clash')
