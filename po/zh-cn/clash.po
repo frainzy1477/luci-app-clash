@@ -1,3 +1,5 @@
+msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
+msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
 
 msgid "Obfs"
 msgstr "混淆"
@@ -323,8 +325,8 @@ msgstr "服务器订阅地址"
 msgid "Clash Subscription Address"
 msgstr "Clash订阅地址"
 
-msgid "V2/SSR Subscription Address"
-msgstr "V2/SSR订阅地址"
+msgid "V2/SSR Subscription Address, Only input your subscription address without any api conversion url"
+msgstr "V2/SSR订阅地址,输入订阅地址不要添加api转换地址"
 
 msgid "Changes to config file must be made from source"
 msgstr "必须从源文件更改配置文件"
@@ -529,4 +531,3 @@ msgstr "内核"
 
 msgid "Select core, clashr support ssr while clash does not."
 msgstr "选择内核clash不支持ssr, clashr支持ssr"
-
