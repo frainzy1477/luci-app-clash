@@ -103,7 +103,7 @@ o.inputstyle = "reload"
 o.write = function()
   kr.uci:commit("clash")
   SYS.call("sh /usr/share/clash/clash.sh >>/tmp/clash.log 2>&1 &")
-  SYS.call("sleep 2")
+  SYS.call("sleep 1")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
 o:depends("subcri", 'clash')
@@ -117,7 +117,7 @@ o.write = function()
   kr.uci:delete_all("clash", "servers", function(s) return true end)
   kr.uci:commit("clash")
   luci.sys.call("bash /usr/share/clash/v2ssr.sh >>/tmp/clash.log 2>&1 &")
-    SYS.call("sleep 2")
+    SYS.call("sleep 1")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "log"))
 end
 o:depends("subcri", 'v2ssr2clash')
