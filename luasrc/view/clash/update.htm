@@ -91,7 +91,7 @@ function core_check(btn)
     XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
    if(status.new_core_version > status.clash_core)
    {
-	core_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-apply" value="<%:Download%>" onclick="return download_core(this)"/>' + '&nbsp;&nbsp;&nbsp;' + '<input type="button" class="cbi-button cbi-button-reset" value="<%:Return%>" onclick="return core_return(this)"/></center>';
+	core_butt.innerHTML ='<center><b><font color=green><%:New Version :%>'+status.new_core_version+'</font> </b></center>';
 	 }
 	
    else if(status.new_core_version==0)
@@ -114,7 +114,7 @@ function clashr_core_check(btn)
     XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
    if(status.new_clashr_core_version > status.clashr_core)
    {
-	corer_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-apply" value="<%:Download%>" onclick="return download_clashr_core(this)"/>' + '&nbsp;&nbsp;&nbsp;' + '<input type="button" class="cbi-button cbi-button-reset" value="<%:Return%>" onclick="return clashr_core_return(this)"/></center>';
+	corer_butt.innerHTML ='<center><b><font color=green><%:New Version :%>'+status.new_core_version+'</font> </b></center>';
 	 }
 	
    else if(status.new_clashr_core_version==0)
@@ -142,29 +142,6 @@ XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_statu
  });
 }
 
-function download_core(btn)
-{
-XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-        btn.disabled = true;
-        btn.value    = '<%:Download%>';
-        url='https://github.com/frainzy1477/clash/releases/tag/v'+status.new_core_version+'';
-        window.open(url);
-        btn.disabled = false;
-        return false;
- });
-}
-
-function download_clashr_core(btn)
-{
-XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-        btn.disabled = true;
-        btn.value    = '<%:Download%>';
-        url='https://github.com/frainzy1477/clashr/releases/tag/v'+status.new_clashr_core_version+'';
-        window.open(url);
-        btn.disabled = false;
-        return false;
- });
-}
 
 function check_return(btn)
 {

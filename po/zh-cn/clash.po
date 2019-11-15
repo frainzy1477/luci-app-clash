@@ -1,6 +1,15 @@
 msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
 msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
 
+msgid "New Version :"
+msgstr "新版本："
+
+msgid "Core Type"
+msgstr "内核类型"
+
+msgid "Select Core"
+msgstr "选择内核"
+
 msgid "Obfs"
 msgstr "混淆"
 

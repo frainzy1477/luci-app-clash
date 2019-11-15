@@ -261,15 +261,15 @@ select_config >/dev/null 2>&1
 
 if [ $core -eq 1 ] && [ ! -f /etc/clash/clash ]; then
 	if [ $lang == "en" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S") - clash core not found,  download and install clash ipk  " >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S") - clash core not found,  download and install clash from update page  " >> /tmp/clash.log
 	elif [ $lang == "zh_cn" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到clash内核,请下载然后安装clash ipk" >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到/etc/clash/clash,请从更新页下载clash内核" >> /tmp/clash.log
 	fi
 elif  [ $core -eq 2 ] && [ ! -f /usr/bin/clash ]; then
 	if [ $lang == "en" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S") - clashr core not found,  download and install clashr ipk  " >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S") - clashr core not found in /usr/bin/clash  download and install clashr from update page  " >> /tmp/clash.log
 	elif [ $lang == "zh_cn" ];then
-		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到clashr内核,请下载然后安装clashr ipk" >> /tmp/clash.log
+		echo "$(date "+%Y-%m-%d %H:%M:%S")  - 找不到/usr/bin/clash,请从更新页下载clashr内核" >> /tmp/clash.log
 	fi
 else
 if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
