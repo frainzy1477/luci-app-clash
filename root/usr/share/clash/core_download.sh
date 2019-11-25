@@ -137,9 +137,9 @@ update(){
 	    fi  
 }
 
-if [ "$VER" != "$CLASHVER" ]; then
+if [ $CORETYPE -eq 1 ] && [ $VER != $CLASHVER ]; then
 	    update
-elif [ "$VERR" != "$CLASHRVER" ]; then
+elif [ $CORETYPE -eq 2 ] && [ $VERR != $CLASHRVER ]; then
 	    update		
 else
 	 if [ $lang == "zh_cn" ];then
