@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.2.9
+PKG_VERSION:=1.3.0
 PKG_RELEASE:=2
 PKG_MAINTAINER:=frainzy1477
 
@@ -111,8 +111,9 @@ if [  -f /usr/share/clash/config/custom/config.bak ];then
 	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml 2>/dev/null
 fi
 
-if [ "$(-f "/etc/clash/clash" || -f "/etc/clash/clashr")" ] && [ -f "/etc/init.d/clash" ]; then
-	/etc/init.d/clash disabled 2>/dev/null
+if [ -f "/etc/init.d/clash" ]; then
+	/etc/init.d/clash disable 2>/dev/null
+	/etc/init.d/clash stop 2>/dev/null
 fi
 
 endef

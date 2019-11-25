@@ -60,7 +60,7 @@ let IP = {
                     throw error;
                 }),
           parseIPIpip: (ip, elID) => {
-                IP.get(`https://api.skk.moe/network/parseIp/ipip/${ip}`, 'json')
+                IP.get(`https://api.skk.moe/network/parseIp/ipip/v3/${ip}`, 'json')
                     .then(resp => {
                         let x = '';
                         for (let i of resp.data) {
@@ -78,7 +78,7 @@ let IP = {
                         document.getElementById('d-ip').innerHTML = `${data[0]} ${data[1]}`;
                     });
             },
-	getIpifyIP: () => {
+	   getIpifyIP: () => {
                 IP.get(`https://api.ipify.org/?format=json&z=${random}`, 'json')
                 .then(resp => {
                 document.getElementById('ip-ipify').innerHTML = resp.data.ip;
@@ -87,16 +87,16 @@ let IP = {
                 .then(ip => {
                 IP.parseIPIpip(ip, 'ip-ipify-ipip');
                 })
-            },
+            }
 
-	 /* IPSB: (data) => {
-                document.getElementById('ip-gb').innerHTML = data.address;
-				if ( "${data.province}" == " " || "${data.city}" == " " ){
-                document.getElementById('ip-geo').innerHTML = `${data.country} ${data.isp.name}`				
-				}else{
-				document.getElementById('ip-geo').innerHTML = `${data.country} ${data.province} ${data.city} ${data.isp.name}`
-				}
-         },*/
+	   /*getIpsbIP: (data) => {
+                document.getElementById('ip-ipify').innerHTML = data.address;
+		if ( "${data.province}" == " " || "${data.city}" == " " ){
+                document.getElementById('ip-ipify-ipip').innerHTML = `${data.country} ${data.isp.name}`				
+		}else{
+		document.getElementById('ip-ipify-ipip').innerHTML = `${data.country} ${data.province} ${data.city} ${data.isp.name}`
+		}
+	   },*/
 				
            
 }
@@ -134,7 +134,7 @@ var HTTP = {
 	         var sbip = document.getElementsByTagName('HEAD').item(0);
 	         var sbipScript= document.createElement("script");
 	         sbipScript.async = "async";
-	         sbipScript.src='https://api.skk.moe/network/parseIp/ipip';
+	         sbipScript.src='https://api.skk.moe/network/parseIp/ipip/v3';
 	         sbip.appendChild( sbipScript);
 
 

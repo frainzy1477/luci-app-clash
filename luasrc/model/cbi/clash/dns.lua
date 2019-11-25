@@ -19,6 +19,9 @@ y:value("1", translate("enabled"))
 y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings")
 
 
+o = s:option(Value, "fake_ip_range", translate("Fake IP Range"))
+o.description = translate("Ip range will be added to iptables")
+
 
 md = s:option(Flag, "mode", translate("Custom DNS"))
 md.default = 1
