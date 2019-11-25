@@ -190,7 +190,7 @@ rules(){
 
 		iptables -t nat -A PREROUTING -p tcp -j clash_tcp
 		
-		iptables -t nat -A OUTPUT -p tcp -d 198.18.0.1/24 -j REDIRECT --to-ports $redir_port			
+		iptables -t nat -A OUTPUT -p tcp -d 198.18.0.1/16 -j REDIRECT --to-ports $redir_port			
 		
 	
 		
