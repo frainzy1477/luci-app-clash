@@ -1,6 +1,9 @@
 msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
 msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
 
+msgid "Cache DNS"
+msgstr "缓存的DNS"
+
 msgid "Fake IP Rang"
 msgstr "假IP范围"
 

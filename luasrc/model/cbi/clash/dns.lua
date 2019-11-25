@@ -18,6 +18,11 @@ y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings")
 
+y = s:option(ListValue, "dnscache", translate("Cache DNS"))
+y:value("0", translate("disabled"))
+y:value("1", translate("enabled"))
+y.description = translate("Cache DNS")
+
 o = s:option(Value, "fake_ip_range", translate("Fake IP Range"))
 o.description = translate("Ip range will be added to iptables")
 
