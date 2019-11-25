@@ -4,7 +4,7 @@ msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策�
 msgid "Cache DNS"
 msgstr "缓存的DNS"
 
-msgid "Fake IP Rang"
+msgid "Fake IP Range"
 msgstr "假IP范围"
 
 msgid "Ip range will be added to iptables"
