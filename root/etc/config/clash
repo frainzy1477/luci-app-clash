@@ -21,7 +21,7 @@ config clash 'config'
 	option cusrule '0'
 	option config_type 'sub'
 	option loadservers 'sub'
-	
+	option fake_ip_range '198.18.0.0/16'	
 
 config groups
 	option old_name '❌AdBlock'

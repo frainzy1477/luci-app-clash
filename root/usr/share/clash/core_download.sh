@@ -7,20 +7,20 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 
 
 if pidof clash >/dev/null; then
-	uci set clash.config.enable="0" && uci commit clash
-	/etc/init.d/clash stop >/dev/null
-	sleep 2		
+		uci set clash.config.enable="0" && uci commit clash
+		/etc/init.d/clash stop >/dev/null
+		sleep 2		
 fi	
   
 if [ $CORETYPE -eq 2 ];then
 if [ -f /usr/share/clash/download_corer_version ];then
 rm -rf /usr/share/clash/download_corer_version
 fi
-if [ $lang == "zh_cn" ];then
+	if [ $lang == "zh_cn" ];then
          echo "${LOGTIME} - 客户端已禁用,检查更新..." >$LOG_FILE
-elif [ $lang == "en" ];then
+		elif [ $lang == "en" ];then
          echo "${LOGTIME} - Client already disabled, Checking for update.." >>$LOG_FILE
-fi
+        fi
 new_clashr_core_version=`wget -qO- "https://github.com/frainzy1477/clashrdev/tags"| grep "/frainzy1477/clashrdev/releases/tag/"| head -n 1| awk -F "/tag/v" '{print $2}'| sed 's/\">//'`
 if [ $new_clashr_core_version ]; then
 echo $new_clashr_core_version > /usr/share/clash/download_corer_version 2>&1 & >/dev/null
@@ -37,11 +37,11 @@ if [ $CORETYPE -eq 1 ];then
 if [ -f /usr/share/clash/download_core_version ];then
 rm -rf /usr/share/clash/download_core_version
 fi
-if [ $lang == "zh_cn" ];then
-      echo "${LOGTIME} - 客户端已禁用,检查更新..." >$LOG_FILE
-elif [ $lang == "en" ];then
-      echo "${LOGTIME} - Client already disabled, Checking for update.." >>$LOG_FILE
-fi
+	    if [ $lang == "zh_cn" ];then
+         echo "${LOGTIME} - 客户端已禁用,检查更新..." >$LOG_FILE
+		elif [ $lang == "en" ];then
+         echo "${LOGTIME} - Client already disabled, Checking for update.." >>$LOG_FILE
+        fi
 new_clashr_core_version=`wget -qO- "https://github.com/frainzy1477/clash_dev/tags"| grep "/frainzy1477/clash_dev/releases/tag/"| head -n 1| awk -F "/tag/v" '{print $2}'| sed 's/\">//'`
 if [ $new_clashr_core_version ]; then
 echo $new_clashr_core_version > /usr/share/clash/download_core_version 2>&1 & >/dev/null
@@ -66,15 +66,17 @@ else
 VERR=0
 fi
 
+sleep 2
+
 update(){
-	    if [ -f /tmp/clash.gz ];then
+		if [ -f /tmp/clash.gz ];then
 		rm -rf /tmp/clash.gz >/dev/null 2>&1
-	    fi
-	    if [ $lang == "zh_cn" ];then
+		fi
+		if [ $lang == "zh_cn" ];then
 			 echo "${LOGTIME} - 开始下载 Clash 内核..." >$LOG_FILE
-	    elif [ $lang == "en" ];then
+		elif [ $lang == "en" ];then
 			 echo "${LOGTIME} - Starting Clash Core download" >>$LOG_FILE
-	   fi				
+		fi				
 	   if [ $CORETYPE -eq 1 ];then
 		wget-ssl --no-check-certificate  https://github.com/frainzy1477/clash_dev/releases/download/v"$CLASHVER"/clash-"$MODELTYPE"-v"$CLASHVER".gz -O 2>&1 >1 /tmp/clash.gz
 	   elif [ $CORETYPE -eq 2 ];then 
@@ -82,21 +84,21 @@ update(){
 	   fi
 	   
 	   if [ "$?" -eq "0" ] && [ "$(ls -l /tmp/clash.gz |awk '{print int($5/1024)}')" -ne 0 ]; then
-		    if [ $lang == "zh_cn" ];then
+			if [ $lang == "zh_cn" ];then
 			 echo "${LOGTIME} - 开始解压缩文件" >$LOG_FILE
-		    elif [ $lang == "en" ];then 
+			elif [ $lang == "en" ];then 
 			 echo "${LOGTIME} - Beginning to unzip file" >>$LOG_FILE
-		    fi
+			fi
 		    gunzip /tmp/clash.gz >/dev/null 2>&1\
 		    && rm -rf /tmp/clash.gz >/dev/null 2>&1\
 		    && chmod 755 /tmp/clash\
 		    && chown root:root /tmp/clash 
  
-		    if [ $lang == "zh_cn" ];then
+			if [ $lang == "zh_cn" ];then
 			   echo "${LOGTIME} - 完成下载内核，正在更新..." >$LOG_FILE
-		    elif [ $lang == "en" ];then
+			   elif [ $lang == "en" ];then
 			   echo "${LOGTIME} - Successfully downloaded core, updating now..." >$LOG_FILE
-		    fi
+			fi
 			  
 		    if [ $CORETYPE -eq 1 ];then
 			  rm -rf /etc/clash/clash >/dev/null 2>&1
@@ -135,14 +137,14 @@ update(){
 	    fi  
 }
 
-if [ $VER != $CLASHVER ]; then
-      update
-elif [ $VERR != $CLASHRVER ]; then
-      update		
+if [ "$VER" != "$CLASHVER" ]; then
+	    update
+elif [ "$VERR" != "$CLASHRVER" ]; then
+	    update		
 else
-      if [ $lang == "zh_cn" ];then
-         echo "${LOGTIME} - 在用中是最新的内核！" >$LOG_FILE
-      elif [ $lang == "en" ];then      
-         echo "${LOGTIME} - Currently using latest core" >$LOG_FILE
-      fi 
+	 if [ $lang == "zh_cn" ];then
+      echo "${LOGTIME} - 在用中是最新的内核！" >$LOG_FILE
+	 elif [ $lang == "en" ];then      
+       echo "${LOGTIME} - Currently using latest core" >$LOG_FILE
+	 fi 
 fi
