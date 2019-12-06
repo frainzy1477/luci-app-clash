@@ -41,6 +41,7 @@ local apply = luci.http.formvalue("cbi.apply")
 if apply then
     m.uci:commit("clash")
     os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
+    luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
 return m

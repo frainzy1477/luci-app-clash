@@ -46,6 +46,7 @@ o:depends("type", "fallback")
 o:depends("type", "load-balance")
 
 o = s:option(DynamicList, "other_group", translate("Other Group"))
+o.rmempty = false
 o.description = translate("Proxy Groups Must Exist In Rule")
 o:value("ALL", translate("All Servers"))
 uci:foreach("clash", "servers",
@@ -62,8 +63,7 @@ uci:foreach("clash", "groups",
 		end)
 o:value("DIRECT")
 o:value("REJECT")
-o:depends("type", "select")
-o.rmempty = true
+
 
 
 local apply = luci.http.formvalue("cbi.apply")

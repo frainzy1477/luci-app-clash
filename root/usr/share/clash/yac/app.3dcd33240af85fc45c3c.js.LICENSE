@@ -1,4 +1,4 @@
-/** @license React v0.16.2
+/** @license React v0.0.0-experimental-b53ea6ca0
  * scheduler.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -12,15 +12,6 @@
   Based on code that is Copyright 2013-2015, Facebook, Inc.
   All rights reserved.
 */
-
-/** @license React v16.9.0
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 
 /*
 object-assign
@@ -55,7 +46,7 @@ object-assign
  * http://api.jqueryui.com/category/ui-core/
  */
 
-/** @license React v16.10.2
+/** @license React v16.11.0
  * react-is.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.

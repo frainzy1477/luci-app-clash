@@ -3,7 +3,7 @@ CONFIG_YAML="/etc/clash/config.yaml"
 CONFIG_YAML_SUB="/usr/share/clash/config/sub/config.yaml"
 CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
 CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
-
+lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 
 if [ $config_type == "sub" ];then 
@@ -22,6 +22,12 @@ fi
 
 if [  -f $CONFIG_YAML ];then
 
+
+ 	if [ $lang == "en" ];then
+		echo "Checking DNS Settings.. " >$REAL_LOG 
+	elif [ $lang == "zh_cn" ];then
+    	 echo "DNS设置检查..." >$REAL_LOG
+	fi
 if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
 #===========================================================================================================================
 	uci set clash.config.mode="1" && uci commit clash
@@ -41,8 +47,13 @@ fi
 		log_level=$(uci get clash.config.level 2>/dev/null)
 		subtype=$(uci get clash.config.subcri 2>/dev/null)
 				
-if [ $mode -eq 1 ];  then	
-		
+if [ $mode -eq 1 ];  then
+	
+ 	if [ $lang == "en" ];then
+		echo "Setting Up Ports and Password.. " >$REAL_LOG 
+	elif [ $lang == "zh_cn" ];then
+    	 echo "设置端口,DNS和密码..." >$REAL_LOG
+	fi		
 		sed -i "/Proxy:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
                 sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
 		sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
@@ -78,7 +89,11 @@ if [ $mode -eq 1 ];  then
 		sed -i "/dns:/i\     " $CONFIG_YAML 2>/dev/null
 		fi	
 else
-
+ 	if [ $lang == "en" ];then
+		echo "Setting Up Ports and Password.. " >$REAL_LOG 
+	elif [ $lang == "zh_cn" ];then
+    	 echo "设置端口,DNS和密码..." >$REAL_LOG
+	fi	
 		if [ ! -z "$(grep "^experimental:" /etc/clash/config.yaml)" ]; then
 		sed -i "/experimental:/i\     " $CONFIG_YAML 2>/dev/null
 		sed -i "/     /a\#clash-openwrt" $CONFIG_YAML 2>/dev/null
