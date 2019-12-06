@@ -56,13 +56,6 @@ s = kr:section(TypedSection, "clash", translate("Subscription Config"))
 s.anonymous = true
 
 
-o = s:option(ListValue, "loadservers", translate("Load Config From"))
-o.default = sub
-o:value("sub", translate("Subscription Config"))
-o:value("upl", translate("Upload Config"))
-o.description = translate("Select from which configuration custom server should be loaded from")
-
-
 o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.description = translate("Auto Update Server subscription")
 
@@ -123,10 +116,10 @@ end
 o:depends("subcri", 'v2ssr2clash')
 
 
-k = Map(clash)
-k.reset = false
-k.submit = false
-sul =k:section(TypedSection, "clash", translate("Upload Config"))
+kk = Map(clash)
+kk.reset = false
+kk.submit = false
+sul =kk:section(TypedSection, "clash", translate("Upload Config"))
 sul.anonymous = true
 sul.addremove=false
 o = sul:option(FileUpload, "")
@@ -179,33 +172,50 @@ end
 
 
 
+krk = Map(clash)
+s = krk:section(TypedSection, "clash", translate("Load Config"))
+s.anonymous = true
 
+o = s:option(ListValue, "loadfrom", translate("Load From"))
+o:value("sub", translate("Subscription Config"))
+o:value("upl", translate("Upload Config"))
+o.description = translate("Select from which configuration custom server should be loaded from")
+
+o = s:option(ListValue, "loadservers", translate("Load Servers"))
+o:value("1", translate("enabled"))
+o:value("0", translate("disabled"))
+o.description = translate("Enabbe to read servers")
+
+
+o = s:option(ListValue, "loadgroups", translate("Load Groups"))
+o:value("1", translate("enabled"))
+o:value("0", translate("disabled"))
+o.description = translate("Enabbe to read policy group")
 
 
 local t = {
     {Load_Config, Creat_Config, Delete_Severs, Delete_Groups}
 }
 
-b = k:section(Table, t)
+b = krk:section(Table, t)
 
 o = b:option(Button,"Load_Config")
-o.inputtitle = translate("Load Servers")
+o.inputtitle = translate("Load Config")
 o.inputstyle = "apply"
 o.write = function()
-  k.uci:delete_all("clash", "servers", function(s) return true end)
-  k.uci:commit("clash")
-  luci.sys.call("sh /usr/share/clash/get_proxy.sh >/dev/null 2>&1 &")
+ krk.uci:commit("clash")
+ luci.sys.call("sh /usr/share/clash/load.sh >/dev/null 2>&1 &")
  SYS.call("sleep 2")
- luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+ luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
 o = b:option(Button,"Creat_Config")
 o.inputtitle = translate("Create Config")
 o.inputstyle = "apply"
 o.write = function()
-  k.uci:commit("clash")
+  krk.uci:commit("clash")
   luci.sys.call("sh /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
 
@@ -213,8 +223,8 @@ o = b:option(Button,"Delete_Severs")
 o.inputtitle = translate("Delete Severs")
 o.inputstyle = "reset"
 o.write = function()
-  k.uci:delete_all("clash", "servers", function(s) return true end)
-  k.uci:commit("clash")
+  krk.uci:delete_all("clash", "servers", function(s) return true end)
+  krk.uci:commit("clash")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
@@ -222,14 +232,14 @@ o = b:option(Button,"Delete_Groups")
 o.inputtitle = translate("Delete Groups")
 o.inputstyle = "reset"
 o.write = function()
-  k.uci:delete_all("clash", "groups", function(s) return true end)
-  k.uci:commit("clash")
+  krk.uci:delete_all("clash", "groups", function(s) return true end)
+  krk.uci:commit("clash")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
 end
 
 
 
-s = k:section(TypedSection, "servers", translate("Proxies"))
+s = krk:section(TypedSection, "servers", translate("Proxies"))
 s.anonymous = true
 s.addremove = true
 s.sortable = true
@@ -268,7 +278,7 @@ o = s:option(DummyValue, "server" ,translate("Latency"))
 o.template="clash/ping"
 o.width="10%"
 
-r = k:section(TypedSection, "groups", translate("Policy Groups"))
+r = krk:section(TypedSection, "groups", translate("Policy Groups"))
 r.anonymous = true
 r.addremove = true
 r.sortable = true
@@ -294,7 +304,7 @@ function o.cfgvalue(...)
 end
 
 
-k:append(Template("clash/list"))
+krk:append(Template("clash/list"))
 
-return kr, k, m
+return kr, kk, krk, m
 

@@ -28,8 +28,10 @@ function index()
 	entry({"admin","services","clash","status"},call("action_status")).leaf=true
 	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 130).leaf = true
 	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 140).leaf = true
+
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 	entry({"admin", "services", "clash", "ping"}, call("act_ping")).leaf=true
+	entry({"admin", "services", "clash", "readlog"},call("action_read")).leaf=true
 
 	
 end
@@ -102,6 +104,16 @@ local function clashr_core()
 	end
 end
 
+local function readlog()
+	return luci.sys.exec("sed -n '$p' /tmp/clash_real.log 2>/dev/null")
+end
+
+function action_read()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+			readlog = readlog();
+	})
+end
 
 function check_status()
 	luci.http.prepare_content("application/json")
@@ -142,6 +154,5 @@ function act_ping()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(e)
 end
-
 
 

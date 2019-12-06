@@ -373,8 +373,26 @@ msgstr "执行此操作以生成新配置"
 msgid "Delete Severs"
 msgstr "清空节点"
 
+msgid "Load Config"
+msgstr "读取配置"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Load Groups"
+msgstr "读取代理组"
+
 msgid "Load Servers"
 msgstr "读取节点"
+
+msgid "Load From"
+msgstr "从读取"
+
+msgid "Enabbe to read servers"
+msgstr "启用读取节点"
+
+msgid "Enabbe to read policy group"
+msgstr "启用读取代理组"
 
 msgid "Type"
 msgstr "节点类型"

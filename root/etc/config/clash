@@ -20,7 +20,9 @@ config clash 'config'
 	option custom_dns '114.114.114.114'
 	option cusrule '0'
 	option config_type 'sub'
-	option loadservers 'sub'
+	option loadfrom 'sub'
+	option loadservers '1'
+	option loadgroups '1'
 	option fake_ip_range '198.18.0.0/16'
 	option dnscache '0'	
 
@@ -54,16 +56,20 @@ config groups
 	list other_group '✈️UrlTest'
 
 config groups
+	option name '✈️UrlTest'
 	option old_name '✈️UrlTest'
 	option old_name_cfg '✈️UrlTest'
-	option test_url 'http://www.gstatic.com/generate_204'
 	option type 'url-test'
+	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '600'
-	option name '✈️UrlTest'
+	list other_group 'ALL'
 
 config groups
+	option name '⚙️LoadBalance'
+	option old_name '⚙️LoadBalance'
+	option old_name_cfg '⚙️LoadBalance'
 	option type 'load-balance'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '300'
-	option name '⚙️LoadBalance'
+	option test_interval '600'
+	list other_group 'ALL'
 

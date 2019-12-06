@@ -41,6 +41,7 @@ o.write = function()
   m.uci:set("clash", "config", "enable", 1)
   luci.sys.call("uci commit clash")
   SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
 
@@ -53,6 +54,7 @@ o.write = function()
   m.uci:set("clash", "config", "enable", 0)
   luci.sys.call("uci commit clash")
   SYS.call("/etc/init.d/clash stop >/dev/null 2>&1 &")
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
 
