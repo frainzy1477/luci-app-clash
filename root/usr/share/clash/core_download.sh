@@ -6,11 +6,7 @@ CORETYPE=$(uci get clash.config.core 2>/dev/null)
 lang=$(uci get luci.main.lang 2>/dev/null)
 
 
-if pidof clash >/dev/null; then
-		uci set clash.config.enable="0" && uci commit clash
-		/etc/init.d/clash stop >/dev/null
-		sleep 2		
-fi	
+	
   
 if [ $CORETYPE -eq 2 ];then
 if [ -f /usr/share/clash/download_corer_version ];then
@@ -134,7 +130,10 @@ update(){
 		  echo "${LOGTIME} - Core Update Error" >>$LOG_FILE
 		  fi
 		  rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
-	    fi  
+	    fi 
+		if pidof clash >/dev/null; then
+		/etc/init.d/clash restart >/dev/null		
+		fi	    
 }
 
 if [ $CORETYPE -eq 1 ] && [ $VER != $CLASHVER ]; then
