@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.3.1
+PKG_VERSION:=1.3.2
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -38,6 +38,7 @@ endef
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
+mkdir -p /usr/share/clashbackup 2>/dev/null
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
 	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null
@@ -63,6 +64,7 @@ if [ -f /usr/share/clash/new_core_version ]; then
 	rm -rf /usr/share/clash/new_core_version 2>/dev/null
 fi
 
+
 if [ -f /usr/share/clash/new_clashr_core_version ]; then
 	rm -rf /usr/share/clash/new_clashr_core_version 2>/dev/null
 fi
@@ -76,15 +78,15 @@ if [  -d /usr/share/clash/web ]; then
 fi
 
 if [  -f /usr/share/clash/config/sub/config.yaml ] && [ "$(ls -l /usr/share/clash/config/sub/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/sub/config.yaml /usr/share/clash/config/sub/config.bak 2>/dev/null
+	mv /usr/share/clash/config/sub/config.yaml /usr/share/clashbackup/config.bak1 2>/dev/null
 fi
 
 if [  -f /usr/share/clash/config/upload/config.yaml ] && [ "$(ls -l /usr/share/clash/config/upload/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/upload/config.yaml /usr/share/clash/config/upload/config.bak 2>/dev/null
+	mv /usr/share/clash/config/upload/config.yaml /usr/share/clashbackup/config.bak2 2>/dev/null
 fi
  
 if [  -f /usr/share/clash/config/custom/config.yaml ] && [ "$(ls -l /usr/share/clash/config/custom/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
-	mv /usr/share/clash/config/custom/config.yaml /usr/share/clash/config/custom/config.bak 2>/dev/null
+	mv /usr/share/clash/config/custom/config.yaml /usr/share/clashbackup/config.bak3 2>/dev/null
 fi
 
 
@@ -99,22 +101,24 @@ if [ -f "/etc/config/clash.bak" ]; then
 	mv /etc/config/clash.bak /etc/config/clash 2>/dev/null
 fi
 
-if [  -f /usr/share/clash/config/sub/config.bak ];then
-	mv /usr/share/clash/config/sub/config.bak /usr/share/clash/config/sub/config.yaml 2>/dev/null
+if [  -f /usr/share/clashbackup/config.bak1 ];then
+	mv /usr/share/clashbackup/config.bak1 /usr/share/clash/config/sub/config.yaml 2>/dev/null
 fi
 
-if [  -f /usr/share/clash/config/upload/config.bak ];then
-	mv /usr/share/clash/config/upload/config.bak /usr/share/clash/config/upload/config.yaml 2>/dev/null
+if [  -f /usr/share/clashbackup/config.bak2 ];then
+	mv /usr/share/clashbackup/config.bak2 /usr/share/clash/config/upload/config.yaml 2>/dev/null
 fi
  
-if [  -f /usr/share/clash/config/custom/config.bak ];then
-	mv /usr/share/clash/config/custom/config.bak /usr/share/clash/config/custom/config.yaml 2>/dev/null
+if [  -f /usr/share/clashbackup/config.bak3 ];then
+	mv /usr/share/clashbackup/config.bak3 /usr/share/clash/config/custom/config.yaml 2>/dev/null
 fi
 
 if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
+	echo "Clash for OpenWRT" >/tmp/clash_real.log 2>/dev/null
 fi
 
+rm -rf /usr/share/clashbackup 2>/dev/null
 endef
 
 define Package/$(PKG_NAME)/install
@@ -137,6 +141,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/share/clash/config/sub
 	$(INSTALL_DIR) $(1)/usr/share/clash/config/upload
 	$(INSTALL_DIR) $(1)/usr/share/clash/config/custom
+	$(INSTALL_DIR) $(1)/usr/share/clash/v2ssr
 	
 	$(INSTALL_BIN) ./root/usr/share/clash/config/upload/config.yaml $(1)/usr/share/clash/config/upload/
 	$(INSTALL_BIN) ./root/usr/share/clash/config/custom/config.yaml $(1)/usr/share/clash/config/custom/
@@ -146,12 +151,15 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
 	$(INSTALL_CONF) ./root/etc/clash/* $(1)/etc/clash/
 
+	$(INSTALL_BIN) ./root/usr/share/clash/v2ssr/v2ssr_custom_rule.yaml $(1)/usr/share/clash/v2ssr/
+	$(INSTALL_BIN) ./root/usr/share/clash/v2ssr/policygroup $(1)/usr/share/clash/v2ssr/
+
 	$(INSTALL_BIN) ./root/usr/share/clash/clash-watchdog.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/ipdb.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/load.sh $(1)/usr/share/clash/
-	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/core_download.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/custom_rule.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/luci_version $(1)/usr/share/clash/
@@ -184,4 +192,3 @@ endef
 
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
-

@@ -3,10 +3,7 @@ LOGTIME=$(date "+%Y-%m-%d %H:%M:%S")
 LOG_FILE="/tmp/clash.log"
 MODELTYPE=$(uci get clash.config.download_core 2>/dev/null)
 CORETYPE=$(uci get clash.config.core 2>/dev/null)
-lang=$(uci get luci.main.lang 2>/dev/null)
-
-
-	
+lang=$(uci get luci.main.lang 2>/dev/null)	
   
 if [ $CORETYPE -eq 2 ];then
 if [ -f /usr/share/clash/download_corer_version ];then
@@ -131,9 +128,10 @@ update(){
 		  fi
 		  rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
 	    fi 
+
 		if pidof clash >/dev/null; then
 		/etc/init.d/clash restart >/dev/null		
-		fi	    
+		fi 
 }
 
 if [ $CORETYPE -eq 1 ] && [ $VER != $CLASHVER ]; then

@@ -82,7 +82,7 @@ local obfs_ssr_list = {
 }
 
 m = Map(clash, translate("Edit Server"))
-m.redirect = luci.dispatcher.build_url("admin/services/clash/servers")
+m.redirect = luci.dispatcher.build_url("admin/services/clash/create")
 if m.uci:get(clash, sid) ~= "servers" then
 	luci.http.redirect(m.redirect) 
 	return
@@ -122,7 +122,7 @@ o:depends("type", "ss")
 o:depends("type", "ssr")
 
 o = s:option(Value, "psk", translate("Psk"))
-o.rmempty = true
+o.rmempty = false
 o:depends("type", "snell")
 
 o = s:option(ListValue, "cipher", translate("Encrypt Method"))

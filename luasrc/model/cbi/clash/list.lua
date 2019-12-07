@@ -41,8 +41,8 @@ o.write = function()
   --SYS.call("sh /usr/share/clash/list.sh 2>&1 &")
   if luci.sys.call("pidof clash >/dev/null") == 0 then
    SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+    luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
    end
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "settings" , "list"))
 end
 
 
