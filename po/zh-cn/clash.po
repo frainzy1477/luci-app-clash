@@ -349,14 +349,12 @@ msgstr "V2/SSR订阅地址,输入订阅地址不要添加api转换地址"
 msgid "Changes to config file must be made from source"
 msgstr "必须从源文件更改配置文件"
 
-msgid "Servers"
-msgstr "订阅&服务器"
+msgid "Import Config"
+msgstr "导入配置"
 
 msgid "Enable to create custom config.yaml. Note that this will overide any configuration you already have"
 msgstr "启用以创建自定义config.yaml。注意，这会覆盖/etc/clash/config.yaml"
 
-msgid "Create Config"
-msgstr "创建配置"
 
 msgid "host"
 msgstr "主机名"
@@ -388,10 +386,10 @@ msgstr "读取节点"
 msgid "Load From"
 msgstr "从读取"
 
-msgid "Enabbe to read servers"
+msgid "Enable to read servers"
 msgstr "启用读取节点"
 
-msgid "Enabbe to read policy group"
+msgid "Enable to read policy group"
 msgstr "启用读取代理组"
 
 msgid "Type"
@@ -467,7 +465,7 @@ msgid "Select Configuration type"
 msgstr "选择配置类型”"
 
 msgid "Create Config"
-msgstr "一键生成配置文件"
+msgstr "创建配置"
 
 msgid "Create Config By One-Click Only Need Proxys"
 msgstr "一键生成配置文件功能只需要配置服务器节点信息"

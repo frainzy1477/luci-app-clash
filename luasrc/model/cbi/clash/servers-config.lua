@@ -82,7 +82,7 @@ local obfs_ssr_list = {
 }
 
 m = Map(clash, translate("Edit Server"))
-m.redirect = luci.dispatcher.build_url("admin/services/clash/servers")
+m.redirect = luci.dispatcher.build_url("admin/services/clash/create")
 if m.uci:get(clash, sid) ~= "servers" then
 	luci.http.redirect(m.redirect) 
 	return

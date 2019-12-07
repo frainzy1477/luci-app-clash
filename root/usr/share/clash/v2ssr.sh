@@ -1,4 +1,27 @@
 #!/bin/sh /etc/rc.common
+
+
+	
+	#awk '/config groups/,/##end/{print}' /etc/config/clashh 2>/dev/null >/usr/share/clash/v2ssr/config.bak 2>&1
+
+	
+	CFG_FILE="/etc/config/clash"
+	
+    while [[ "$( grep -c "config groups" $CFG_FILE )" -ne 0 ]] 
+    do
+      uci delete clash.@groups[0] && uci commit clash >/dev/null 2>&1
+    done
+   
+    while [[ "$( grep -c "config servers" $CFG_FILE )" -ne 0 ]] 
+    do
+      uci delete clash.@servers[0] && uci commit clash >/dev/null 2>&1
+    done  
+
+	cat /etc/config/clash  /usr/share/clash/v2ssr/policygroup >/usr/share/clash/v2ssr/clash 2>/dev/null
+	
+	mv /usr/share/clash/v2ssr/clash /etc/config/clash 2>/dev/null
+	
+	
 # functions for parsing and generating json
 
 _json_get_var() {
@@ -315,6 +338,9 @@ json_for_each_item() {
 	esac
 }
 
+REAL_LOG="/tmp/clash_real.log"
+lang=$(uci get luci.main.lang 2>/dev/null)
+
 urlsafe_b64decode() {
     local d="====" data=$(echo $1 | sed 's/_/\//g; s/-/+/g')
     local mod4=$((${#data}%4))
@@ -369,7 +395,12 @@ subscribe_url=($(uci get $name.config.subscribe_url))
 
 for ((o=0;o<${#subscribe_url[@]};o++))
 do
-
+		  	if [ $lang == "en" ];then
+				echo "Downloading Configuration..." >$REAL_LOG
+			elif [ $lang == "zh_cn" ];then
+				echo "正在下载配置..." >$REAL_LOG
+			fi
+			sleep 2
 	subscribe_data=$(wget-ssl --user-agent="User-Agent: Mozilla" --no-check-certificate -T 3 -O- ${subscribe_url[o]})
 	curl_code=$?
 	if [ ! $curl_code -eq 0 ];then
@@ -377,6 +408,21 @@ do
 		subscribe_data=$(wget-ssl --no-check-certificate -T 3 -O- ${subscribe_url[o]})
 		curl_code=$?
 	fi
+	
+			if [ $lang == "en" ];then
+				echo "Downloading Configuration Completed" >$REAL_LOG
+			elif [ $lang == "zh_cn" ];then
+				echo "下载配置完成" >$REAL_LOG
+			fi
+			sleep 2
+			
+ 	if [ $lang == "en" ];then
+		echo "Strating to Create Custom Config.. " >$REAL_LOG 
+	elif [ $lang == "zh_cn" ];then
+    	 echo "开始创建自定义配置..." >$REAL_LOG
+	fi
+	sleep 2
+	
 	if [ $curl_code -eq 0 ];then
 		ssr_url=($(echo $subscribe_data | base64 -d | sed 's/\r//g')) 
 		subscribe_max=$(echo ${ssr_url[0]} | grep -i MAX= | awk -F = '{print $2}')
@@ -489,12 +535,22 @@ do
 				uci_name_tmp=$(uci add $name servers)
 				subscribe_n=$(($subscribe_n + 1))
 			fi
+
+		  	if [ $lang == "en" ];then
+				echo "Decoding 【$ssr_type】-【$ssr_remarks】 Proxy..." >$REAL_LOG
+			elif [ $lang == "zh_cn" ];then
+				echo "正在解码 【$ssr_type】-【$ssr_remarks】 代理..." >$REAL_LOG
+			fi
+			
+			sleep 1
+			
 			Server_Update $uci_name_tmp
 			subscribe_x=$subscribe_x$ssr_hashkey" "
 			ssrtype=$(echo $ssr_type | tr '[a-z]' '[A-Z]')
 			
 			
 		done
+
 		for ((x=0;x<${#temp_host_o[@]};x++)) 
 		do
 			if [ -z "$(echo "$subscribe_x" | grep -w ${temp_host_o[x]})" ]; then
@@ -512,25 +568,38 @@ echo "0" >/www/lock.htm
 
 . /lib/functions.sh
 
+
+
 config_type=$(uci get clash.config.config_type 2>/dev/null)
-if [ $config_type == "sub" ];then 
-if pidof clash >/dev/null; then
-/etc/init.d/clash stop 2>/dev/null
-fi
-fi
 
 
 
-CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
+	
+CONFIG_YAML_RULE="/usr/share/clash/v2ssr/v2ssr_custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
 CONFIG_YAML="/usr/share/clash/config/sub/config.yaml"
 TEMP_FILE="/tmp/dns_temp.yaml"
 Proxy_Group="/tmp/Proxy_Group"
 GROUP_FILE="/tmp/groups.yaml"
 CONFIG_FILE="/tmp/y_groups"
-CFG_FILE="/etc/config/clash"
 DNS_FILE="/usr/share/clash/dns.yaml" 
 
+
+   servcount=$( grep -c "config servers" $CFG_FILE 2>/dev/null)
+   gcount=$( grep -c "config groups" $CFG_FILE 2>/dev/null)
+   if [ $servcount -eq 0 ] || [ $gcount -eq 0 ];then
+ 	if [ $lang == "en" ];then
+		echo "No servers or group. Aborting Operation .." >$REAL_LOG 
+		sleep 2
+			echo "Clash for OpenWRT" >$REAL_LOG
+	elif [ $lang == "zh_cn" ];then
+    	 echo "找不到代理或策略组。中止操作..." >$REAL_LOG
+		 sleep 2
+			echo "Clash for OpenWRT" >$REAL_LOG
+	fi
+	exit 0	
+   fi
+   sleep 2
 servers_set()
 {
    local section="$1"
@@ -739,7 +808,7 @@ yml_groups_set()
 
   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$type" == "fallback" ]; then
       echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
-      cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
+      #cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
    else
       echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
    fi       
@@ -829,10 +898,28 @@ sed -i "/Rule:/i\     " $CONFIG_YAML 2>/dev/null
 
 rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
 
+
+ 	if [ $lang == "en" ];then
+		echo "Completed Creating Custom Config.. " >$REAL_LOG 
+		 sleep 2
+			echo "Clash for OpenWRT" >$REAL_LOG
+	elif [ $lang == "zh_cn" ];then
+    	 echo "创建自定义配置完成..." >$REAL_LOG
+		  sleep 2
+			echo "Clash for OpenWRT" >$REAL_LOG
+	fi
+	
+
+
+mv /usr/share/clash/v2ssr/config.bak /etc/config/clash 2>/dev/null
+sleep 1
+
 if [ $config_type == "sub" ];then 
+if pidof clash >/dev/null; then
 /etc/init.d/clash restart 2>/dev/null
 fi
 fi
+	
+fi
 rm -rf $SERVER_FILE
-
 

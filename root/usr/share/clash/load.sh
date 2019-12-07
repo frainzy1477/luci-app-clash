@@ -28,7 +28,7 @@ fi
     	echo "Start updating policy group config" >$REAL_LOG
 	fi
 
-
+	sleep 3
 if [ -f "$load" ]; then
 	 [ ! -z "$(grep "^ \{0,\}'Proxy':" "$load")" ] || [ ! -z "$(grep '^ \{0,\}"Proxy":' "$load")" ] && {
 	    sed -i "/^ \{0,\}\'Proxy\':/c\Proxy:" "$load"
@@ -93,10 +93,27 @@ fi
 
 awk '/Proxy Group:/,/Rule:/{print}' $load 2>/dev/null |sed 's/\"//g' 2>/dev/null |sed "s/\'//g" 2>/dev/null |sed 's/\t/ /g' 2>/dev/null >/tmp/yaml_group.yaml 2>&1
 
+
+if [ -f /tmp/yaml_group.yaml ] && [ "$(ls -l /tmp/yaml_group.yaml | awk '{print int($5/1024)}')" -eq 0 ];then
+
+ 	if [ $lang == "en" ];then
+		echo "No policy group found. Aborting Operation .." >$REAL_LOG 
+		sleep 5
+		echo "Clash for OpenWRT" >$REAL_LOG
+	elif [ $lang == "zh_cn" ];then
+    	 	echo "找不到策略组。中止操作..." >$REAL_LOG
+		 sleep 5
+		echo "Clash for OpenWRT" >$REAL_LOG
+	fi
+	exit 0	
+else
    while [[ "$( grep -c "config groups" $CFG_FILE )" -ne 0 ]] 
    do
       uci delete clash.@groups[0] && uci commit clash >/dev/null 2>&1
    done
+
+fi
+
 
 
 
@@ -425,4 +442,5 @@ uci commit clash
 rm -rf /tmp/servers.yaml 2>/dev/null
 rm -rf /tmp/yaml_proxy.yaml 2>/dev/null
 fi
+
 /usr/share/clash/proxy.sh 2>/dev/null

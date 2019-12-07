@@ -4,19 +4,14 @@
 REAL_LOG="/tmp/clash_real.log"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
-if [ $config_type == "cus" ];then 
 
-if pidof clash >/dev/null; then
-/etc/init.d/clash stop 2>/dev/null
-fi
-fi
 
  	if [ $lang == "en" ];then
 		echo "Strating to Create Custom Config.. " >$REAL_LOG 
 	elif [ $lang == "zh_cn" ];then
     	 echo "开始创建自定义配置..." >$REAL_LOG
 	fi
-
+sleep 2
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
 CONFIG_YAML="/usr/share/clash/config/custom/config.yaml"
@@ -42,7 +37,7 @@ DNS_FILE="/usr/share/clash/dns.yaml"
 	fi
 	exit 0	
    fi
-
+sleep 2
 servers_set()
 {
    local section="$1"
@@ -430,9 +425,15 @@ rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
 			echo "Clash for OpenWRT" >$REAL_LOG
 	fi
 	
+
+
+
 if [ $config_type == "cus" ];then 
+if pidof clash >/dev/null; then
 /etc/init.d/clash restart 2>/dev/null
 fi
+fi
+
 fi
 rm -rf $SERVER_FILE
 

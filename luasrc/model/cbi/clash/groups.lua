@@ -9,7 +9,7 @@ local sid = arg[1]
 
 m = Map(clash, translate("Edit Group"))
 --m.pageaction = false
-m.redirect = luci.dispatcher.build_url("admin/services/clash/servers")
+m.redirect = luci.dispatcher.build_url("admin/services/clash/create")
 if m.uci:get(clash, sid) ~= "groups" then
 	luci.http.redirect(m.redirect)
 	return
