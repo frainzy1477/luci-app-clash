@@ -51,7 +51,8 @@ md = s:option(Flag, "rejectlan", translate("Bypass Lan IP"))
 md.default = 1
 md.rmempty = false
 md.description = translate("Selected IPs will not be proxied if enabled. fake-ip mode not supported")
-md:depends("proxylan", 0)
+md:depends("proxylan", 0)    
+
 
 o = s:option(DynamicList, "lan_ips", translate("Bypass Lan List"))
 o.datatype = "ipaddr"

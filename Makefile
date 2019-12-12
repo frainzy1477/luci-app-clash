@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.3.2
+PKG_VERSION:=1.3.4
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -13,7 +13,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
 	TITLE:=LuCI app for clash
-	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
+	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef
@@ -77,15 +77,15 @@ if [  -d /usr/share/clash/web ]; then
 	rm -rf /usr/share/clash/web 2>/dev/null
 fi
 
-if [  -f /usr/share/clash/config/sub/config.yaml ] && [ "$(ls -l /usr/share/clash/config/sub/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+if [  -f /usr/share/clash/config/sub/config.yaml ];then
 	mv /usr/share/clash/config/sub/config.yaml /usr/share/clashbackup/config.bak1 2>/dev/null
 fi
 
-if [  -f /usr/share/clash/config/upload/config.yaml ] && [ "$(ls -l /usr/share/clash/config/upload/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+if [  -f /usr/share/clash/config/upload/config.yaml ];then
 	mv /usr/share/clash/config/upload/config.yaml /usr/share/clashbackup/config.bak2 2>/dev/null
 fi
  
-if [  -f /usr/share/clash/config/custom/config.yaml ] && [ "$(ls -l /usr/share/clash/config/custom/config.yaml | awk '{print int($5/1024)}')" -ne 0 ];then
+if [  -f /usr/share/clash/config/custom/config.yaml ];then
 	mv /usr/share/clash/config/custom/config.yaml /usr/share/clashbackup/config.bak3 2>/dev/null
 fi
 
@@ -115,7 +115,7 @@ fi
 
 if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
-	echo "Clash for OpenWRT" >/tmp/clash_real.log 2>/dev/null
+	echo "Clash for OpenWRT" >/usr/share/clash/clash_real.log 2>/dev/null
 fi
 
 rm -rf /usr/share/clashbackup 2>/dev/null

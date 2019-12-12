@@ -1,6 +1,18 @@
 msgid "Do not edit Policy Group with Group Name Proxy or proxy and or 🔑Proxy and it's other policy group"
 msgstr "不要编辑策略组别名Proxy或proxy或🔑proxy和它的其他策略组"
 
+msgid "Enable Lan DNS"
+msgstr "启用局域网DNS"
+
+msgid "Enabling will set custom DNS Servers for Lan"
+msgstr "启用将为自定义局域网DNS服务器"
+
+msgid "Lan DNS servers"
+msgstr "局域网DNS服务器"
+
+msgid "Set custom DNS Servers for Lan"
+msgstr "设置自定义局域网DNS服务器"
+
 msgid "Cache DNS"
 msgstr "缓存的DNS"
 
@@ -172,8 +184,8 @@ msgstr "检查"
 msgid "DNS Forwarding"
 msgstr "DNS转发"
 
-msgid "Set custom DNS forwarder in DHCP and DNS Settings"
-msgstr "在DHCP和DNS设置自定义DNS转发"
+msgid "Set custom DNS forwarder in DHCP and DNS Settings and forward all dns traffic to clash"
+msgstr "在DHCP和DNS设置自定义DNS转发,转发所有dns流量到clash"
 
 msgid "Proxy Lan IP"
 msgstr "走代理的局域网IP"

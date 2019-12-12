@@ -338,7 +338,7 @@ json_for_each_item() {
 	esac
 }
 
-REAL_LOG="/tmp/clash_real.log"
+REAL_LOG="/usr/share/clash/clash_real.log"
 lang=$(uci get luci.main.lang 2>/dev/null)
 
 urlsafe_b64decode() {
@@ -401,11 +401,11 @@ do
 				echo "正在下载配置..." >$REAL_LOG
 			fi
 			sleep 2
-	subscribe_data=$(wget-ssl --user-agent="User-Agent: Mozilla" --no-check-certificate -T 3 -O- ${subscribe_url[o]})
+	subscribe_data=$(wget --user-agent="User-Agent: Mozilla" --no-check-certificate -T 3 -O- ${subscribe_url[o]})
 	curl_code=$?
 	if [ ! $curl_code -eq 0 ];then
 
-		subscribe_data=$(wget-ssl --no-check-certificate -T 3 -O- ${subscribe_url[o]})
+		subscribe_data=$(wget --no-check-certificate -T 3 -O- ${subscribe_url[o]})
 		curl_code=$?
 	fi
 	
@@ -542,7 +542,6 @@ do
 				echo "正在解码 【$ssr_type】-【$ssr_remarks】 代理..." >$REAL_LOG
 			fi
 			
-			sleep 1
 			
 			Server_Update $uci_name_tmp
 			subscribe_x=$subscribe_x$ssr_hashkey" "

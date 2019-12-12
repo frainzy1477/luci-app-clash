@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 . /lib/functions.sh
 
-REAL_LOG="/tmp/clash_real.log"
+REAL_LOG="/usr/share/clash/clash_real.log"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 
@@ -11,7 +11,7 @@ config_type=$(uci get clash.config.config_type 2>/dev/null)
 	elif [ $lang == "zh_cn" ];then
     	 echo "开始创建自定义配置..." >$REAL_LOG
 	fi
-sleep 2
+	sleep 1
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
 CONFIG_YAML="/usr/share/clash/config/custom/config.yaml"
@@ -29,11 +29,11 @@ DNS_FILE="/usr/share/clash/dns.yaml"
  	if [ $lang == "en" ];then
 		echo "No servers or group. Aborting Operation .." >$REAL_LOG 
 		sleep 2
-			echo "Clash for OpenWRT" >$REAL_LOG
+		echo "Clash for OpenWRT" >$REAL_LOG
 	elif [ $lang == "zh_cn" ];then
     	 echo "找不到代理或策略组。中止操作..." >$REAL_LOG
 		 sleep 2
-			echo "Clash for OpenWRT" >$REAL_LOG
+		echo "Clash for OpenWRT" >$REAL_LOG
 	fi
 	exit 0	
    fi

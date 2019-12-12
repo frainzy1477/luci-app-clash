@@ -15,7 +15,18 @@ s.addremove=false
 y = s:option(ListValue, "dnsforwader", translate("DNS Forwarding"))
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
-y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings")
+y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings and forward all dns traffic to clash")
+
+cdns = s:option(Flag, "culan", translate("Enable Lan DNS"))
+cdns.default = 1
+cdns.description = translate("Enabling will set custom DNS Servers for Lan")
+cdns:depends("dnsforwader", 0)
+
+dns = s:option(DynamicList, "landns", translate("Lan DNS servers"))
+dns.description = translate("Set custom DNS Servers for Lan")
+dns.datatype = "ipaddr"
+dns.cast     = "string"
+dns:depends("culan", 1)
 
 y = s:option(ListValue, "dnscache", translate("Cache DNS"))
 y:value("0", translate("disabled"))

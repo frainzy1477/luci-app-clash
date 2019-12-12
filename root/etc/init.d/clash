@@ -18,7 +18,7 @@ CUSLIST="/tmp/dnsmasq.d/custom_list.conf"
 CUSLITT="/tmp/dnsmasq.clash"
 CUSLISTV="/var/dnsmasq.d/custom_list.conf"
 CUSLITTV="/var/dnsmasq.clash"
-REAL_LOG="/tmp/clash_real.log"
+REAL_LOG="/usr/share/clash/clash_real.log"
 
 revert_dns() {
 #=========================================================================================================================== 
@@ -320,6 +320,7 @@ if pidof clash >/dev/null; then
 	kill $(pidof clash) >/dev/null 2>&1 || kill -9 $(ps | grep clash | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 fi
 
+landns=$(uci get clash.config.landns 2>/dev/null)
 enable=$(uci get clash.config.enable 2>/dev/null)
 core=$(uci get clash.config.core 2>/dev/null)
 lana=$(uci get clash.config.proxylan 2>/dev/null)
@@ -363,13 +364,7 @@ elif  [ $core -eq 2 ] && [ ! -f /usr/bin/clash ]; then
 else
 if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
 
- 	if [ $lang == "en" ];then
-		echo "Setting Up Ports and Password.. " >$REAL_LOG 
-	elif [ $lang == "zh_cn" ];then
-    	 echo "设置端口,DNS和密码..." >$REAL_LOG
-	fi
    	yml_change >/dev/null 2>&1
-	sleep 2
 
 	checktype=$(grep -c "ssr" /etc/clash/config.yaml 2>/dev/null)
 	if [ $checktype -gt 0 ] && [ $core -eq 1 ]; then
@@ -429,6 +424,15 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	fi
 
 
+	if [ ! -z "${landns}" ];then
+		if [ $lang == "en" ];then
+			echo "Setting up Custom lan dns server " >$REAL_LOG 
+		elif [ $lang == "zh_cn" ];then
+			echo "设置自定义lan dns服务器" >$REAL_LOG
+		fi
+		sleep 1
+		uci set network.lan.dns="${landns}" && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
+	fi
 
 
 	yml_dns_change >/dev/null 2>&1
@@ -455,37 +459,35 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	sleep 1
 	
 	ln -s /usr/share/clash/yac /www/clash
-	 		
+	 	
+	
 	if [ $lang == "en" ];then
 		echo "Restarting Firewall rules " >$REAL_LOG 
 	elif [ $lang == "zh_cn" ];then
     	echo "重启防火墙规则" >$REAL_LOG
 	fi	
-	
 	uci commit firewall	
 	/etc/init.d/firewall restart >/dev/null 2>&1
-		sleep 1
-		if [ $lang == "en" ];then
-			echo "Setting up clash iptables rules" >$REAL_LOG 
-		elif [ $lang == "zh_cn" ];then
-			echo "设置 Clash iptables" >$REAL_LOG
-		fi		
-		
-		
+
+	if [ $lang == "en" ];then
+		echo "Setting up clash iptables rules" >$REAL_LOG 
+	elif [ $lang == "zh_cn" ];then
+	echo "设置 Clash iptables" >$REAL_LOG
+	fi		
+				
 	rules >/dev/null 2>&1
-		sleep 1
-	killall -9 dnsmasq >/dev/null 2>&1
 	
 	custom_list >/dev/null 2>&1
 	
 	if [ $lang == "en" ];then
 		echo "Restarting Dnsmasq " >$REAL_LOG 
 	elif [ $lang == "zh_cn" ];then
-    	echo "重启 Dnsmasq 程序" >$REAL_LOG
+    		echo "重启 Dnsmasq 程序" >$REAL_LOG
 	fi
-		
+	killall -9 dnsmasq >/dev/null 2>&1		
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
-		sleep 1
+	sleep 1
+
 	if pidof clash >/dev/null; then
 			add_cron
 			if [ $lang == "en" ];then

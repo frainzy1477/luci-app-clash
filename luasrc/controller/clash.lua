@@ -106,7 +106,7 @@ local function clashr_core()
 end
 
 local function readlog()
-	return luci.sys.exec("sed -n '$p' /tmp/clash_real.log 2>/dev/null")
+	return luci.sys.exec("sed -n '$p' /usr/share/clash/clash_real.log 2>/dev/null")
 end
 
 function action_read()
