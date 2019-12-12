@@ -539,6 +539,7 @@ fi
 
 
 stop(){
+landns=$(uci get clash.config.landns 2>/dev/null)
 lang=$(uci get luci.main.lang 2>/dev/null)
 		  if [ $lang == "en" ];then
 			echo "Stopping Client..." >$REAL_LOG
@@ -589,6 +590,17 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 	  	  	uci commit firewall
 		  	/etc/init.d/firewall restart >/dev/null 2>&1
 		sleep 1	
+		
+			if [ ! -z "${landns}" ];then
+			if [ $lang == "en" ];then
+				echo "Remove Custom lan dns server " >$REAL_LOG 
+			elif [ $lang == "zh_cn" ];then
+				echo "删除自定义lan dns服务器" >$REAL_LOG
+			fi
+			sleep 1
+			uci delete network.lan.dns && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
+		fi	
+		
 		if [ $lang == "en" ];then
 			echo "Restarting Dnsmasq " >$REAL_LOG 
 		elif [ $lang == "zh_cn" ];then
