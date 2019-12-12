@@ -114,7 +114,7 @@ function clashr_core_check(btn)
     XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
    if(status.new_clashr_core_version > status.clashr_core)
    {
-	corer_butt.innerHTML ='<center><b><font color=green><%:New Version :%>'+status.new_core_version+'</font> </b></center>';
+	corer_butt.innerHTML ='<center><b><font color=green><%:New Version :%>'+status.new_clashr_core_version+'</font> </b></center>';
 	 }
 	
    else if(status.new_clashr_core_version==0)
