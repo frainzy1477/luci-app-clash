@@ -577,3 +577,13 @@ msgstr "内核"
 
 msgid "Select core, clashr support ssr while clash does not."
 msgstr "选择内核clash不支持ssr, clashr支持ssr"
+
+msgid "Downloading..."
+msgstr "正在下载。。。"
+
+msgid "Remove Lan DNS"
+msgstr "删除局域网DNS"
+
+msgid "Remove Lan custom DNS Servers when client is disabled"
+msgstr "禁用客户端时删除局域网自定义DNS服务器"
+

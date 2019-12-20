@@ -209,6 +209,7 @@ rules(){
 		lan_ip=$(uci get network.lan.ipaddr 2>/dev/null)
 		lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 		lan=$(uci get clash.config.proxylan 2>/dev/null)
+		ipv6=$(uci get clash.config.ipv6 2>/dev/null)
 		dns_port=$(grep listen: $CONFIG_YAML |awk -F ':' '{print $3}' |tr -cd "[0-9]")
 		redir_port=$(uci get clash.config.redir_port 2>/dev/null)
 		fake_ip_range=$(uci get clash.config.fake_ip_range 2>/dev/null)		
@@ -239,17 +240,25 @@ rules(){
 
 			
 		fi
+		iptables -t nat -A OUTPUT -p tcp -d $fake_ip_range -j REDIRECT --to-ports "${redir_port}"
+		iptables -t nat -A OUTPUT -p udp -d $fake_ip_range -j REDIRECT --to-ports "${redir_port}"
 
 		iptables -t nat -I PREROUTING 1 -p udp --dport 53 -j clash_udp
-		iptables -t nat -A PREROUTING --in-interface br-lan -p tcp -j clash_tcp
-		iptables -t nat -A PREROUTING --in-interface br-lan -p udp -j clash_tcp
 
-		iptables -t nat -A PREROUTING -p tcp -j clash_tcp
-		iptables -t nat -I PREROUTING -p tcp -j clash_tcp
-		
-		iptables -t nat -A OUTPUT -p tcp -d $fake_ip_range -j REDIRECT --to-ports "${redir_port}"			
-		
+		if [ "$(brctl show | grep -o "br-lan" | wc -l)" -gt 0 ];then
+			iptables -t nat -A PREROUTING --in-interface br-lan -p tcp -j clash_tcp
+			iptables -t nat -A PREROUTING --in-interface br-lan -p udp -j clash_tcp
+		elif [ "$(brctl show | grep -o "br-lan" | wc -l)" -lt 1 ];then
+			iptables -t nat -A PREROUTING -p tcp -j clash_tcp
+			iptables -t nat -A PREROUTING -p udp -j clash_tcp
+		fi
 	
+		 if [ -f /usr/sbin/ip6tables ]; then
+		    	ip6tables -t nat -N clash_ipv6
+		    	ip6tables -t nat -A clash_ipv6 -p tcp -j REDIRECT --to-ports "${redir_port}"
+		    	ip6tables -t nat -A PREROUTING --in-interface br-lan -p tcp -j clash_ipv6
+		    	ip6tables -t nat -A PREROUTING --in-interface br-lan -p udp -j clash_ipv6
+		 fi
 		
 #=========================================================================================================================== 
 }	 
@@ -437,6 +446,12 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 
 	yml_dns_change >/dev/null 2>&1
 	
+		if [ "${lang}" == "en" ];then
+			echo "$(date "+%Y-%m-%d %H:%M:%S")  - Starting Client..." >$REAL_LOG 
+		elif [ "${lang}" == "zh_cn" ];then
+			echo "$(date "+%Y-%m-%d %H:%M:%S")  - 启动客户端..." >$REAL_LOG
+		fi
+
         if [ "${core}" -eq 1 ];then
         nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &	
 		
@@ -469,16 +484,17 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	uci commit firewall	
 	/etc/init.d/firewall restart >/dev/null 2>&1
 
+	sleep 1
+
 	if [ "${lang}" == "en" ];then
 		echo "Setting up clash iptables rules" >$REAL_LOG 
 	elif [ "${lang}" == "zh_cn" ];then
 	echo "设置 Clash iptables" >$REAL_LOG
-	fi		
-				
+	fi					
 	rules >/dev/null 2>&1
-	
 	custom_list >/dev/null 2>&1
-	
+	sleep 1
+
 	if [ "${lang}" == "en" ];then
 		echo "Restarting Dnsmasq " >$REAL_LOG 
 	elif [ "${lang}" == "zh_cn" ];then
@@ -539,6 +555,7 @@ fi
 
 
 stop(){
+delandns=$(uci get clash.config.delan 2>/dev/null)
 landns=$(uci get clash.config.landns 2>/dev/null)
 lang=$(uci get luci.main.lang 2>/dev/null)
 		  if [ "${lang}" == "en" ];then
@@ -561,11 +578,16 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		iptables -t nat -D PREROUTING -p tcp -j clash_tcp >/dev/null 2>&1
 		iptables -t nat -D PREROUTING -p udp -j clash_udp >/dev/null 2>&1
 		
+		ip6tables -t nat -F clash_ipv6 >/dev/null 2>&1
+		ip6tables -t nat -X clash_ipv6 >/dev/null 2>&1
+		ip6tables -t nat -D PREROUTING -p tcp -j clash_ipv6 >/dev/null 2>&1
+		ip6tables -t nat -D PREROUTING -p udp -j clash_ipv6 >/dev/null 2>&1
+
 
 		ipset -! flush clash_lan_ac >/dev/null 2>&1
 		ipset -! flush clash_lan >/dev/null 2>&1
 
-		sleep 2
+		sleep 1
 
 		kill -9 $(ps | grep clash-watchdog.sh | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		
@@ -587,20 +609,19 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		elif [ "${lang}" == "zh_cn" ];then
 	    	echo "重启防火墙规则" >$REAL_LOG
 		fi		
-	  	  	uci commit firewall
-		  	/etc/init.d/firewall restart >/dev/null 2>&1
+	  	uci commit firewall
+		/etc/init.d/firewall restart >/dev/null 2>&1
 		sleep 1	
 
-		if [ ! -z "${landns}" ];then
-			if [ "${lang}" == "en" ];then
-				echo "Remove Custom lan dns server " >$REAL_LOG 
+
+		if [ ! -z "${delandns}" ];then
+		if [ "${lang}" == "en" ];then
+				echo "Removing Custom lan dns server " >$REAL_LOG 
 			elif [ "${lang}" == "zh_cn" ];then
 				echo "删除自定义lan dns服务器" >$REAL_LOG
-			fi
-			sleep 1
-			uci delete network.lan.dns && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
 		fi
-
+		uci delete network.lan.dns && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
+		fi
 
 		if [ "${lang}" == "en" ];then
 			echo "Restarting Dnsmasq " >$REAL_LOG 
@@ -624,6 +645,8 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		rm -rf /www/clash >/dev/null 2>&1
 		
 	 	rm -rf /tmp/clash.log >/dev/null 2>&1
+
+		echo "0" > /usr/share/clash/logstatus_check >/dev/null 2>&1
 		
 		if [ "${lang}" == "en" ];then
 			echo "$(date "+%Y-%m-%d %H:%M:%S") - CLIENT IS DISABLED " >> /tmp/clash.log
@@ -649,7 +672,7 @@ restart(){
 			stop  >/dev/null 2>&1
 			start >/dev/null 2>&1
 		else
-		    start >/dev/null 2>&1
+		        start >/dev/null 2>&1
 		fi	
 
 #=========================================================================================================================== 

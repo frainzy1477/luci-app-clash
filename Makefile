@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.3.5
+PKG_VERSION:=1.3.6
 PKG_RELEASE:=1
 PKG_MAINTAINER:=frainzy1477
 
@@ -115,10 +115,11 @@ fi
 
 if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
-	echo "Clash for OpenWRT" >/usr/share/clash/clash_real.log 2>/dev/null
 fi
+	echo "Clash for OpenWRT" >/usr/share/clash/clash_real.log 2>/dev/null
+	echo "0" > /usr/share/clash/logstatus_check 2>/dev/null
+	echo "" > /tmp/clash.log 2>/dev/null
 
-rm -rf /usr/share/clashbackup 2>/dev/null
 endef
 
 define Package/$(PKG_NAME)/install
@@ -127,6 +128,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/clash
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
 	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_DIR) $(1)/www
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DIR) $(1)/etc/clash
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
@@ -143,6 +145,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/share/clash/config/custom
 	$(INSTALL_DIR) $(1)/usr/share/clash/v2ssr
 	
+	$(INSTALL_BIN) ./root/usr/share/clash/jquery-1.11.1.min.js $(1)/www/
 	$(INSTALL_BIN) ./root/usr/share/clash/config/upload/config.yaml $(1)/usr/share/clash/config/upload/
 	$(INSTALL_BIN) ./root/usr/share/clash/config/custom/config.yaml $(1)/usr/share/clash/config/custom/
 	$(INSTALL_BIN) ./root/usr/share/clash/config/sub/config.yaml $(1)/usr/share/clash/config/sub/
@@ -176,10 +179,10 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_BIN) ./root/usr/share/clash/yac/* $(1)/usr/share/clash/yac/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.5627832cb814ad89ff0a.css $(1)/usr/share/clash/dashboard/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.aee3e3fc24cd46786598.css $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/img/33343e6117c37aaef8886179007ba6b5.png $(1)/usr/share/clash/dashboard/img/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.5627832cb814ad89ff0a.min.js $(1)/usr/share/clash/dashboard/js/
-	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.5627832cb814ad89ff0a.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/1.bundle.aee3e3fc24cd46786598.min.js $(1)/usr/share/clash/dashboard/js/
+	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/js/bundle.aee3e3fc24cd46786598.min.js $(1)/usr/share/clash/dashboard/js/
         
 	$(INSTALL_DATA) ./luasrc/clash.lua $(1)/usr/lib/lua/luci/
 	$(INSTALL_DATA) ./luasrc/controller/*.lua $(1)/usr/lib/lua/luci/controller/

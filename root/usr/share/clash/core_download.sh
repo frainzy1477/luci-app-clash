@@ -1,26 +1,35 @@
 #!/bin/sh
 LOGTIME=$(date "+%Y-%m-%d %H:%M:%S")
-LOG_FILE="/tmp/clash.log"
+LOG_FILE="/tmp/clash_update.log"
 MODELTYPE=$(uci get clash.config.download_core 2>/dev/null)
 CORETYPE=$(uci get clash.config.core 2>/dev/null)
-lang=$(uci get luci.main.lang 2>/dev/null)	
-  
+lang=$(uci get luci.main.lang 2>/dev/null)
+if [ -f /tmp/clash.tar.gz ];then
+rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
+fi
+ echo '' >/tmp/clash_update.log 2>/dev/null
+ 
+if [ /usr/share/clash/core_down_complete ];then 
+  rm -rf /usr/share/clash/core_down_complete 2>/dev/null
+fi
+
 if [ $CORETYPE -eq 2 ];then
 if [ -f /usr/share/clash/download_corer_version ];then
 rm -rf /usr/share/clash/download_corer_version
 fi
 	if [ $lang == "zh_cn" ];then
-         echo "${LOGTIME} - 客户端已禁用,检查更新..." >$LOG_FILE
-		elif [ $lang == "en" ];then
-         echo "${LOGTIME} - Client already disabled, Checking for update.." >>$LOG_FILE
+         echo "${LOGTIME} - 正在检查最新版本。。" >$LOG_FILE
+	elif [ $lang == "en" ];then
+         echo "${LOGTIME} - Checking latest version.." >>$LOG_FILE
         fi
 new_clashr_core_version=`wget -qO- "https://github.com/frainzy1477/clashrdev/tags"| grep "/frainzy1477/clashrdev/releases/tag/"| head -n 1| awk -F "/tag/v" '{print $2}'| sed 's/\">//'`
+
 if [ $new_clashr_core_version ]; then
 echo $new_clashr_core_version > /usr/share/clash/download_corer_version 2>&1 & >/dev/null
 elif [ $new_clashr_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_corer_version 2>&1 & >/dev/null
 fi
-sleep 10
+sleep 8
 if [ -f /usr/share/clash/download_corer_version ];then
 CLASHRVER=$(sed -n 1p /usr/share/clash/download_corer_version 2>/dev/null) 
 fi
@@ -30,18 +39,19 @@ if [ $CORETYPE -eq 1 ];then
 if [ -f /usr/share/clash/download_core_version ];then
 rm -rf /usr/share/clash/download_core_version
 fi
-	    if [ $lang == "zh_cn" ];then
-         echo "${LOGTIME} - 客户端已禁用,检查更新..." >$LOG_FILE
-		elif [ $lang == "en" ];then
-         echo "${LOGTIME} - Client already disabled, Checking for update.." >>$LOG_FILE
+	if [ $lang == "zh_cn" ];then
+         echo "${LOGTIME} - 正在检查最新版本。。" >$LOG_FILE
+	elif [ $lang == "en" ];then
+         echo "${LOGTIME} - Checking latest version.." >>$LOG_FILE
         fi
 new_clashr_core_version=`wget -qO- "https://github.com/frainzy1477/clash_dev/tags"| grep "/frainzy1477/clash_dev/releases/tag/"| head -n 1| awk -F "/tag/v" '{print $2}'| sed 's/\">//'`
+
 if [ $new_clashr_core_version ]; then
 echo $new_clashr_core_version > /usr/share/clash/download_core_version 2>&1 & >/dev/null
 elif [ $new_clashr_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_core_version 2>&1 & >/dev/null
 fi
-sleep 10
+sleep 8
 if [ -f /usr/share/clash/download_core_version ];then
 CLASHVER=$(sed -n 1p /usr/share/clash/download_core_version 2>/dev/null) 
 fi
@@ -119,6 +129,11 @@ update(){
 			  echo "${LOGTIME} - Clashr Core Update Successful" >>$LOG_FILE
 			 fi			  
 		    fi
+		    sleep 2
+		    touch /usr/share/clash/core_down_complete >/dev/null 2>&1
+		    sleep 2
+		    rm -rf /var/run/core_update >/dev/null 2>&1
+		    
 			
 	    else
 		  if [ $lang == "zh_cn" ];then
@@ -127,11 +142,11 @@ update(){
 		  echo "${LOGTIME} - Core Update Error" >>$LOG_FILE
 		  fi
 		  rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
-	    fi 
-
+		  echo "" > /tmp/clash_update.log >/dev/null 2>&1
+	    fi  
 		if pidof clash >/dev/null; then
 		/etc/init.d/clash restart >/dev/null		
-		fi 
+		fi
 }
 
 if [ $CORETYPE -eq 1 ] && [ $VER != $CLASHVER ]; then
@@ -144,4 +159,9 @@ else
 	 elif [ $lang == "en" ];then      
        echo "${LOGTIME} - Currently using latest core" >$LOG_FILE
 	 fi 
+	sleep 2
+	touch /usr/share/clash/core_down_complete >/dev/null 2>&1
+	sleep 2
+	rm -rf /var/run/core_update >/dev/null 2>&1
+
 fi
