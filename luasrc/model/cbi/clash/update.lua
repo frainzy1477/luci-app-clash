@@ -19,7 +19,7 @@ k = Map("clash")
 s = k:section(TypedSection, "clash")
 s.anonymous = true
 
-o = s:option(ListValue, "core", translate("Core Type"))
+o = s:option(ListValue, "dcore", translate("Core Type"))
 o.default = "clashcore"
 o:value("1", translate("Clash"))
 o:value("2", translate("Clashr"))

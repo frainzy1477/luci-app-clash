@@ -24,7 +24,7 @@
 	</tbody>
 	</table>
 </fieldset>
-
+ 
 
 
 <script type="text/javascript">//<![CDATA[
@@ -37,11 +37,9 @@
 	var core_butt = document.getElementById('_corebutt');
 	var corer_butt = document.getElementById('_corerbutt');
 
-	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
+	XHR.poll(1, '<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {
-			version_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return version_check(this)"/></center>' : '<em></em>';
-			core_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return core_check(this)"/></center>' : '<em></em>';
-			corer_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return clashr_core_check(this)"/></center>' : '<em></em>';
+		
 			if(status.clash_core==0){
 				core.innerHTML = status.clash_core ? '<b><font color=red><%:Not Installed%></font> </b>' : '<em><b><font color=red><%:Checking...%></font></b></em>';
 				}else{
@@ -58,7 +56,16 @@
 	});
 	
 
-	
+	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
+		if ( x && x.status == 200 ) {
+			version_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return version_check(this)"/></center>' : '<em></em>';
+			core_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return core_check(this)"/></center>' : '<em></em>';
+			corer_butt.innerHTML = status.current_version ? '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return clashr_core_check(this)"/></center>' : '<em></em>';
+			
+			
+						
+		}
+	});	
 
 function version_check(btn)
 {
