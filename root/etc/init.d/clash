@@ -642,7 +642,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		
 		rm -rf /www/clash >/dev/null 2>&1
 		
-	 	rm -rf /tmp/clash.log >/dev/null 2>&1
+	 	echo "" > /tmp/clash.log >/dev/null 2>&1
 
 		echo "0" > /usr/share/clash/logstatus_check >/dev/null 2>&1
 		
