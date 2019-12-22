@@ -40,7 +40,7 @@ o.inputtitle = translate("Update GEOIP Database")
 o.description = update_time
 o.inputstyle = "reload"
 o.write = function()
-  SYS.call("bash /usr/share/clash/ipdb.sh >>/tmp/clash.log 2>&1 &")
+  SYS.call("bash /usr/share/clash/ipdb.sh >>/tmp/clash.txt 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash","settings", "access"))
 end
 

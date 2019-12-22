@@ -3,6 +3,8 @@ local fs=require"nixio.fs"
 local http=require"luci.http"
 local uci=require"luci.model.uci".cursor()
 
+
+
 function index()
 
 	if not nixio.fs.access("/etc/config/clash") then
@@ -39,6 +41,8 @@ function index()
 
 	entry({"admin", "services", "clash", "check"}, call("check_update_log")).leaf=true
 	entry({"admin", "services", "clash", "doupdate"}, call("do_update")).leaf=true
+	entry({"admin", "services", "clash", "start"}, call("do_start")).leaf=true
+	entry({"admin", "services", "clash", "stop"}, call("do_stop")).leaf=true
 	entry({"admin", "services", "clash", "getlog"}, call("get_log")).leaf=true
 	entry({"admin", "services", "clash", "corelog"},call("down_check")).leaf=true
 	entry({"admin", "services", "clash", "logstatus"},call("logstatus_check")).leaf=true
@@ -114,7 +118,7 @@ local function clashr_core()
 end
 
 local function readlog()
-	return luci.sys.exec("sed -n '$p' /usr/share/clash/clash_real.log 2>/dev/null")
+	return luci.sys.exec("sed -n '$p' /usr/share/clash/clash_real.txt 2>/dev/null")
 end
 
 
@@ -186,35 +190,21 @@ end
 
 function do_update()
 	fs.writefile("/var/run/clashlog","0")
-	luci.sys.exec("(rm /var/run/core_update_error ;  touch /var/run/core_update ; sh /usr/share/clash/core_download.sh >/tmp/clash_update.log 2>&1  || touch /var/run/core_update_error ;rm /var/run/core_update) &")
+	luci.sys.exec("(rm /var/run/core_update_error ;  touch /var/run/core_update ; sh /usr/share/clash/core_download.sh >/tmp/clash_update.txt 2>&1  || touch /var/run/core_update_error ;rm /var/run/core_update) &")
 end
 
-
-function get_log()
-	local logfile="/tmp/clash_update.log"
-	if (logfile==nil) then
-		luci.http.write("no log available\n")
-		return
-	elseif not fs.access(logfile) then
-		luci.http.write("log file not created\n")
-		return
-	end
-	luci.http.prepare_content("text/plain; charset=utf-8")
-	local fdp=tonumber(fs.readfile("/var/run/clashlog")) or 0
-	local f=io.open(logfile, "r+")
-	f:seek("set",fdp)
-	local a=f:read(2048000) or ""
-	fdp=f:seek()
-	fs.writefile("/var/run/clashlog",tostring(fdp))
-	f:close()
-	luci.http.write(a)
+function do_start()
+	luci.sys.exec("/etc/init.d/clash restart 2>&1 &")
 end
 
+function do_stop()
+	luci.sys.exec("/etc/init.d/clash stop 2>&1 &")
+end
 
 function check_update_log()
 	luci.http.prepare_content("text/plain; charset=utf-8")
 	local fdp=tonumber(fs.readfile("/var/run/clashlog")) or 0
-	local f=io.open("/tmp/clash_update.log", "r+")
+	local f=io.open("/tmp/clash_update.txt", "r+")
 	f:seek("set",fdp)
 	local a=f:read(2048000) or ""
 	fdp=f:seek()
@@ -231,7 +221,7 @@ end
 function logstatus_check()
 	luci.http.prepare_content("text/plain; charset=utf-8")
 	local fdp=tonumber(fs.readfile("/usr/share/clash/logstatus_check")) or 0
-	local f=io.open("/tmp/clash.log", "r+")
+	local f=io.open("/tmp/clash.txt", "r+")
 	f:seek("set",fdp)
 	local a=f:read(2048000) or ""
 	fdp=f:seek()

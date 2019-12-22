@@ -587,3 +587,9 @@ msgstr "删除局域网DNS"
 msgid "Remove Lan custom DNS Servers when client is disabled"
 msgstr "禁用客户端时删除局域网自定义DNS服务器"
 
+msgid "Enable ipv6"
+msgstr "启用ipv6"
+
+msgid "Allow ipv6 traffic through clash"
+msgstr "允许ipv6流量通过clash"
+

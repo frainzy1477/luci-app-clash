@@ -22,21 +22,24 @@ cdns.default = 1
 cdns.description = translate("Enabling will set custom DNS Servers for Lan")
 cdns:depends("dnsforwader", 0)
 
-deldns = s:option(Flag, "delan", translate("Remove Lan DNS"))
-deldns.description = translate("Remove Lan custom DNS Servers when client is disabled")
-deldns:depends("dnsforwader", 0)
-
 dns = s:option(DynamicList, "landns", translate("Lan DNS servers"))
 dns.description = translate("Set custom DNS Servers for Lan")
 dns.datatype = "ipaddr"
 dns.cast     = "string"
 dns:depends("culan", 1)
 
+deldns = s:option(Flag, "delan", translate("Remove Lan DNS"))
+deldns.description = translate("Remove Lan custom DNS Servers when client is disabled")
+
 y = s:option(ListValue, "dnscache", translate("Cache DNS"))
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Cache DNS")
 
+y = s:option(ListValue, "ipv6", translate("Enable ipv6"))
+y:value("0", translate("disabled"))
+y:value("1", translate("enabled"))
+y.description = translate("Allow ipv6 traffic through clash")
 
 o = s:option(Value, "fake_ip_range", translate("Fake IP Range"))
 o.description = translate("Ip range will be added to iptables")

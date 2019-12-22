@@ -69,7 +69,7 @@ o:value("REJECT")
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
     m.uci:commit(clash, sid) 
-    sys.call("/usr/share/clash/groups.sh start")
+    sys.call("sh /usr/share/clash/groups.sh start")
 end
 
 return m

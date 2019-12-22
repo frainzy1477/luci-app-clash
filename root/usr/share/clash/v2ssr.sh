@@ -338,7 +338,7 @@ json_for_each_item() {
 	esac
 }
 
-REAL_LOG="/usr/share/clash/clash_real.log"
+REAL_LOG="/usr/share/clash/clash_real.txt"
 lang=$(uci get luci.main.lang 2>/dev/null)
 
 urlsafe_b64decode() {
@@ -395,7 +395,7 @@ subscribe_url=($(uci get $name.config.subscribe_url))
 
 for ((o=0;o<${#subscribe_url[@]};o++))
 do
-		  	if [ $lang == "en" ];then
+		  	if [ $lang == "en" ] || [ $lang == "auto" ];then
 				echo "Downloading Configuration..." >$REAL_LOG
 			elif [ $lang == "zh_cn" ];then
 				echo "正在下载配置..." >$REAL_LOG
@@ -409,14 +409,14 @@ do
 		curl_code=$?
 	fi
 	
-			if [ $lang == "en" ];then
+			if [ $lang == "en" ] || [ $lang == "auto" ];then
 				echo "Downloading Configuration Completed" >$REAL_LOG
 			elif [ $lang == "zh_cn" ];then
 				echo "下载配置完成" >$REAL_LOG
 			fi
 			sleep 2
 			
- 	if [ $lang == "en" ];then
+ 	if [ $lang == "en" ] || [ $lang == "auto" ];then
 		echo "Strating to Create Custom Config.. " >$REAL_LOG 
 	elif [ $lang == "zh_cn" ];then
     	 echo "开始创建自定义配置..." >$REAL_LOG
@@ -536,7 +536,7 @@ do
 				subscribe_n=$(($subscribe_n + 1))
 			fi
 
-		  	if [ $lang == "en" ];then
+		  	if [ $lang == "en" ] || [ $lang == "auto" ];then
 				echo "Decoding 【$ssr_type】-【$ssr_remarks】 Proxy..." >$REAL_LOG
 			elif [ $lang == "zh_cn" ];then
 				echo "正在解码 【$ssr_type】-【$ssr_remarks】 代理..." >$REAL_LOG
@@ -587,7 +587,7 @@ DNS_FILE="/usr/share/clash/dns.yaml"
    servcount=$( grep -c "config servers" $CFG_FILE 2>/dev/null)
    gcount=$( grep -c "config groups" $CFG_FILE 2>/dev/null)
    if [ $servcount -eq 0 ] || [ $gcount -eq 0 ];then
- 	if [ $lang == "en" ];then
+ 	if [ $lang == "en" ] || [ $lang == "auto" ];then
 		echo "No servers or group. Aborting Operation .." >$REAL_LOG 
 		sleep 2
 			echo "Clash for OpenWRT" >$REAL_LOG
@@ -898,7 +898,7 @@ sed -i "/Rule:/i\     " $CONFIG_YAML 2>/dev/null
 rm -rf $TEMP_FILE $GROUP_FILE $Proxy_Group $CONFIG_FILE
 
 
- 	if [ $lang == "en" ];then
+ 	if [ $lang == "en" ] || [ $lang == "auto" ];then
 		echo "Completed Creating Custom Config.. " >$REAL_LOG 
 		 sleep 2
 			echo "Clash for OpenWRT" >$REAL_LOG

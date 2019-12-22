@@ -28,7 +28,7 @@ o.description = translate("Download Rule")
 o.inputstyle = "reload"
 o.write = function()
   uci:commit("clash")
-  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.log 2>&1 &")
+  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.txt 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
 end
 
@@ -65,13 +65,13 @@ o.description = translate("Select from which configuration custom server should 
 o = s:option(ListValue, "loadservers", translate("Load Servers"))
 o:value("1", translate("enabled"))
 o:value("0", translate("disabled"))
-o.description = translate("Enabbe to read servers")
+o.description = translate("Enable to read servers")
 
 
 o = s:option(ListValue, "loadgroups", translate("Load Groups"))
 o:value("1", translate("enabled"))
 o:value("0", translate("disabled"))
-o.description = translate("Enabbe to read policy group")
+o.description = translate("Enable to read policy group")
 
 
 local t = {
@@ -105,7 +105,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "servers", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
 end
 
 o = b:option(Button,"Delete_Groups")
@@ -114,7 +114,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "groups", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "servers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
 end
 
 
@@ -123,7 +123,7 @@ s = krk:section(TypedSection, "servers", translate("Proxies"))
 s.anonymous = true
 s.addremove = true
 s.sortable = true
-s.template = "cbi/tblsection"
+s.template = "clash/tblsection"
 s.extedit = luci.dispatcher.build_url("admin/services/clash/servers-config/%s")
 function s.create(...)
 	local sid = TypedSection.create(...)
