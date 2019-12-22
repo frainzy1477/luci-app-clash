@@ -4,6 +4,8 @@ LOG_FILE="/tmp/clash_update.txt"
 MODELTYPE=$(uci get clash.config.download_core 2>/dev/null)
 CORETYPE=$(uci get clash.config.dcore 2>/dev/null)
 lang=$(uci get luci.main.lang 2>/dev/null)
+CORE=$(uci get clash.config.core 2>/dev/null)
+
 if [ -f /tmp/clash.tar.gz ];then
 rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
 fi
@@ -107,7 +109,7 @@ update(){
 			  rm -rf /etc/clash/clash >/dev/null 2>&1
 			  mv /tmp/clash /etc/clash/clash >/dev/null 2>&1
 			  rm -rf /usr/share/clash/core_version >/dev/null 2>&1
-			  echo $CLASHVER > /usr/share/clash/core_version >/dev/null 2>&1
+			  mv /usr/share/clash/download_core_version /usr/share/clash/core_version >/dev/null 2>&1
 
 			 if [ $lang == "zh_cn" ];then
 			  echo "${LOGTIME} - Clash内核更新成功！" >$LOG_FILE
@@ -120,7 +122,7 @@ update(){
 			  rm -rf /usr/bin/clash >/dev/null 2>&1
 			  mv /tmp/clash /usr/bin/clash >/dev/null 2>&1
 			  rm -rf /usr/share/clash/corer_version >/dev/null 2>&1
-			  echo $CLASHRVER > /usr/share/clash/corer_version >/dev/null 2>&1
+			  mv /usr/share/clash/download_corer_version /usr/share/clash/corer_version >/dev/null 2>&1
 			  
 			 if [ $lang == "zh_cn" ];then
 			  echo "${LOGTIME} - Clashr内核更新成功！" >$LOG_FILE
@@ -133,7 +135,7 @@ update(){
 		    touch /usr/share/clash/core_down_complete >/dev/null 2>&1
 		    sleep 2
 		    rm -rf /var/run/core_update >/dev/null 2>&1
-		    
+		    echo "" > /tmp/clash_update.txt >/dev/null 2>&1
 			
 	    else
 		  if [ $lang == "zh_cn" ];then
@@ -145,7 +147,9 @@ update(){
 		  echo "" > /tmp/clash_update.txt >/dev/null 2>&1
 	    fi  
 		if pidof clash >/dev/null; then
-		/etc/init.d/clash restart >/dev/null		
+			if [ $CORETYPE == $CORE ];then
+		   	 /etc/init.d/clash restart >/dev/null	
+			fi	
 		fi
 }
 
