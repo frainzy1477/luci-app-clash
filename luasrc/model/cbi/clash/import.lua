@@ -14,7 +14,7 @@ local http = luci.http
 kr = Map(clash)
 s = kr:section(TypedSection, "clash", translate("Subscription Config"))
 s.anonymous = true
-
+kr.pageaction = false
 
 o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.description = translate("Auto Update Server subscription")
