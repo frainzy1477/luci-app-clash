@@ -471,7 +471,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi
 		
 	elif [ "${core}" -eq 2 ];then
-        nohup $CLASHR -d "$CLASH_CONFIG" > /tmp/clash.log 2>&1 &		
+        nohup $CLASHR -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clashr Core Started Successfully " >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
