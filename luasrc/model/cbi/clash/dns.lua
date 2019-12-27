@@ -41,9 +41,6 @@ y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Allow ipv6 traffic through clash")
 
-o = s:option(Value, "fake_ip_range", translate("Fake IP Range"))
-o.description = translate("Ip range will be added to iptables")
-
 md = s:option(Flag, "mode", translate("Custom DNS"))
 md.default = 1
 md.rmempty = false
