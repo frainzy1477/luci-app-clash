@@ -9,7 +9,8 @@
   </p>
   <p align="center">
   <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.3.9">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.3.9-blue.svg">  
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.3.9-blue.svg"> 
+      <img src="https://api.travis-ci.org/frainzy1477/luci-app-clash.svg?branch=koolshare-lede-openwrt"> 	  
   </a>
   
   </p>
