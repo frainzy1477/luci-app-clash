@@ -246,7 +246,12 @@ rules(){
 
 			
 		fi
-		iptables -t nat -A OUTPUT -p tcp -d $fake_ip_range -j REDIRECT --to-ports "${redir_port}"
+		fake_ip_range=$(egrep '^ {0,}fake-ip-range' /etc/clash/config.yaml |grep fake-ip-range: |awk -F ': ' '{print $2}')
+		if [ ! -z "${fake_ip_range}" ];then
+			iptables -t nat -A OUTPUT -p tcp -d $fake_ip_range -j REDIRECT --to-ports "${redir_port}"
+		else
+			iptables -t nat -A OUTPUT -p tcp -d 198.18.0.0/16 -j REDIRECT --to-ports "${redir_port}"
+		fi
 
 		iptables -t nat -I PREROUTING 1 -p udp --dport 53 -j clash_udp
 
