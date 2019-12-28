@@ -1,19 +1,19 @@
 
 experimental:
   ignore-resolve-fail: true
-
 #authentication:
 # - "user1:pass1"
-
 # hosts:
 #   '*.clash.dev': 127.0.0.1
 #   'alpha.clash.dev': '::1'
- 
 dns:
  enable: true
- ipv6: true
  listen: 0.0.0.0:5300
  enhanced-mode: fake-ip
+ fake-ip-range: 198.18.0.0/16
+ # fake-ip-filter: # fake ip white domain list
+ #   - *.lan
+ #   - localhost.ptlogin2.qq.com
  nameserver: 
   - 119.29.29.29 
   - 114.114.114.114    
@@ -23,6 +23,7 @@ dns:
 fallback:
   - tls://dns.rubyfish.cn:853
   - tcp://1.1.1.1
+  - tcp://8.8.8.8
 fallback-filter:
   geoip: true
   ipcidr:
