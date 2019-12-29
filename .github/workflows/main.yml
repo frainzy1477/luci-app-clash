@@ -1,7 +1,7 @@
 name: Luci-app-clash CI
 on:
   release:
-    types: [push, published]
+    types: [published]
   
   push:
     branches: 
