@@ -122,8 +122,8 @@ end
 s = krk:section(TypedSection, "servers", translate("Proxies"))
 s.anonymous = true
 s.addremove = true
-s.sortable = true
-s.template = "clash/tblsection"
+s.sortable = false
+s.template = "cbi/tblsection"
 s.extedit = luci.dispatcher.build_url("admin/services/clash/servers-config/%s")
 function s.create(...)
 	local sid = TypedSection.create(...)
@@ -161,8 +161,8 @@ o.width="10%"
 r = krk:section(TypedSection, "groups", translate("Policy Groups"))
 r.anonymous = true
 r.addremove = true
-r.sortable = true
-r.template = "clash/tblsection"
+s.sortable = false
+r.template = "cbi/tblsection"
 r.extedit = luci.dispatcher.build_url("admin/services/clash/groups/%s")
 function r.create(...)
 	local sid = TypedSection.create(...)
