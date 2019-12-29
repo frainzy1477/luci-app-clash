@@ -1,0 +1,51 @@
+name: Luci-app-clash CI
+on:
+  release:
+    types: [push, published]
+
+
+      
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    env:
+      URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+    
+    steps:
+    - name: Checkout - clone repository
+      uses: actions/checkout@v1
+    
+    - name: Download and untar sdk
+      run: |
+        wget $URL
+        tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+
+    
+    - name: Configure sdk
+      run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+      
+    - name: Install dependencies
+      run: |
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion git-core gcc-multilib libelf-dev autoconf automake libtool
+        
+    - name: Clone package
+      run: |
+		mkdir -p koolshare && r -p official
+        git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git package/luci-app-clash
+		git clone -b koolshare-lede-openwrt https://github.com/frainzy1477/luci-app-clash.git package/koolshare/luci-app-clash
+		git clone -b offiacial-openwrt https://github.com/frainzy1477/luci-app-clash.git package/offiacial/luci-app-clash
+
+
+    - name: Build ipk
+      run: |
+        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+        make package/luci-app-clash/compile V=99
+		make package/koolshare/luci-app-clash/compile V=99
+		make package/offiacial/luci-app-clash/compile V=99
+
+    - name: Upload - push to artifact file
+      uses: actions/upload-artifact@v1
+      with:
+        name: luci-app-clash
+        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base
