@@ -15,7 +15,7 @@ install:
 - tar xvJf $FILE
 
 script:
-- wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+- wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/master/config -O 2>&1 >1 $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
 - cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
 - git clone -b koolshare-lede-openwrt https://github.com/frainzy1477/luci-app-clash.git 
 - cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
