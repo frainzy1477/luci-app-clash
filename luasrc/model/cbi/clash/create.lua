@@ -57,6 +57,11 @@ krk = Map(clash)
 s = krk:section(TypedSection, "clash", translate("Load Config"))
 s.anonymous = true
 
+
+cc = s:option(Flag, "create", translate("Enable Create"))
+cc.default = 1
+cc.description = translate("Enable to create configuration")
+
 o = s:option(ListValue, "loadfrom", translate("Load From"))
 o:value("sub", translate("Subscription Config"))
 o:value("upl", translate("Upload Config"))

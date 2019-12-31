@@ -5,6 +5,8 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 loadgroups=$(uci get clash.config.loadgroups 2>/dev/null)
 loadservers=$(uci get clash.config.loadservers 2>/dev/null)
 load_from=$(uci get clash.config.loadfrom 2>/dev/null)
+
+
 if [ "$load_from" == "sub" ];then 
         load="/usr/share/clash/config/sub/config.yaml"	
 elif [ "$load_from" == "upl" ];then
@@ -460,4 +462,6 @@ rm -rf /tmp/servers.yaml 2>/dev/null
 rm -rf /tmp/yaml_proxy.yaml 2>/dev/null
 fi
 
+
 /usr/share/clash/proxy.sh 2>/dev/null
+

@@ -593,3 +593,14 @@ msgstr "启用ipv6"
 msgid "Allow ipv6 traffic through clash"
 msgstr "允许ipv6流量通过clash"
 
+msgid "NB: Upload GEOIP Database file Country.mmdb"
+msgstr "注意：上传GEOIP数据库文件Country.mmdb"
+
+msgid "Download logs"
+msgstr "下载日志"
+
+msgid "Enable Create"
+msgstr "启用创建"
+
+msgid "Enable to create configuration"
+msgstr "启用以创建配置"

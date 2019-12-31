@@ -17,6 +17,9 @@ y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings and forward all dns traffic to clash")
 
+deldns = s:option(Flag, "delan", translate("Remove Lan DNS"))
+deldns.description = translate("Remove Lan custom DNS Servers when client is disabled")
+
 cdns = s:option(Flag, "culan", translate("Enable Lan DNS"))
 cdns.default = 1
 cdns.description = translate("Enabling will set custom DNS Servers for Lan")
@@ -28,14 +31,6 @@ dns.datatype = "ipaddr"
 dns.cast     = "string"
 dns:depends("culan", 1)
 
-deldns = s:option(Flag, "delan", translate("Remove Lan DNS"))
-deldns.description = translate("Remove Lan custom DNS Servers when client is disabled")
-
-y = s:option(ListValue, "dnscache", translate("Cache DNS"))
-y:value("0", translate("disabled"))
-y:value("1", translate("enabled"))
-y.description = translate("Cache DNS")
-
 y = s:option(ListValue, "ipv6", translate("Enable ipv6"))
 y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
@@ -45,7 +40,6 @@ md = s:option(Flag, "mode", translate("Custom DNS"))
 md.default = 1
 md.rmempty = false
 md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")
-
 
 local dns = "/usr/share/clash/dns.yaml"
 o = s:option(TextValue, "dns",translate("Modify yaml DNS"))

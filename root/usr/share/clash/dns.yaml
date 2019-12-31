@@ -1,4 +1,3 @@
-
 experimental:
   ignore-resolve-fail: true
 #authentication:
@@ -10,18 +9,20 @@ dns:
  enable: true
  listen: 0.0.0.0:5300
  enhanced-mode: fake-ip
- fake-ip-range: 198.18.0.0/16
- # fake-ip-filter: # fake ip white domain list
+ fake-ip-range: 198.18.0.1/16
+ # fake-ip-filter: # fake ip white domain
  #   - *.lan
  #   - localhost.ptlogin2.qq.com
- nameserver: 
-  - 119.29.29.29 
+ nameserver:  
   - 114.114.114.114    
-  - tls://dns.rubyfish.cn:853
-  - https://dns.google/dns-query
-  - https://1.1.1.1/dns-query
+  - tls://118.89.110.78:853
+  - tls://47.96.179.163:853
+  - udp://8.8.8.8:53
+  - udp://8.8.4.4:53
+  - tcp://1.1.1.1
 fallback:
-  - tls://dns.rubyfish.cn:853
+  - tls://118.89.110.78:853
+  - tls://47.96.179.163:853
   - tcp://1.1.1.1
   - tcp://8.8.8.8
 fallback-filter:

@@ -4,7 +4,8 @@
 REAL_LOG="/usr/share/clash/clash_real.txt"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
-
+create=$(uci get clash.config.create 2>/dev/null)
+if [ "${create}" -eq 1 ];then
 
  	if [ $lang == "en" ] || [ $lang == "auto" ];then
 		echo "Strating to Create Custom Config.. " >$REAL_LOG 
@@ -437,4 +438,5 @@ fi
 fi
 rm -rf $SERVER_FILE
 
+fi
 

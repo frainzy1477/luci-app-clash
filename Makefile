@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.3.9
+PKG_VERSION:=1.4.0
 PKG_RELEASE:=3
 PKG_MAINTAINER:=frainzy1477
 
@@ -156,7 +156,6 @@ define Package/$(PKG_NAME)/install
 
 	$(INSTALL_BIN) ./root/usr/share/clash/clash-watchdog.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/clash.sh $(1)/usr/share/clash/
-	$(INSTALL_BIN) ./root/usr/share/clash/ipdb.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/load.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/core_download.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/

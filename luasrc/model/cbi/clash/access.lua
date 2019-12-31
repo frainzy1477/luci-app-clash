@@ -6,6 +6,8 @@ local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 local fs = require "luci.clash"
 local uci = require "luci.model.uci".cursor()
+local clash = "clash"
+local http = luci.http
 
 
 m = Map("clash")
@@ -33,15 +35,47 @@ o:depends("proxylan", 1)
 
 
 
-update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
-o = s:option(Button,"update",translate("Update GEOIP Database")) 
-o.title = translate("GEOIP Database")
-o.inputtitle = translate("Update GEOIP Database")
-o.description = update_time
-o.inputstyle = "reload"
-o.write = function()
-  SYS.call("bash /usr/share/clash/ipdb.sh >>/tmp/clash.txt 2>&1 &")
-  HTTP.redirect(DISP.build_url("admin", "services", "clash","settings", "access"))
+o = s:option(FileUpload, "",translate("Update GEOIP Database"))
+o.description = translate("NB: Upload GEOIP Database file Country.mmdb")
+o.title = translate("Update GEOIP Database")
+o.template = "clash/clash_upload"
+um = s:option(DummyValue, "", nil)
+um.template = "clash/clash_dvalue"
+
+local dir, fd
+dir = "/etc/clash/"
+http.setfilehandler(
+	function(meta, chunk, eof)
+		if not fd then
+			if not meta then return end
+
+			if	meta and chunk then fd = nixio.open(dir .. meta.file, "w") end
+
+			if not fd then
+				um.value = translate("upload file error.")
+				return
+			end
+		end
+		if chunk and fd then
+			fd:write(chunk)
+		end
+		if eof and fd then
+			fd:close()
+			fd = nil
+			um.value = translate("File saved to") .. ' "/etc/clash/"'
+			SYS.call("chmod + x /etc/clash/Country.mmdb")
+			if luci.sys.call("pidof clash >/dev/null") == 0 then
+			SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
+			end
+		end
+	end
+)
+
+if luci.http.formvalue("upload") then
+	local f = luci.http.formvalue("ulfile")
+	if #f <= 0 then
+		um.value = translate("No specify upload file.")
+	end
 end
 
 
