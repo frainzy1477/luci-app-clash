@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/luci%20for%20clash-v1.4.0-blue.svg"> 	  
   </a>
   <a target="_blank" href="https://travis-ci.org/frainzy1477/luci-app-clash/builds">
-      <img src="https://api.travis-ci.org/frainzy1477/luci-app-clash.svg?branch=koolshare-lede-openwrt"> 	  
+      <img src="https://api.travis-ci.org/frainzy1477/luci-app-clash.svg?branch=master"> 	  
   </a>	
   
   </p>
