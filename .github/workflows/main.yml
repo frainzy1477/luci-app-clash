@@ -26,7 +26,9 @@ jobs:
 
     
     - name: Configure sdk
-      run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+      run: |
+            cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+            make deconfig
       
     - name: Install dependencies
       run: |
