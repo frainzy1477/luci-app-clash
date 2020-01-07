@@ -616,7 +616,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 			iptables -t nat -D zone_lan_prerouting $nat_index >/dev/null 2>&1
 		done
 
-		mangle_indexs=$(i6ptables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
+		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
 		for mangle_index in $mangle_indexs; do
 			iptables -t mangle -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
 		done
