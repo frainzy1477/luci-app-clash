@@ -11,9 +11,7 @@
   <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.4.2">
     <img src="https://img.shields.io/badge/luci%20for%20clash-v1.4.2-blue.svg"> 	  
   </a>
-  <a target="_blank" href="https://travis-ci.org/frainzy1477/luci-app-clash/builds">
-      <img src="https://api.travis-ci.org/frainzy1477/luci-app-clash.svg?branch=master"> 	  
-  </a>	
+	
   
   </p>
 
