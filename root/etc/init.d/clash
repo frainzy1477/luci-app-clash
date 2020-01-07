@@ -694,7 +694,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		fi		
 		
 		dns_listen=$(egrep '^ {0,}dns-listen' /etc/clash/config.yaml |grep dns-listen: |awk -F ': ' '{print $1}')
-		if [ $core -eq 3  ] && [ ! -z $dns_listen ];then		
+		if [ ! -z $dns_listen ];then		
 			ip addr del 198.18.0.1/16 dev clash0
 			ip link set clash0 down
 			ip tuntap del user root mode tun clash0
