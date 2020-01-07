@@ -36,7 +36,7 @@ y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Allow ipv6 traffic through clash")
 
-md = s:option(Flag, "mode", translate("Clash DNS"))
+md = s:option(Flag, "mode", translate("Custom DNS"))
 md.default = 1
 md.rmempty = false
 md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")

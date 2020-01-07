@@ -118,7 +118,9 @@ if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
 fi
 
+
 mkdir -p /etc/clash/clashtun 2>/dev/null
+
 
 endef
 
