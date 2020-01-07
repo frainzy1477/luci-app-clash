@@ -40,6 +40,7 @@ define Package/$(PKG_NAME)/preinst
 
 mkdir -p /usr/share/clashbackup 2>/dev/null
 
+
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
 	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null
 fi
@@ -116,6 +117,8 @@ fi
 if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
 fi
+
+mkdir -p /etc/clash/clashtun 2>/dev/null
 
 endef
 

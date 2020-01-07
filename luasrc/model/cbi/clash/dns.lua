@@ -41,14 +41,6 @@ md.default = 1
 md.rmempty = false
 md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")
 
-
-y = s:option(ListValue, "tun_type", translate("Clash Tun DNS"))
-y:value("0", translate("Do Nothing"))
-y:value("1", translate("Dreamacro Tun core"))
-y:value("2", translate("comzyh Tun core"))
-y.description = translate("Select clash tun core source")
-y:depends("mode", 0)
-
 local dns = "/usr/share/clash/dns.yaml"
 o = s:option(TextValue, "dns",translate("Modify yaml DNS"))
 o.template = "clash/tvalue"

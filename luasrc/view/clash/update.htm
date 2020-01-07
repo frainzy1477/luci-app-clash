@@ -60,7 +60,7 @@
 			}else{
 				coretun.innerHTML = status.clashtun_core ? '<b><font color=green>'+status.clashr_core+'</font> </b>' : '<em><b><font color=red><%:Checking...%></font></b></em>';
 			}			
-			version.innerHTML = status.current_version ? '<b><font color=green>'+status.current_version+'</font> </b>' : '<em><b><font color=red><%:Checking...%></font></b></em>';
+			version.innerHTML = status.current_version ? '<b><font color=green>v'+status.current_version+'</font> </b>' : '<em><b><font color=red><%:Checking...%></font></b></em>';
 						
 		}
 	});
@@ -164,7 +164,7 @@ function clashtun_core_check1(btn)
 {
 XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
         btn.disabled = true;
-        btn.value    = '<%:Download%>';
+        btn.value    = '<%:Link1%>';
         url='https://github.com/Dreamacro/clash/releases/tag/TUN';
         window.open(url);
         btn.disabled = false;
@@ -176,7 +176,7 @@ function clashtun_core_check2(btn)
 {
 XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
         btn.disabled = true;
-        btn.value    = '<%:Download%>';
+        btn.value    = '<%:Link2%>';
         url='https://github.com/comzyh/clash/releases';
         window.open(url);
         btn.disabled = false;
