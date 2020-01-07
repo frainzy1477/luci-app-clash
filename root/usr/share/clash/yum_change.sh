@@ -5,6 +5,8 @@ CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
 CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
+
+
 REAL_LOG="/usr/share/clash/clash_real.txt"
 
 if [ $config_type == "sub" ];then 
@@ -54,7 +56,10 @@ if [ $mode -eq 1 ];  then
 		echo "Setting Up Ports and Password.. " >$REAL_LOG 
 	elif [ $lang == "zh_cn" ];then
     	 echo "设置端口,DNS和密码..." >$REAL_LOG
-	fi		
+	fi
+	sleep 2
+	echo "Clash for OpenWRT" >$REAL_LOG
+	
 		sed -i "/Proxy:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
                 sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
 		sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
@@ -95,6 +100,9 @@ else
 	elif [ $lang == "zh_cn" ];then
     	 echo "设置端口,DNS和密码..." >$REAL_LOG
 	fi	
+	sleep 2
+	echo "Clash for OpenWRT" >$REAL_LOG
+	
 		if [ ! -z "$(grep "^experimental:" /etc/clash/config.yaml)" ]; then
 		sed -i "/experimental:/i\     " $CONFIG_YAML 2>/dev/null
 		sed -i "/     /a\#clash-openwrt" $CONFIG_YAML 2>/dev/null

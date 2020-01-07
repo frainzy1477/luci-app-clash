@@ -18,6 +18,8 @@ o.default = 0
 o.rmempty = false
 o.description = translate("Enable")
 
+
+
 o = s:option(ListValue, "core", translate("Core"))
 o.default = "clashcore"
 if nixio.fs.access("/etc/clash/clash") then
@@ -26,8 +28,10 @@ end
 if nixio.fs.access("/usr/bin/clash") then
 o:value("2", translate("Clashr"))
 end
+if nixio.fs.access("/etc/clash/clashtun/clash") then
+o:value("3", translate("ClashTun"))
+end
 o.description = translate("Select core, clashr support ssr while clash does not.")
-
 
 o = s:option(ListValue, "config_type", translate("Config Type"))
 o.default = "sub"
