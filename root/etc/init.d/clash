@@ -240,7 +240,7 @@ rules(){
 			iptables -t nat -A zone_lan_prerouting -p tcp -j clash
 		else
 			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
-            iptables -t nat -A zone_lan_prerouting -p tcp -j clash
+            		iptables -t nat -A zone_lan_prerouting -p tcp -j clash
 		fi
 		
 		fake_ip_range=$(egrep '^ {0,}fake-ip-range' /etc/clash/config.yaml |grep fake-ip-range: |awk -F ': ' '{print $2}')
@@ -405,7 +405,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	fi
 
 	checkaccess=$(egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}')
-    if [ "${checkaccess}" = "fake-ip" ] && [ "${lana}" -eq 1 ];then
+    	if [ "${checkaccess}" = "fake-ip" ] && [ "${lana}" -eq 1 ];then
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clash fake-ip mode does not support Proxy Lan IP " >$REAL_LOG
 		elif [ "${lang}" == "zh_cn" ];then
@@ -468,7 +468,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		ip addr add 198.18.0.1/16 dev clash0
 	fi
 	
-    if [ "${core}" -eq 1 ];then
+    	if [ "${core}" -eq 1 ];then
         nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -508,11 +508,11 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	custom_list >/dev/null 2>&1
 	sleep 1
 	
-    if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
-       uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
-       uci commit firewall >/dev/null 2>&1
-       /etc/init.d/firewall reload >/dev/null 2>&1
-    fi
+    	if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
+       	uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
+       	uci commit firewall >/dev/null 2>&1
+       	/etc/init.d/firewall reload >/dev/null 2>&1
+    	fi
 
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "Restarting Dnsmasq " >$REAL_LOG 
@@ -618,18 +618,18 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 
 		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
 		for mangle_index in $mangle_indexs; do
-			iptables -t mangle -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
+			ip6tables -t mangle -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
 		done
 		
 		fake=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.0\/16/=' |sort -r)
-       	for fake in $fake; do
+       		for fake in $fake; do
           		iptables -t nat -D OUTPUT $fake >/dev/null 2>&1
-        done
+        	done
 		
 		fake2=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.1\/16/=' |sort -r)
-       	for fake2 in $fake2; do
+       		for fake2 in $fake2; do
           		iptables -t nat -D OUTPUT $fake2 >/dev/null 2>&1
-        done		
+        	done		
 
 
 		kill -9 $(ps | grep clash-watchdog.sh | grep -v grep | awk '{print $1}') >/dev/null 2>&1
