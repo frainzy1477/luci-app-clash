@@ -40,7 +40,6 @@ md = s:option(Flag, "mode", translate("Clash DNS"))
 md.default = 1
 md.rmempty = false
 md.description = translate("Enabling Custom DNS will Overwrite your config.yaml dns section")
-md:depends("tun_type", 0)
 
 
 y = s:option(ListValue, "tun_type", translate("Clash Tun DNS"))
@@ -63,40 +62,6 @@ o.write = function(self, section, value)
 end
 o.description = translate("NB: press ENTER to create a blank line at the end of input.")
 o:depends("mode", 1)
-
-
-
-local dnst = "/usr/share/clash/tundns_1.yaml"
-o = s:option(TextValue, "dnst",translate("Modify yaml DNS"))
-o.template = "clash/tvalue"
-o.rows = 20
-o.wrap = "off"
-o.cfgvalue = function(self, section)
-	return NXFS.readfile(dnst) or ""
-end
-o.write = function(self, section, value)
-	NXFS.writefile(dnst, value:gsub("\r\n", "\n"))
-end
-o.description = translate("Download url  https://github.com/Dreamacro/clash/releases/tag/TUN")
-o:depends("tun_type", 1)
-
-
-
-local dnss = "/usr/share/clash/tundns_2.yaml"
-tu = s:option(TextValue, "dnss",translate("Modify yaml DNS"))
-tu.template = "clash/tvalue"
-tu.rows = 20
-tu.wrap = "off"
-tu.cfgvalue = function(self, section)
-	return NXFS.readfile(dnss) or ""
-end
-tu.write = function(self, section, value)
-	NXFS.writefile(dnss, value:gsub("\r\n", "\n"))
-end
-tu.description = translate("Download url https://github.com/comzyh/clash/releases")
-tu:depends("tun_type", 2)
-
-
 
 
 o = s:option(Button, "Apply")

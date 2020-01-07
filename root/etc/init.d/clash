@@ -18,7 +18,7 @@ CONFIG_YAML_CUS="/usr/share/clash/config/custom/config.yaml"
 CUSLIST="/tmp/dnsmasq.d/custom_list.conf"
 CUSLITT="/tmp/dnsmasq.clash"
 CUSLISTV="/var/dnsmasq.d/custom_list.conf"
-CUSLITTV="/var/dnsmasq.clash"
+CUSLITTV="/var/dnsmasq.clash" 
 REAL_LOG="/usr/share/clash/clash_real.txt"
 
 revert_dns() {
