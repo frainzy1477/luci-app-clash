@@ -208,8 +208,6 @@ EOF
 rules(){
 #===========================================================================================================================
 
-
-		lan_ip=$(uci get network.lan.ipaddr 2>/dev/null)
 		lanac=$(uci get clash.config.rejectlan 2>/dev/null)
 		lan=$(uci get clash.config.proxylan 2>/dev/null)
 		dns_port=$(grep listen: $CONFIG_YAML |awk -F ':' '{print $3}' |tr -cd "[0-9]")
@@ -288,11 +286,10 @@ if [ "${config_type}" == "sub" ];then
 if [ "${subscri}" == "clash" ];then 
 if [ ! -f $CONFIG_YAML_SUB ] && [ ! -z "${subscribe_url_clash}" ];then 
 	sh /usr/share/clash/clash.sh >>/tmp/clash.txt
-elif [[  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url_clash}" ]]  && [[ -f $CONFIG_YAML_OLD ] && [ "$(ls -l $CONFIG_YAML_OLD | awk '{print int($5/1024)}')" -eq 0 ]];then
+elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url_clash}" ]  && [ -f $CONFIG_YAML_OLD ] && [ "$(ls -l $CONFIG_YAML_OLD | awk '{print int($5/1024)}')" -eq 0 ];then
 	sh /usr/share/clash/clash.sh >>/tmp/clash.txt 
 elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url_clash}" ] && [ ! -f $CONFIG_YAML_OLD ];then
 	sh /usr/share/clash/clash.sh >>/tmp/clash.txt 
-
 fi
 fi
 
@@ -301,11 +298,10 @@ if [ "${subscri}" == "v2ssr2clash" ];then
 
 if [ ! -f $CONFIG_YAML_CUS ] && [ ! -z "${subscribe_url}" ];then 
 	sh /usr/share/clash/v2ssr.sh >>/tmp/clash.txt  
-elif [[  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url}" ]] && [[ -f $CONFIG_YAML_OLD ] && [ "$(ls -l $CONFIG_YAML_OLD | awk '{print int($5/1024)}')" -eq 0 ]] ;then	
+elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url}" ] && [ -f $CONFIG_YAML_OLD ] && [ "$(ls -l $CONFIG_YAML_OLD | awk '{print int($5/1024)}')" -eq 0 ] ;then	
 	sh /usr/share/clash/v2ssr.sh >>/tmp/clash.txt 
-elif [  -f $CONFIG_YAML_CUS ] && [ "$(ls -l $CONFIG_YAML_CUS | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url}" ] && [ -f $CONFIG_YAML_OLD ] ;then	
+elif [  -f $CONFIG_YAML_SUB ] && [ "$(ls -l $CONFIG_YAML_SUB | awk '{print int($5)}')" -eq 0 ] && [ ! -z "${subscribe_url}" ] && [ -f $CONFIG_YAML_OLD ] ;then	
 	sh /usr/share/clash/v2ssr.sh >>/tmp/clash.txt 
-
 fi 
 
 fi
@@ -322,11 +318,6 @@ custom_list() {
 
 
 start(){
-    config_load clash
-    local enabled
- 
-   config_get_bool enabled clash enabled 0
-
 lang=$(uci get luci.main.lang 2>/dev/null)
 #=========================================================================================================================== 
 if pidof clash >/dev/null; then
@@ -469,7 +460,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	fi
 	
     	if [ "${core}" -eq 1 ];then
-        nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
+        	nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clash Core Started Successfully " >$REAL_LOG 
@@ -478,7 +469,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi
 		
 	elif [ "${core}" -eq 3 ];then
-        nohup $CLASHT -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
+       	 	nohup $CLASHT -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clash Core Started Successfully " >$REAL_LOG 
@@ -487,7 +478,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi	
 		
 	elif [ "${core}" -eq 2 ];then
-        nohup $CLASHR -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &		
+        	nohup $CLASHR -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clashr Core Started Successfully " >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
@@ -497,21 +488,22 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	fi
 	
 	sleep 1	
-	
 
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "Setting up clash iptables rules" >$REAL_LOG 
 	elif [ "${lang}" == "zh_cn" ];then
-	echo "设置 Clash iptables" >$REAL_LOG
-	fi					
+		echo "设置 Clash iptables" >$REAL_LOG
+	fi
+	
 	rules >/dev/null 2>&1
 	custom_list >/dev/null 2>&1
+	
 	sleep 1
 	
     	if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
-       	uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
-       	uci commit firewall >/dev/null 2>&1
-       	/etc/init.d/firewall reload >/dev/null 2>&1
+       		uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
+       		uci commit firewall >/dev/null 2>&1
+       		/etc/init.d/firewall reload >/dev/null 2>&1
     	fi
 
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -524,25 +516,25 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	sleep 1
 
 	if pidof clash >/dev/null; then
-			add_cron
-			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-				echo "Setting Cron Job" >$REAL_LOG 
-				sleep 1
-				echo "Clash Started Successfully " >$REAL_LOG
-				sleep 2
-				echo "Clash is Running " >$REAL_LOG
-				sleep 2
-				echo "Clash for OpenWRT" >$REAL_LOG
-			elif [ "${lang}" == "zh_cn" ];then
-				echo "设置Cron" >$REAL_LOG
-				sleep 1
-				echo "Clash 启动成功，请等待服务器上线！" >$REAL_LOG
-				sleep 2
-				echo "Clash运行中" >$REAL_LOG
-				sleep 2
-				echo "Clash for OpenWRT" >$REAL_LOG
-			fi
-			nohup /usr/share/clash/clash-watchdog.sh >/dev/null 2>&1
+	add_cron
+	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+		echo "Setting Cron Job" >$REAL_LOG 
+		sleep 1
+		echo "Clash Started Successfully " >$REAL_LOG
+		sleep 2
+		echo "Clash is Running " >$REAL_LOG
+		sleep 2
+		echo "Clash for OpenWRT" >$REAL_LOG
+	elif [ "${lang}" == "zh_cn" ];then
+		echo "设置Cron" >$REAL_LOG
+		sleep 1
+		echo "Clash 启动成功，请等待服务器上线！" >$REAL_LOG
+		sleep 2
+		echo "Clash运行中" >$REAL_LOG
+		sleep 2
+		echo "Clash for OpenWRT" >$REAL_LOG
+	fi
+	nohup /usr/share/clash/clash-watchdog.sh >/dev/null 2>&1
 		
 
 	fi
@@ -567,15 +559,15 @@ fi
 fi
 else
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-		    echo "Enable Client and Start Client Again" >$REAL_LOG 
-		    echo "  $(date "+%Y-%m-%d %H:%M:%S") - Enable Client and Start Client Again" >>/tmp/clash.txt
-		    sleep 3
-			echo "Clash for OpenWRT" >$REAL_LOG
+		echo "Enable Client and Start Client Again" >$REAL_LOG 
+		echo "  $(date "+%Y-%m-%d %H:%M:%S") - Enable Client and Start Client Again" >>/tmp/clash.txt
+		sleep 3
+		echo "Clash for OpenWRT" >$REAL_LOG
 	elif [ "${lang}" == "zh_cn" ];then
     		echo "启用客户端并重新启动客户端" >$REAL_LOG
-			echo "  $(date "+%Y-%m-%d %H:%M:%S") - 启用客户端并重新启动客户端" >>/tmp/clash.txt
-			sleep 3
-			echo "Clash for OpenWRT" >$REAL_LOG
+		echo "  $(date "+%Y-%m-%d %H:%M:%S") - 启用客户端并重新启动客户端" >>/tmp/clash.txt
+		sleep 3
+		echo "Clash for OpenWRT" >$REAL_LOG
 	fi
 fi
 
@@ -585,12 +577,10 @@ fi
 
 
 stop(){
-tun_mode=$(uci get clash.config.tun_mode 2>/dev/null)
-tun_type=$(uci get clash.config.tun_type 2>/dev/null)
 delandns=$(uci get clash.config.delan 2>/dev/null)
 landns=$(uci get clash.config.landns 2>/dev/null)
 lang=$(uci get luci.main.lang 2>/dev/null)
-		  if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+		 if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Stopping Client..." >$REAL_LOG
 		elif [ "${lang}" == "zh_cn" ];then
 			echo "正在停止客户端..." >$REAL_LOG
@@ -618,7 +608,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 
 		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
 		for mangle_index in $mangle_indexs; do
-			ip6tables -t mangle -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
+			ip6tables -t nat -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
 		done
 		
 		fake=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.0\/16/=' |sort -r)
@@ -649,7 +639,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		if [ ! -z "${delandns}" ];then
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 				echo "Removing Custom lan dns server " >$REAL_LOG 
-			elif [ "${lang}" == "zh_cn" ];then
+		elif [ "${lang}" == "zh_cn" ];then
 				echo "删除自定义lan dns服务器" >$REAL_LOG
 		fi
 		uci delete network.lan.dns && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
@@ -665,7 +655,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		killall -9 dnsmasq >/dev/null 2>&1
 		
   	  	/etc/init.d/dnsmasq restart >/dev/null 2>&1
-   	    sleep 1
+   	    	sleep 1
 	
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 				echo "Deleting Cron Job" >$REAL_LOG 
@@ -674,7 +664,7 @@ lang=$(uci get luci.main.lang 2>/dev/null)
 		fi
 		
   	  	del_cron >/dev/null 2>&1
-	    sleep 1
+	    	sleep 1
 		
 		
 	 	echo "" >/tmp/clash.txt >/dev/null 2>&1
@@ -712,7 +702,7 @@ restart(){
 			stop  >/dev/null 2>&1
 			start >/dev/null 2>&1
 		else
-		    start >/dev/null 2>&1
+		    	start >/dev/null 2>&1
 		fi	
 
 #=========================================================================================================================== 
