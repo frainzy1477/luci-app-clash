@@ -24,8 +24,7 @@ endef
 
 
 define Build/Prepare
-	chmod 777 -R ${CURDIR}/tools/po2lmo
-	${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
+	po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
 
 endef
 
@@ -36,7 +35,7 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/conffiles
-	/etc/config/clash
+/etc/config/clash
 endef
 
 define Package/$(PKG_NAME)/prerm
@@ -160,7 +159,5 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DATA) ./po/zh-cn/clash.zh-cn.lmo $(1)/usr/lib/lua/luci/i18n/
 	
 endef
-
-
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
