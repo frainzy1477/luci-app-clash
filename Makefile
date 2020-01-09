@@ -38,7 +38,7 @@ endef
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
-[ -z "$${IPKG_INSTROOT}" ] || exit 0
+[ -z "$${IPKG_INSTROOT}" ] && exit 0
 
 mkdir -p /usr/share/clashbackup 2>/dev/null
 
@@ -99,7 +99,7 @@ endef
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 
-[ -z "$${IPKG_INSTROOT}" ] || exit 0
+[ -z "$${IPKG_INSTROOT}" ] && exit 0
 
 rm -rf /tmp/luci*  
 
