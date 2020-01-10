@@ -17,6 +17,7 @@ function index()
 	entry({"admin", "services", "clash", "import"},cbi("clash/import"),_("Import Config"), 30).leaf = true
 	entry({"admin", "services", "clash", "create"},cbi("clash/create"),_("Create Config"), 40).leaf = true
     entry({"admin", "services", "clash", "servers-config"},cbi("clash/servers-config"), nil).leaf = true
+	entry({"admin", "services", "clash", "provider-config"},cbi("clash/provider-config"), nil).leaf = true
     entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
 
 	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 50)

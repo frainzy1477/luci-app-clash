@@ -17,12 +17,14 @@
 
   
  ## Install
+- Upload ipk file to tmp folder
 
 - cd /tmp
 
 - opkg install luci-app-clash_1.4.2_all.ipk  
 
-
+ ## Wiki
+ 
 - [Fake-IP wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Fake-IP-Mode)
 
 - [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
@@ -43,7 +45,8 @@
 - Ping Custom proxy servers
 - Create v2ray & ssr clash config from subscription url
 - Create Custom Clash Config
-
+- Tun Support
+- Support Proxy Provider
 
 ## Dependency
 
