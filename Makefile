@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.4.2
+PKG_VERSION:=1.4.3
 #PKG_RELEASE:=3
 PKG_MAINTAINER:=frainzy1477
 
@@ -22,7 +22,6 @@ define Package/luci-app-clash/description
 	Luci Interface for clash.
 endef
 
-
 define Build/Prepare
 	chmod 777 -R ${CURDIR}/tools/po2lmo
 	${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
@@ -39,7 +38,6 @@ define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
 mkdir -p /usr/share/clashbackup 2>/dev/null
-
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
 	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null
@@ -65,7 +63,6 @@ if [ -f /usr/share/clash/new_core_version ]; then
 	rm -rf /usr/share/clash/new_core_version 2>/dev/null
 fi
 
-
 if [ -f /usr/share/clash/new_clashr_core_version ]; then
 	rm -rf /usr/share/clash/new_clashr_core_version 2>/dev/null
 fi
@@ -89,8 +86,6 @@ fi
 if [  -f /usr/share/clash/config/custom/config.yaml ];then
 	mv /usr/share/clash/config/custom/config.yaml /usr/share/clashbackup/config.bak3 2>/dev/null
 fi
-
-
 
 endef
 
@@ -118,10 +113,7 @@ if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
 fi
 
-
 mkdir -p /etc/clash/clashtun 2>/dev/null
-
-
 endef
 
 define Package/$(PKG_NAME)/install
@@ -189,9 +181,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DATA) ./luasrc/model/cbi/clash/*.lua $(1)/usr/lib/lua/luci/model/cbi/clash/
 	$(INSTALL_DATA) ./luasrc/view/clash/* $(1)/usr/lib/lua/luci/view/clash/
 	$(INSTALL_DATA) ./po/zh-cn/clash.zh-cn.lmo $(1)/usr/lib/lua/luci/i18n/
-	
 endef
-
-
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
