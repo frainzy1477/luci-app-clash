@@ -2,15 +2,16 @@
 local m, s, o
 local clash = "clash"
 local uci = luci.model.uci.cursor()
+local ipkg = require("luci.model.ipkg")
 local fs = require "nixio.fs"
 local sys = require "luci.sys"
 local sid = arg[1]
 
 
-m = Map(openclash, translate("Edit Proxy-Provider"))
-m.pageaction = false
+m = Map(clash, translate("Edit Proxy-Provider"))
+--m.pageaction = false
 m.redirect = luci.dispatcher.build_url("admin/services/clash/create")
-if m.uci:get(openclash, sid) ~= "provider" then
+if m.uci:get(clash, sid) ~= "provider" then
 	luci.http.redirect(m.redirect)
 	return
 end

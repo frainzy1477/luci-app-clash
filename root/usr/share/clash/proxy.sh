@@ -47,8 +47,7 @@ sleep 2
 yml_proxy_provider_set()
 {
    local section="$1"
-   config_get_bool "enabled" "$section" "enabled" "1"
-   config_get "config" "$section" "config" ""
+
    config_get "type" "$section" "type" ""
    config_get "name" "$section" "name" ""
    config_get "path" "$section" "path" ""
@@ -58,13 +57,7 @@ yml_proxy_provider_set()
    config_get "health_check_url" "$section" "health_check_url" ""
    config_get "health_check_interval" "$section" "health_check_interval" ""
    
-   if [ ! -z "$config" ] && [ "$config" != "$CONFIG_NAME" ]; then
-      return
-   fi
-   
-   if [ "$enabled" = "0" ]; then
-      return
-   fi
+
 
    if [ -z "$type" ]; then
       return
@@ -348,17 +341,19 @@ EOF
 
 }
 
-echo "proxy-provider:" >$PROVIDER_FILE
-rm -rf /tmp/Proxy_Provider
+
+
 config_load "clash"
 config_foreach yml_proxy_provider_set "provider"
 
+if [ -f $PROVIDER_FILE ];then 
+sed -i "1i\   " $PROVIDER_FILE 2>/dev/null 
+sed -i "2i\proxy-provider:" $PROVIDER_FILE 2>/dev/null
+#echo "proxy-provider:" >$PROVIDER_FILE
+rm -rf /tmp/Proxy_Provider
 
-sed -i "s/^ \{0,\}/  - /" /tmp/Proxy_Provider 2>/dev/null
-if [ "$(grep "-" /tmp/Proxy_Provider |wc -l)" -eq 0 ]; then
-   rm -rf $PROXY_PROVIDER_FILE
-   rm -rf /tmp/Proxy_Provider
 fi
+
 
 config_load clash
 config_foreach servers_set "servers"
@@ -424,7 +419,7 @@ set_provider_groups()
 
 	if [ "$1" = "$3" ]; then
 	   set_proxy_provider=1
-	   echo "  - ${2}" >>$GROUP_FILE
+	   echo "    - ${2}" >>$GROUP_FILE
 	fi
 
 }
@@ -450,8 +445,9 @@ yml_groups_set()
    
    echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
+   
    group_name="$name"
-   echo "  proxies: $group_name" >>$GROUP_FILE
+   #echo "  proxies: $group_name" >>$GROUP_FILE
 
   if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$type" == "fallback" ] ; then
       echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
@@ -473,8 +469,10 @@ yml_groups_set()
    config_list_foreach "$section" "other_group" set_other_groups 
    config_foreach yml_servers_add "servers" "$name" 
    
-   echo "  use: $group_name" >>$GROUP_FILE
-
+   if [ "$( grep -c "config provider" $CFG_FILE )" -ne 0 ];then
+   
+	echo "  use: $group_name" >>$GROUP_FILE
+   
    config_foreach set_proxy_provider "provider" "$group_name" 
 
    if [ "$set_group" -eq 1 ]; then
@@ -487,6 +485,8 @@ yml_groups_set()
       sed -i "/^ \{0,\}use: ${group_name}/c\  use:" $GROUP_FILE
    else
       sed -i "/use: ${group_name}/d" $GROUP_FILE 2>/dev/null
+   fi
+   
    fi
    
    
@@ -555,7 +555,9 @@ cat $SERVER_FILE >> $TEMP_FILE  2>/dev/null
 
 cat $GROUP_FILE >> $TEMP_FILE 2>/dev/null
 
+if [ -f $PROVIDER_FILE ];then 
 cat $PROVIDER_FILE >> $TEMP_FILE 2>/dev/null
+fi
 
 if [ -f $CONFIG_YAML ];then
 	rm -rf $CONFIG_YAML
