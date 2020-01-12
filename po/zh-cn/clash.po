@@ -241,8 +241,8 @@ msgstr "Github"
 msgid "Music.163"
 msgstr "网易云音乐"
 
-msgid "Taobao"
-msgstr "淘宝网"
+msgid "iQiyi"
+msgstr "爱奇艺"
 
 msgid "NORMAL"
 msgstr "正常"
