@@ -453,15 +453,18 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	elif [ "${lang}" == "zh_cn" ];then
 		echo "设置 Clash iptables" >$REAL_LOG
 	fi
+
+    	if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
+       		uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
+       		uci commit firewall >/dev/null 2>&1
+       		/etc/init.d/firewall restart >/dev/null 2>&1
+    	fi
+
+
 	rules >/dev/null 2>&1
 	custom_list >/dev/null 2>&1
 	sleep 1
 	
-    	if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
-       		uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
-       		uci commit firewall >/dev/null 2>&1
-       		/etc/init.d/firewall reload >/dev/null 2>&1
-    	fi
 	
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "Restarting Dnsmasq " >$REAL_LOG 
@@ -540,12 +543,7 @@ stop(){
 		elif [ "${lang}" == "zh_cn" ];then
 	    	echo "删除clash iptables规则" >$REAL_LOG
 		fi
-				
-		iptables -t nat -D PREROUTING -p tcp -j clash >/dev/null 2>&1
-		ip6tables -t nat -D PREROUTING -p tcp -j clash_ipv6 >/dev/null 2>&1
-		
-		# flush iptables rules
-		ip6tables -t nat -F clash_ipv6 >/dev/null 2>&1 && ip6tables -t nat -X clash_ipv6 >/dev/null 2>&1		
+										
 		iptables -t nat -F clash >/dev/null 2>&1 && iptables -t nat -X clash >/dev/null 2>&1
 		
 		nat_indexs=$(iptables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash/=' | sort -r)
@@ -555,6 +553,7 @@ stop(){
 
 		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
 		for mangle_index in $mangle_indexs; do
+			ip6tables -t nat -F clash_ipv6 >/dev/null 2>&1 && ip6tables -t nat -X clash_ipv6 >/dev/null 2>&1
 			ip6tables -t nat -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
 		done
 		

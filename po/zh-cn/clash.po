@@ -525,7 +525,7 @@ msgid "Proxy Groups Must Exist In Rule"
 msgstr "添加的策略组必须存在规则创建"
 
 msgid "Policy Groups"
-msgstr "添加到策略组"
+msgstr "策略组"
 
 msgid "Rule"
 msgstr "规则"
@@ -613,8 +613,9 @@ msgstr "编辑代理集配置"
 
 msgid "Provider Type"
 msgstr "代理集类型
-msgid "Choose The Provider Type"
-msgstr "选择代理集的类型"
+
+msgid "Provider Type"
+msgstr "代理集的类型"
 
 msgid "Provider Name"
 msgstr "代理集别名"

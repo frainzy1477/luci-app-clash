@@ -21,7 +21,7 @@ s.addremove   = false
 
 o = s:option(ListValue, "type", translate("Provider Type"))
 o.rmempty = true
-o.description = translate("Choose The Provider Type")
+o.description = translate("Provider Type")
 o:value("http")
 o:value("file")
 
