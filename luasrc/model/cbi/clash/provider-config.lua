@@ -8,8 +8,7 @@ local sys = require "luci.sys"
 local sid = arg[1]
 
 
-m = Map(clash, translate("Edit Proxy-Provider"))
---m.pageaction = false
+m = Map(clash, translate("Edit Proxy Provider"))
 m.redirect = luci.dispatcher.build_url("admin/services/clash/create")
 if m.uci:get(clash, sid) ~= "provider" then
 	luci.http.redirect(m.redirect)
@@ -55,8 +54,7 @@ o = s:option(Value, "health_check_interval", translate("Health Check Interval"))
 o.default = "300"
 o.rmempty = false
 
-o = s:option(DynamicList, "groups", translate("Proxy Group"))
-o.description = translate("No Need Set when Config Create, The added Proxy Groups Must Exist")
+o = s:option(DynamicList, "groups", translate("Policy Group"))
 o.rmempty = true
 m.uci:foreach("clash", "groups",
 		function(s)

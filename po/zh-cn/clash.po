@@ -608,7 +608,7 @@ msgstr "启用以创建配置"
 msgid "Proxy-Provider"
 msgstr "代理集管理"
 
-msgid "Edit Proxy-Provider"
+msgid "Edit Proxy Provider"
 msgstr "编辑代理集配置"
 
 msgid "Provider Type"
@@ -642,3 +642,9 @@ msgstr "状态检查间隔"
 
 msgid "Delete Provider"
 msgstr "清空节点集"
+
+msgid "Policy Group"
+msgstr "策略组"
+
+msgid "Proxy Provider"
+msgstr "代理集"

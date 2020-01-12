@@ -176,7 +176,7 @@ o.width="10%"
 
 
 -- [[ Proxy-Provider Manage ]]--
-s = krk:section(TypedSection, "proxy-provider", translate("Proxy-Provider"))
+s = krk:section(TypedSection, "provider", translate("Proxy Provider"))
 s.anonymous = true
 s.addremove = true
 s.sortable = false
@@ -191,9 +191,10 @@ function s.create(...)
 end
 
 
-o = s:option(DummyValue, "config", translate("Config File"))
+
+o = s:option(DummyValue, "name", translate("Provider Name"))
 function o.cfgvalue(...)
-	return Value.cfgvalue(...) or translate("all")
+	return Value.cfgvalue(...) or translate("None")
 end
 
 o = s:option(DummyValue, "type", translate("Provider Type"))
@@ -201,7 +202,7 @@ function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "name", translate("Provider Name"))
+o = s:option(DummyValue, "path", translate("Provider Path"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
