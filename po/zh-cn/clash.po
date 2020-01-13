@@ -649,3 +649,15 @@ msgstr "策略组"
 
 msgid "Proxy Provider"
 msgstr "代理集"
+
+msgid "Tun Mode"
+msgstr "Tun模式"
+
+msgid "Select Tun Mode"
+msgstr "选Tun模式"
+
+msgid "Tun Mode DNS"
+msgstr "Tun模式DNS"
+
+msgid "Select Tun Mode, Enable Tun custom DNS and make sure you are using tun supported core"
+msgstr "选择Tun模式，启用Tun自定义DNS,并确保使用支持的Tun内核"

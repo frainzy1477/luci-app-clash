@@ -24,7 +24,6 @@ function index()
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 60).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 70).leaf = true
 	entry({"admin", "services", "clash", "settings", "list"},cbi("clash/list"),_("Custom List"), 80).leaf = true
-	entry({"admin", "services", "clash", "settings", "access"},cbi("clash/access"),_("Access Control"), 90).leaf = true
 			
 	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 100)
 	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 110).leaf = true
