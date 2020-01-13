@@ -154,6 +154,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/core_download.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/proxy.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/tundns_1.yaml $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/tundns_2.yaml $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/tundns_3.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/custom_rule.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/luci_version $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/check_luci_version.sh $(1)/usr/share/clash/
