@@ -521,6 +521,47 @@ fi
 #=========================================================================================================================== 
 }
 
+
+remove_mark(){
+
+		tun_mode=$(uci get clash.config.tun_mode 2>/dev/null)
+		ipv6=$(uci get clash.config.ipv6 2>/dev/null)
+
+		if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
+		ip6tables -t nat -F clash_ipv6 2>/dev/null1 && ip6tables -t nat -X clash_ipv6 2>/dev/null
+		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
+		for mangle_index in $mangle_indexs; do
+			ip6tables -t nat -D zone_lan_prerouting $mangle_index 2>/dev/null
+		done
+		fi
+
+
+		if [ "${tun_mode}" -eq 2 ] || [ "${tun_mode}" -eq 3 ];then
+		
+		PROXY_FWMARK="0x162" 2>/dev/null
+		PROXY_ROUTE_TABLE="0x162" 2>/dev/null
+		
+		ip link set dev clash0 down 2>/dev/null
+		ip tuntap del clash0 mode tun 2>/dev/null
+		ip route del default dev clash0 table "$PROXY_ROUTE_TABLE" 2>/dev/null
+		ip rule del fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE" 2>/dev/null
+
+		iptables -t mangle -D OUTPUT -j clash 2>/dev/null
+		iptables -t mangle -D PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK" 2>/dev/null
+
+		if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
+		ip6tables -t mangle -D PREROUTING -j MARK --set-mark "$PROXY_FWMARK" 2>/dev/null
+		fi
+
+		iptables -t mangle -F clash 2>/dev/null
+		iptables -t mangle -X clash 2>/dev/null
+		ipset destroy localnetwork 2>/dev/null
+				
+		fi
+
+}
+
+
 stop(){
 #=========================================================================================================================== 
 		delandns=$(uci get clash.config.delan 2>/dev/null)
@@ -550,13 +591,6 @@ stop(){
 		done
 
 
-		if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
-		ip6tables -t nat -F clash_ipv6 >/dev/null 2>&1 && ip6tables -t nat -X clash_ipv6 >/dev/null 2>&1
-		mangle_indexs=$(ip6tables -nvL zone_lan_prerouting -t nat | sed 1,2d | sed -n '/clash_ipv6/=' | sort -r)
-		for mangle_index in $mangle_indexs; do
-			ip6tables -t nat -D zone_lan_prerouting $mangle_index >/dev/null 2>&1
-		done
-		fi
 		
 		fake=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.0\/16/=' |sort -r)
        	for fake in $fake; do
@@ -568,29 +602,7 @@ stop(){
           	iptables -t nat -D OUTPUT $fake2 >/dev/null 2>&1
         done	
 
-		ipset -! flush clash_lan_ac >/dev/null 2>&1
-		ipset -! flush clash_lan >/dev/null 2>&1
-
-		if [ "${tun_mode}" -eq 2 ] || [ "${tun_mode}" -eq 3 ];then
-		
-		PROXY_FWMARK="0x162"
-		PROXY_ROUTE_TABLE="0x162"
-		
-		ip link set dev clash0 down >/dev/null 2>&1
-		ip tuntap del clash0 mode tun >/dev/null 2>&1
-		ip route del default dev clash0 table "$PROXY_ROUTE_TABLE" >/dev/null 2>&1
-		ip rule del fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE" >/dev/null 2>&1
-
-		iptables -t mangle -D OUTPUT -j clash >/dev/null 2>&1
-		iptables -t mangle -D PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK" >/dev/null 2>&1
-		if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
-		ip6tables -t mangle -D PREROUTING -j MARK --set-mark "$PROXY_FWMARK" >/dev/null 2>&1
-		fi
-		iptables -t mangle -F clash >/dev/null 2>&1
-		iptables -t mangle -X clash >/dev/null 2>&1
-		ipset destroy localnetwork >/dev/null 2>&1
-				
-		fi
+		remove_mark >/dev/null 2>&1
 
 		kill -9 $(ps | grep clash-watchdog.sh | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		
