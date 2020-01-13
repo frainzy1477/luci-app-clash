@@ -174,7 +174,7 @@ rules(){
 		core=$(uci get clash.config.core 2>/dev/null)
 		tun_mode=$(uci get clash.config.tun_mode 2>/dev/null)
 		
-		if [ "{$tun_mode}" -eq 1 ] || [ -z "{$tun_mode}" ];then
+		if [ "${core}" -eq 1 ] || [ "${core}" -eq 2 ] || [ -z "${tun_mode}" ] || [ "${tun_mode}" -eq 1 ];then
 			iptables -t nat -N clash              
 			iptables -t nat -A clash -d 0.0.0.0/8 -j RETURN
 			iptables -t nat -A clash -d 10.0.0.0/8 -j RETURN
@@ -208,32 +208,32 @@ rules(){
 			fi
 			
 		elif [ "${tun_mode}" -eq 2 ] || [ "${tun_mode}" -eq 3 ];then
-				PROXY_FWMARK="0x162"
-				PROXY_ROUTE_TABLE="0x162"
-                ipset create localnetwork hash:net
-                ipset add localnetwork 127.0.0.0/8
-                ipset add localnetwork 10.0.0.0/8
-                ipset add localnetwork 169.254.0.0/16
-                ipset add localnetwork 192.168.0.0/16
-                ipset add localnetwork 224.0.0.0/4
-                ipset add localnetwork 240.0.0.0/4
-                ipset add localnetwork 172.16.0.0/12
+			PROXY_FWMARK="0x162"
+			PROXY_ROUTE_TABLE="0x162"
+			ipset create localnetwork hash:net
+			ipset add localnetwork 127.0.0.0/8
+			ipset add localnetwork 10.0.0.0/8
+			ipset add localnetwork 169.254.0.0/16
+			ipset add localnetwork 192.168.0.0/16
+			ipset add localnetwork 224.0.0.0/4
+			ipset add localnetwork 240.0.0.0/4
+			ipset add localnetwork 172.16.0.0/12
 
-                ip tuntap add user root mode tun clash0
-                ip link set clash0 up
-                ip route replace default dev clash0 table "$PROXY_ROUTE_TABLE"
-                ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"
+			ip tuntap add user root mode tun clash0
+			ip link set clash0 up
+			ip route replace default dev clash0 table "$PROXY_ROUTE_TABLE"
+			ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"
 
-                iptables -t mangle -N clash
-                iptables -t mangle -F clash
-                iptables -t mangle -A clash -d 198.18.0.0/16 -j MARK --set-mark "$PROXY_FWMARK"
-                iptables -t mangle -A clash -m set --match-set localnetwork dst -j RETURN			
+			iptables -t mangle -N clash
+			iptables -t mangle -F clash
+			iptables -t mangle -A clash -d 198.18.0.0/16 -j MARK --set-mark "$PROXY_FWMARK"
+			iptables -t mangle -A clash -m set --match-set localnetwork dst -j RETURN			
 
-				iptables -t mangle -I OUTPUT -j clash
-                iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"							
-				if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
-                ip6tables -t mangle -I PREROUTING -j MARK --set-mark "$PROXY_FWMARK"		
-				fi
+			iptables -t mangle -I OUTPUT -j clash
+			iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"							
+			if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
+			ip6tables -t mangle -I PREROUTING -j MARK --set-mark "$PROXY_FWMARK"		
+			fi
 		fi
 #=========================================================================================================================== 
 }	 
@@ -593,14 +593,14 @@ stop(){
 
 		
 		fake=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.0\/16/=' |sort -r)
-       	for fake in $fake; do
+       		for fake in $fake; do
           	iptables -t nat -D OUTPUT $fake >/dev/null 2>&1
-        done
+        	done
 		
 		fake2=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.1\/16/=' |sort -r)
-       	for fake2 in $fake2; do
+       		for fake2 in $fake2; do
           	iptables -t nat -D OUTPUT $fake2 >/dev/null 2>&1
-        done	
+        	done	
 
 		remove_mark >/dev/null 2>&1
 
@@ -632,7 +632,7 @@ stop(){
 		fi
 		
   	  	del_cron >/dev/null 2>&1
-	    sleep 1		
+	    	sleep 1		
 
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Restarting Dnsmasq " >$REAL_LOG 
@@ -640,7 +640,7 @@ stop(){
 	    	echo "重启 Dnsmasq 程序" >$REAL_LOG
 		fi	
 		revert_dns >/dev/null 2>&1
-   	    sleep 1
+   	    	sleep 1
 
 	 	echo "" >/tmp/clash.txt >/dev/null 2>&1
 
