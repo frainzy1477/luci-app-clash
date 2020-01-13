@@ -1,14 +1,7 @@
 name: Luci-app-clash CI
-on:
-  release:
-    types: [published]
-  
-  push:
-    branches: 
-      - master
-
-      
+on: [push, pull_request]
 jobs:
+
   build:
     runs-on: ubuntu-18.04
     
