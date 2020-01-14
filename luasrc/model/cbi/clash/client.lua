@@ -41,7 +41,7 @@ o:value("cus", translate("Custom Config"))
 o.description = translate("Select Configuration type")
 
 o = s:option(Button, "Apply")
-o.title = translate("Save & Apply")
+o.title = translate("Save &amp; Apply")
 o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
@@ -51,10 +51,6 @@ end
 o = s:option(Button,"action")
 o.title = translate("Action")
 o.template = "clash/start_stop"
-
-
-
-
 
 return m
 

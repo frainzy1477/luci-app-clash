@@ -45,7 +45,7 @@ o:value("linux-mipsle-hardfloat")
 
 o=s:option(Button,"down_core")
 o.inputtitle = translate("Save & Apply")
-o.title = translate("Save & Apply")
+o.title = translate("Save &amp; Apply")
 o.inputstyle = "reload"
 o.write = function()
   k.uci:commit("clash")
