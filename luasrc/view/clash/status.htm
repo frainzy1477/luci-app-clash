@@ -108,15 +108,15 @@ var HTTP = {
 		let timeout = setTimeout(() => {
 			img.onerror = img.onload = null;
 			img = null;
-			document.getElementById(cbElID).innerHTML = '<b><font color=red><%:NO ACCESS%></font></b>'
+			document.getElementById(cbElID).innerHTML = '<b><font color="red"><%:NO ACCESS%></font></b>'
 		}, 1000);
 		img.onerror = () => {
 			clearTimeout(timeout);
-			document.getElementById(cbElID).innerHTML = '<b><font color=red><%:TIMEOUT%></font></b>'
+			document.getElementById(cbElID).innerHTML = '<b><font color="red"><%:TIMEOUT%></font></b>'
 		}
 		img.onload = () => {
 			clearTimeout(timeout);
-			document.getElementById(cbElID).innerHTML = '<b><font color=green><%:NORMAL%></font></b>'
+			document.getElementById(cbElID).innerHTML = '<b><font color="green"><%:NORMAL%></font></b>'
 		}
 		img.src = `https://${domain}/favicon.ico?${+(new Date)}`
 	}
