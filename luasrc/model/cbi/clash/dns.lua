@@ -94,7 +94,7 @@ o:value("0", translate("Disable"))
 o:value("1", translate("Fake-IP(Dreamacro Tun)"))
 o:value("2", translate("Fake-IP(comzyh Tun)"))
 o:value("3", translate("Redir-Host(comzyh Tun)"))
-o.description = translate("Select Tun Mode, Enabling will disable custom DNS and make sure your are using tun supported core")
+o.description = translate("Select Tun Mode, Enable Tun custom DNS and make sure your are using tun supported core")
 o:depends("mode", 0)
 
 md = s:option(Flag, "mode", translate("Custom DNS"))
@@ -138,5 +138,4 @@ end
 
 
 return m
-
 
