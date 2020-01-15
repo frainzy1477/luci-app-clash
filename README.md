@@ -29,9 +29,6 @@
 
 - [Redir-Host wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Redir-Host-Mode)
 
-- [Dreamacro Clash TUN mode wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Tun-Mode-1)
-
-- [comzyh Clash TUN mode wiki](https://github.com/frainzy1477/luci-app-clash/wiki/Tun-Mode-2)
 
 ## Features
 
