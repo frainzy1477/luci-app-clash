@@ -100,6 +100,7 @@ fi
 #######READ GROUPS START
 if [ $loadgroups -eq 1 ];then
 
+if [ -f /tmp/yaml_group.yaml ];then
 	while [[ "$( grep -c "config groups" $CFG_FILE )" -ne 0 ]] 
 	do
       uci delete clash.@groups[0] && uci commit clash >/dev/null 2>&1
@@ -239,7 +240,7 @@ rm -rf /usr/shar/clash/custom_rule.yaml 2>/dev/null
 mv /tmp/rule.yaml /usr/share/clash/custom_rule.yaml 2>/dev/null
 rm -rf /tmp/rule.yaml 2>&1  
 
-
+fi
 fi
 #######READ GROUPS END
 
@@ -307,7 +308,7 @@ cfg_gett()
 	echo "$(grep "$1" $single_server 2>/dev/null |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed 's/ \{0,\}\}\{0,\}$//g' 2>/dev/null)"
 }  
 #######READ SERVERS START   
-
+if [ -f /tmp/yaml_proxy.yaml ];then
    while [[ "$( grep -c "config servers" $CFG_FILE )" -ne 0 ]] 
    do
       uci delete clash.@servers[0] && uci commit clash >/dev/null 2>&1
@@ -491,9 +492,12 @@ elif [ $lang == "zh_cn" ];then
 			sleep 2
 			echo "Clash for OpenWRT" >$REAL_LOG			
 fi
+fi
 #######READ SERVERS END  
 
 #######READ PROVIDER START
+
+if [ -f /tmp/yaml_provider.yaml ];then
 
 while [[ "$( grep -c "config provider" $CFG_FILE )" -ne 0 ]] 
 do
@@ -636,6 +640,7 @@ done
 			echo "Clash for OpenWRT" >$REAL_LOG			
 		fi
 #######READ PROVIDER END
+fi
 fi
 rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
 

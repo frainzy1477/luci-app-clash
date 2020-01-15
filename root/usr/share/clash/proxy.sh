@@ -36,7 +36,7 @@ CFG_FILE="/etc/config/clash"
 DNS_FILE="/usr/share/clash/dns.yaml" 
 PROVIDER_FILE="/tmp/yaml_provider.yaml"
 
-rm $PROVIDER_FILE $SERVER_FILE
+
 
    servcount=$( grep -c "config servers" $CFG_FILE 2>/dev/null)
    gcount=$( grep -c "config groups" $CFG_FILE 2>/dev/null)
@@ -601,9 +601,6 @@ fi
 
 fi
 rm -rf $SERVER_FILE
-
-
-rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
 
 fi
 

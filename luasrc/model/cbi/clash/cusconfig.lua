@@ -26,6 +26,7 @@ sev.cfgvalue = function(self, section)
 	return NXFS.readfile(conf) or ""
 end
 sev.write = function(self, section, value)
+	NXFS.writefile(conf, value:gsub("\r\n", "\n"))
 end
 
 
