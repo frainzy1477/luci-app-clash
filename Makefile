@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.4.5
+PKG_VERSION:=1.4.6
 PKG_MAINTAINER:=frainzy1477
 
 
@@ -38,6 +38,7 @@ define Package/$(PKG_NAME)/preinst
 [ -z "$${IPKG_INSTROOT}" ] && exit 0
 
 mkdir -p /usr/share/clashbackup 2>/dev/null
+mkdir -p /etc/clash/provider 2>/dev/null
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
 	rm -rf /tmp/dnsmasq.d/custom_list.conf 2>/dev/null

@@ -1,10 +1,18 @@
-#!/bin/sh /etc/rc.common
+#!/bin/bash /etc/rc.common
 . /lib/functions.sh
 
 REAL_LOG="/usr/share/clash/clash_real.txt"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 create=$(uci get clash.config.create 2>/dev/null)
+load_from=$(uci get clash.config.loadfrom 2>/dev/null)
+
+
+if [ "$load_from" == "sub" ];then  
+        load="/usr/share/clash/config/sub/config.yaml"	
+elif [ "$load_from" == "upl" ];then
+	    load="/usr/share/clash/config/upload/config.yaml"
+fi
 
 
 if [ "${create}" -eq 1 ];then
@@ -15,6 +23,8 @@ if [ "${create}" -eq 1 ];then
     	 echo "开始创建自定义配置..." >$REAL_LOG
 	fi
 	sleep 1
+	
+	
 CONFIG_YAML_RULE="/usr/share/clash/custom_rule.yaml"
 SERVER_FILE="/tmp/servers.yaml"
 CONFIG_YAML="/usr/share/clash/config/custom/config.yaml"
@@ -25,6 +35,8 @@ CONFIG_FILE="/tmp/y_groups"
 CFG_FILE="/etc/config/clash"
 DNS_FILE="/usr/share/clash/dns.yaml" 
 PROVIDER_FILE="/tmp/yaml_provider.yaml"
+
+rm $PROVIDER_FILE $SERVER_FILE
 
    servcount=$( grep -c "config servers" $CFG_FILE 2>/dev/null)
    gcount=$( grep -c "config groups" $CFG_FILE 2>/dev/null)
@@ -51,13 +63,19 @@ yml_proxy_provider_set()
    config_get "type" "$section" "type" ""
    config_get "name" "$section" "name" ""
    config_get "path" "$section" "path" ""
+   config_get "pathh" "$section" "pathh" ""
    config_get "provider_url" "$section" "provider_url" ""
    config_get "provider_interval" "$section" "provider_interval" ""
    config_get "health_check" "$section" "health_check" ""
    config_get "health_check_url" "$section" "health_check_url" ""
    config_get "health_check_interval" "$section" "health_check_interval" ""
    
-
+	if [ "$type" == "http" ];then
+		ppath="path: $path"
+	elif [ "$type" == "file" ];then
+	    ppath="path: $pathh"
+	fi
+	  
 
    if [ -z "$type" ]; then
       return
@@ -85,7 +103,7 @@ yml_proxy_provider_set()
 cat >> "$PROVIDER_FILE" <<-EOF
   $name:
     type: $type
-    path: $path
+    $ppath
 EOF
    if [ ! -z "$provider_url" ]; then
 cat >> "$PROVIDER_FILE" <<-EOF
@@ -457,8 +475,8 @@ yml_groups_set()
    fi       
  
    if [ "$name" != "$old_name" ]; then
-      sed -i "s/,${old_name}$/,${name}#d/g" $CONFIG_FILE 2>/dev/null
-      sed -i "s/:${old_name}$/:${name}#d/g" $CONFIG_FILE 2>/dev/null
+      sed -i "s/,${old_name}$/,${name}#d/g" $load 2>/dev/null
+      sed -i "s/:${old_name}$/:${name}#d/g" $load 2>/dev/null
       sed -i "s/\'${old_name}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
       config_load "clash"
    fi
@@ -590,12 +608,9 @@ fi
 
 fi
 rm -rf $SERVER_FILE
-rm -rf /tmp/match_servers.list 2>/dev/null
-rm -rf /tmp/yaml_provider.yaml 2>/dev/null
-rm -rf /tmp/provider.yaml 2>/dev/null
-rm -rf /tmp/provider_gen.yaml 2>/dev/null
-rm -rf /tmp/provider_che.yaml 2>/dev/null
-rm -rf /tmp/match_provider.list 2>/dev/null
+
+
+rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
 
 fi
 

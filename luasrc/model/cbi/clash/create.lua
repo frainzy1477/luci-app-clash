@@ -28,7 +28,7 @@ o.description = translate("Download Rule")
 o.inputstyle = "reload"
 o.write = function()
   uci:commit("clash")
-  SYS.call("sh /usr/share/clash/rule.sh >>/tmp/clash.txt 2>&1 &")
+  luci.sys.call("/usr/share/clash/rule.sh >>/tmp/clash.txt 2>&1 &")
   HTTP.redirect(DISP.build_url("admin", "services", "clash", "servers"))
 end
 
@@ -90,7 +90,7 @@ o.inputtitle = translate("Load Config")
 o.inputstyle = "apply"
 o.write = function()
  krk.uci:commit("clash")
- luci.sys.call("sh /usr/share/clash/load.sh >/dev/null 2>&1 &")
+ luci.sys.call("/usr/share/clash/load.sh >/dev/null 2>&1 &")
  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
@@ -99,7 +99,7 @@ o.inputtitle = translate("Create Config")
 o.inputstyle = "apply"
 o.write = function()
   krk.uci:commit("clash")
-  luci.sys.call("sh /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
+  luci.sys.call("/usr/share/clash/proxy.sh >/dev/null 2>&1 &")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
 end
 
