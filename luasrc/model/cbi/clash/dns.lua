@@ -97,14 +97,7 @@ o:value("3", translate("Redir-Host(comzyh Tun)"))
 o.description = translate("Select Tun Mode, Enable Tun custom DNS and make sure you are using tun supported core")
 o:depends("mode", 0)
 
-md = s:option(Flag, "tun_dns", translate("Modify Tun DNS"))
-md.default = 1
-md.rmempty = false
-md.description = translate("Modify Tun DNS")
-md:depends("tun_mode", 1)
-md:depends("tun_mode", 2)
-md:depends("tun_mode", 3)
-o:depends("mode", 0)
+
 
 
 md = s:option(Flag, "mode", translate("Custom DNS"))
@@ -141,7 +134,7 @@ o.write = function(self, section, value)
 end
 o.description = translate("NB: press ENTER to create a blank line at the end of input.")
 o:depends("tun_mode", 1)
-o:depends("tun_dns", 1)
+
 
 local dns2 = "/usr/share/clash/tundns_2.yaml"
 o = s:option(TextValue, "dns2",translate("Modify Tun DNS"))
@@ -156,7 +149,7 @@ o.write = function(self, section, value)
 end
 o.description = translate("NB: press ENTER to create a blank line at the end of input.")
 o:depends("tun_mode", 2)
-o:depends("tun_dns", 1)
+
 
 
 local dns3 = "/usr/share/clash/tundns_3.yaml"
@@ -172,7 +165,7 @@ o.write = function(self, section, value)
 end
 o.description = translate("NB: press ENTER to create a blank line at the end of input.")
 o:depends("tun_mode", 3)
-o:depends("tun_dns", 1)
+
 
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")

@@ -12,7 +12,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
 	TITLE:=LuCI app for clash
-	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util +kmod-tun
+	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef
@@ -35,8 +35,7 @@ endef
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
-[ -z "$${IPKG_INSTROOT}" ] && exit 0
-
+mkdir -p /etc/clash/clashtun 2>/dev/null
 mkdir -p /usr/share/clashbackup 2>/dev/null
 mkdir -p /etc/clash/provider 2>/dev/null
 
@@ -93,8 +92,6 @@ endef
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 
-[ -z "$${IPKG_INSTROOT}" ] && exit 0
-
 rm -rf /tmp/luci*  
 
 if [ -f "/etc/config/clash.bak" ]; then
@@ -117,7 +114,6 @@ if [ -f "/etc/init.d/clash" ]; then
 	/etc/init.d/clash disable 2>/dev/null
 fi
 
-mkdir -p /etc/clash/clashtun 2>/dev/null
 endef
 
 define Package/$(PKG_NAME)/install
