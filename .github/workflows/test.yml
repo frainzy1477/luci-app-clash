@@ -1,0 +1,46 @@
+
+name: Luci-app-clash CI
+on: [push, pull_request]
+jobs:
+
+  build:
+    runs-on: ubuntu-18.04
+    
+    env:
+      URL: https://downloads.openwrt.org/snapshots/targets/ramips/mt7621/openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+    
+    steps:
+    - name: Checkout - clone repository
+      uses: actions/checkout@v1
+    
+    - name: Download and untar sdk
+      run: |
+        wget $URL
+        tar xvJf openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+
+    - name: Install dependencies
+      run: |
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion git-core gcc-multilib libelf-dev autoconf automake libtool
+        
+    - name: Load custom configuration
+      env:
+        CONFIG_FILE: '.config'
+      run: |
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64/.config
+        cd openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64
+        make defconfig
+        
+    - name: Clone package
+      run: |
+        cd openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64/package/
+        git clone -b master https://github.com/frainzy1477/luci-app-clash.git
+      
+    - name: Build ipk
+      run: |
+        cd openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64
+        make package/luci-app-clash/compile V=99
+    - name: Upload - push to artifact file
+      uses: actions/upload-artifact@v1
+      with:
+        name: luci-app-clash
+        path: openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64/bin/packages/
