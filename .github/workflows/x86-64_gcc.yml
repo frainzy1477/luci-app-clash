@@ -52,7 +52,7 @@ jobs:
       run: |
         cd $SPATH
         make package/luci-app-clash/compile V=99
-        mv $SPATH/bin ./
+        mv bin ../
 
     - name: Upload - push to artifact file
       uses: actions/upload-artifact@v1
