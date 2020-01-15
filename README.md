@@ -24,6 +24,7 @@
 - cd /tmp
 
 - opkg install luci-app-clash_1.4.5_all.ipk  
+- opkg install luci-app-clash_1.4.5_all.ipk --force-depends
 
  ## Wiki
  
