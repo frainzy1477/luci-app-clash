@@ -28,7 +28,8 @@ jobs:
     - name: Clone package
       run: |
         cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
-        git clone -b master https://github.com/frainzy1477/luci-app-clash.git       
+        git clone -b master https://github.com/frainzy1477/luci-app-clash.git
+      
 
     - name: Build ipk
       run: |
