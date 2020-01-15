@@ -29,7 +29,10 @@ jobs:
       run: |
         cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
         git clone -b master https://github.com/frainzy1477/luci-app-clash.git
-
+        
+    - name: Install luci-base host tools
+      run: |
+        make package/luci-base/host/compile V=s       
 
     - name: Build ipk
       run: |
