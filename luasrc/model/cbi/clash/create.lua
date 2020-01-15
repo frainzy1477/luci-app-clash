@@ -202,10 +202,7 @@ function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "path", translate("Provider Path"))
-function o.cfgvalue(...)
-	return Value.cfgvalue(...) or translate("None")
-end
+
 
 
 r = krk:section(TypedSection, "groups", translate("Policy Groups"))

@@ -84,19 +84,12 @@ yml_proxy_provider_set()
    if [ -z "$name" ]; then
       return
    fi
-   
-   if [ -z "$path" ]; then
-      return
-   fi
+
    
    if [ -z "$health_check" ]; then
       return
    fi
-   if [ $lang == "en" ] || [ $lang == "auto" ];then
-   echo "Now Reading 【$type】-【$name】 Proxy Provider ..." >$REAL_LOG
-   elif [ $lang == "zh_cn" ];then
-   echo "正在写入【$type】-【$name】代理集到配置文件【$CONFIG_NAME】..." >$REAL_LOG
-   fi
+
    
    echo "$name" >> /tmp/Proxy_Provider
    
