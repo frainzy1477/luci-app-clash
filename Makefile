@@ -36,6 +36,8 @@ endef
 define Package/$(PKG_NAME)/preinst
 #!/bin/sh
 
+[ -z "$${IPKG_INSTROOT}" ] || exit 0
+
 mkdir -p /usr/share/clashbackup 2>/dev/null
 
 if [ -f "/tmp/dnsmasq.d/custom_list.conf" ]; then
@@ -90,6 +92,9 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
+
+[ -z "$${IPKG_INSTROOT}" ] || exit 0
+
 rm -rf /tmp/luci*  
 
 if [ -f "/etc/config/clash.bak" ]; then
