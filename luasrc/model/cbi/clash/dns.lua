@@ -57,7 +57,6 @@ o:depends("mode", 1)
 
 
 o = s:option(Button, "Apply")
-o.title = translate("Save &amp; Apply")
 o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()

@@ -1,0 +1,61 @@
+name: Luci-app-clash CI
+on:
+  release:
+    types: [published]
+  
+  push:
+    branches: 
+      - patcher
+
+      
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    env:
+      URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+      SPATH: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+    
+    steps:
+    - name: Checkout - clone repository
+      uses: actions/checkout@v1
+    
+    - name: Download and untar sdk
+      run: |
+        wget $URL
+        tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+
+    
+    - name: Configure sdk
+      run: cp ./config $SPATH/.config
+      
+    - name: Install dependencies
+      run: |
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion git-core gcc-multilib libelf-dev autoconf automake libtool
+        
+    - name: Clone package
+      run: |
+        cd $SPATH
+        git clone -b master https://github.com/frainzy1477/luci-app-clash.git package/luci-app-clash
+
+    - name: Prepare package building env
+      run: |
+        cd $SPATH
+        rm -rf $SPATH/package/linux
+        echo "CONFIG_PACKAGE_luci-app-clash=y" >> .config
+        make defconfig
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a -d m
+        make package/luci-base/host/compile V=s
+
+    - name: Build ipk
+      run: |
+        cd $SPATH
+        make package/luci-app-clash/compile V=99
+        mv $SPATH/bin ./
+
+    - name: Upload - push to artifact file
+      uses: actions/upload-artifact@v1
+      with:
+        name: luci-app-clash
+        path: ./bin
