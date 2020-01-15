@@ -43,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: luci-app-clash
-        path: openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64/bin/packages/
+        path: openwrt-sdk-ramips-mt7621_gcc-8.3.0_musl.Linux-x86_64/bin/packages/mipsel_24kc/
