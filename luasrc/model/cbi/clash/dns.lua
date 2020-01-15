@@ -119,7 +119,7 @@ o:depends("mode", 1)
 
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
-o.inputtitle = translate("Save & Apply")
+o.inputtitle = translate("Save &amp; Apply")
 o.inputstyle = "apply"
 o.write = function()
 local clash_conf = "/etc/clash/config.yaml"

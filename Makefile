@@ -22,8 +22,9 @@ define Package/luci-app-clash/description
 endef
 
 define Build/Prepare
-	chmod 777 -R ${CURDIR}/tools/po2lmo
-	${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
+	#chmod 777 -R ${CURDIR}/tools/po2lmo
+	#${CURDIR}/tools/po2lmo/src/po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
+	po2lmo ${CURDIR}/po/zh-cn/clash.po ${CURDIR}/po/zh-cn/clash.zh-cn.lmo
 
 endef
 

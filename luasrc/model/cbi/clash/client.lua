@@ -54,7 +54,7 @@ o.description = translate("Select Configuration type")
 
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
-o.inputtitle = translate("Save & Apply")
+o.inputtitle = translate("Save &amp; Apply")
 o.inputstyle = "apply"
 o.write = function()
   	m.uci:commit("clash")
