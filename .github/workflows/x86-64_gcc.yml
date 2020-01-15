@@ -16,14 +16,18 @@ jobs:
       run: |
         wget $URL
         tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
-
-    
-    - name: Configure sdk
-      run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
       
     - name: Install dependencies
       run: |
         sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion git-core gcc-multilib libelf-dev autoconf automake libtool
+        
+    - name: Load custom configuration
+      env:
+        CONFIG_FILE: '.config'
+      run: |
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+        make defconfig        
         
     - name: Clone package
       run: |
@@ -40,4 +44,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: luci-app-clash
-        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base
+        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/
