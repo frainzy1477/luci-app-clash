@@ -58,7 +58,6 @@ o.description = translate("Bind Address")
 o:depends("allow_lan", "true")
 
 
-
 o = s:option(Value, "dash_port")
 o.title = translate("Dashboard Port")
 o.default = 9191
@@ -82,7 +81,7 @@ o:value("debug", "debug")
 
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
-o.inputtitle = translate("Save &amp; Apply")
+o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
 local clash_conf = "/etc/clash/config.yaml"

@@ -19,7 +19,6 @@ o.rmempty = false
 o.description = translate("Enable")
 
 
-
 o = s:option(ListValue, "core", translate("Core"))
 o.default = "clashcore"
 if nixio.fs.access("/etc/clash/clash") then
@@ -54,7 +53,7 @@ o.description = translate("Select Configuration type")
 
 o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
-o.inputtitle = translate("Save &amp; Apply")
+o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
   	m.uci:commit("clash")
