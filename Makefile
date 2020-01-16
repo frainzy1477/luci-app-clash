@@ -141,6 +141,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/yum_change.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/groups.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/rule.sh $(1)/usr/share/clash/
+	$(INSTALL_BIN) ./root/usr/share/clash/geoip.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/list.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/v2ssr.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/server.list $(1)/usr/share/clash/
