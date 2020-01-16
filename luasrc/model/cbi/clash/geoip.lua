@@ -17,10 +17,10 @@ bold_off = [[</strong>]]
 k = Map(clash)
 k.reset = false
 k.submit = false
-s =k:section(TypedSection, "clash", translate("Local Update GeoIP"))
+s=k:section(TypedSection, "clash", translate("Local Update GeoIP"))
 s.anonymous = true
 s.addremove=false
-o = s:option(FileUpload, "",translate("Update GEOIP Database"))
+o = s:option(FileUpload, "")
 o.description = translate("NB: Upload GEOIP Database file Country.mmdb")
 .."<br />"
 ..translate("https://github.com/Dreamacro/maxmind-geoip/releases")
@@ -100,7 +100,7 @@ o.default=1
 
 o = s:option(Value, "license_key")
 o.title = translate("LICENSE KEY")
-o.description = translate("MaxMind LICENSE KEY")
+o.description = translate("MaxMind LICENSE KEY")..translate(" https://www.maxmind.com/en/geolite2/signup")
 o.rmempty = true
 
 o=s:option(Button,"update_geoip")

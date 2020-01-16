@@ -710,3 +710,5 @@ msgstr "每月的第三周"
 msgid "Every Fouth Weeks"
 msgstr "每月的第四周"
 
+msgid "Update GeoIP"
+msgstr "更新GeoIP数据库"
