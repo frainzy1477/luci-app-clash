@@ -75,9 +75,8 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-
+rm -rf /tmp/luci*
 if [ -z "$${IPKG_INSTROOT}" ]; then
-	rm -rf /tmp/luci*
 	mv /etc/config/clash.bak /etc/config/clash 2>/dev/null
 	mv /usr/share/clashbackup/config.bak1 /usr/share/clash/config/sub/config.yaml 2>/dev/null
 	mv /usr/share/clashbackup/config.bak2 /usr/share/clash/config/upload/config.yaml 2>/dev/null
