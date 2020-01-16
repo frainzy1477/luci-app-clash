@@ -6,6 +6,7 @@ loadgroups=$(uci get clash.config.loadgroups 2>/dev/null)
 loadservers=$(uci get clash.config.loadservers 2>/dev/null)
 load_from=$(uci get clash.config.loadfrom 2>/dev/null)
 
+run_load(){
 
 if [ "$load_from" == "sub" ];then 
         load="/usr/share/clash/config/sub/config.yaml"	
@@ -644,5 +645,10 @@ fi
 fi
 rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
 
-/usr/share/clash/proxy.sh 2>/dev/null
+/usr/share/clash/proxy.sh >/dev/null 2>&1
+
+}
+
+run_load >/dev/null 2>&1
+
 

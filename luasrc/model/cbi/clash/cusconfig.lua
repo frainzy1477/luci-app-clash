@@ -19,7 +19,7 @@ s.addremove=false
 
 local conf = "/usr/share/clash/config/custom/config.yaml"
 sev = s:option(TextValue, "conf")
-sev.readonly=true
+--sev.readonly=true
 sev.rows = 20
 sev.wrap = "off"
 sev.cfgvalue = function(self, section)
