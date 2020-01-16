@@ -17,10 +17,10 @@ bold_off = [[</strong>]]
 k = Map(clash)
 k.reset = false
 k.submit = false
-sul =k:section(TypedSection, "clash", translate("Local Update GeoIP"))
-sul.anonymous = true
-sul.addremove=false
-o = sul:option(FileUpload, "",translate("Update GEOIP Database"))
+s =k:section(TypedSection, "clash", translate("Local Update GeoIP"))
+s.anonymous = true
+s.addremove=false
+o = s:option(FileUpload, "",translate("Update GEOIP Database"))
 o.description = translate("NB: Upload GEOIP Database file Country.mmdb")
 .."<br />"
 ..translate("https://github.com/Dreamacro/maxmind-geoip/releases")
