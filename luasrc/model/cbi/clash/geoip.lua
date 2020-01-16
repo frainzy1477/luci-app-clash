@@ -99,8 +99,8 @@ o.default=1
 
 
 o = s:option(Value, "license_key")
-o.title = translate("LICENSE KEY")
-o.description = translate("MaxMind LICENSE KEY")..translate(" https://www.maxmind.com/en/geolite2/signup")
+o.title = translate("License Key")
+o.description = translate("MaxMind License Key")..translate(" https://www.maxmind.com/en/geolite2/signup")
 o.rmempty = true
 
 o=s:option(Button,"update_geoip")

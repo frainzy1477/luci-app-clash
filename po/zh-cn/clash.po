@@ -680,10 +680,10 @@ msgstr "本地更新GeoIP数据库"
 msgid "Online Update GeoIP"
 msgstr "在线更新GeoIP数据库"
 
-msgid "MaxMind LICENSE KEY"
+msgid "MaxMind License Key"
 msgstr "MaxMind许可证密钥"
 
-msgid "LICENSE KEY"
+msgid "License Key"
 msgstr "许可证密钥"
 
 msgid "Auto Update GeoIP Database"

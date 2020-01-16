@@ -29,13 +29,13 @@ XHR.poll(2, '<%=url([[admin]], [[services]], [[clash]], [[check_geoip]])%>', nul
 
 }
 
-XHR.poll(3, '<%=luci.dispatcher.build_url("admin", "services", "clash", "geoipcheck")%>', null, function(x, status) {
+XHR.poll(3, '<%=luci.dispatcher.build_url("admin", "services", "clash", "geo_ip_check")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {			
 			if(status.geoipcheck==0||status.geoipcheck==2){
 				hide();	
 			}
 			if(status.geoipcheck==1){
-				var btn = docgeoipcheckument.getElementById('apply_update_geoip');
+				var btn = document.getElementById('apply_update_geoip');
 				btn.disabled = false;
 				btn.value    = '<%:Download%>';
 				poll_check();

@@ -44,8 +44,8 @@ function index()
 	entry({"admin", "services", "clash", "doupdate"}, call("do_update")).leaf=true
 	entry({"admin", "services", "clash", "start"}, call("do_start")).leaf=true
 	entry({"admin", "services", "clash", "stop"}, call("do_stop")).leaf=true
-	entry({"admin", "services", "clash", "geoipcheck"}, call("geoip_check")).leaf=true
-	entry({"admin", "services", "clash", "geoipupdate"}, call("geoipupdate")).leaf=true
+	entry({"admin", "services", "clash", "geo_ip_check"}, call("geoip_check")).leaf=true
+	entry({"admin", "services", "clash", "geoipupdate"}, call("geoip_update")).leaf=true
 	entry({"admin", "services", "clash", "check_geoip"}, call("check_geoip_log")).leaf=true	
 	entry({"admin", "services", "clash", "corelog"},call("down_check")).leaf=true
 	entry({"admin", "services", "clash", "logstatus"},call("logstatus_check")).leaf=true
@@ -219,7 +219,7 @@ function act_ping()
 end
 
 
-function geoipupdate()
+function geoip_update()
 	fs.writefile("/var/run/geoiplog","0")
 	luci.sys.exec("(rm /var/run/geoip_update_error ;  touch /var/run/geoip_update ; bash /usr/share/clash/geoip.sh >/tmp/geoip_update.txt 2>&1  || touch /var/run/geoip_update_error ;rm /var/run/geoip_update) &")
 end
