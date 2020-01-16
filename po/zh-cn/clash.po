@@ -689,26 +689,26 @@ msgstr "许可证密钥"
 msgid "Auto Update GeoIP Database"
 msgstr "自动更新GeoIP数据库"
 
-msgid "Update Time (Day/Weeks of Month)"
-msgstr "更新时间(每月的日/每月的星期)"
+msgid "Update Day (Day of Month)"
+msgstr "更新时间(每月的日)"
 
 msgid "GeoIP Update Time"
 msgstr "GeoIP更新时间"
 
-msgid "Every First Day"
+msgid "Every 1st Day"
 msgstr "每月的第一天"
 
-msgid "Every First Week"
-msgstr "每月的第一周"
+msgid "Every 7th Day"
+msgstr "每月的第七天"
 
-msgid "Every Second Weeks"
-msgstr "每月的第二周"
+msgid "Every 14th Day"
+msgstr "每月的第十四天"
 
-msgid "Every Third Weeks"
-msgstr "每月的第三周"
+msgid "Every 21st Day"
+msgstr "每月的第二十一天"
 
-msgid "Every Fouth Weeks"
-msgstr "每月的第四周"
+msgid "Every 28th Day"
+msgstr "每月的第二十八天"
 
 msgid "Update GeoIP"
 msgstr "更新GeoIP数据库"

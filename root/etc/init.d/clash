@@ -413,7 +413,28 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	fi
 	
 	yml_dns_change >/dev/null 2>&1
-
+	
+	if [ ! -f /etc/clash/Country.mmdb ];then
+		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+			echo "Cannot find Country.mmdb" >$REAL_LOG 
+		elif [ "${lang}" == "zh_cn" ];then
+			echo "找不到Country.mmdb" >$REAL_LOG
+		fi	
+		sleep 5
+		echo "Clash for OpenWRT" >$REAL_LOG		
+		exit 0
+	fi
+	
+	if [ ! -f /etc/clash/config.yaml ];then
+		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+			echo "Cannot find config.yaml" >$REAL_LOG 
+		elif [ "${lang}" == "zh_cn" ];then
+			echo "找不到config.yaml" >$REAL_LOG
+		fi	
+		sleep 5
+		echo "Clash for OpenWRT" >$REAL_LOG		
+		exit 0
+	fi	
 	
     if [ "${core}" -eq 1 ];then
         	nohup $CLASH -d "$CLASH_CONFIG" > /tmp/clash.txt 2>&1 &	
