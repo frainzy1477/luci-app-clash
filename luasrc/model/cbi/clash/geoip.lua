@@ -96,7 +96,8 @@ o:value("14", translate("Every Second Weeks"))
 o:value("21", translate("Every Third Weeks"))
 o:value("28", translate("Every Fouth Weeks"))
 o.default=1
-
+update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
+o.description = translate("Release Time")..'- ' ..font_green..bold_on..update_time..bold_off..font_off..' '
 
 o = s:option(Value, "license_key")
 o.title = translate("License Key")

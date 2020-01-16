@@ -11,6 +11,7 @@ echo '' >/tmp/geoip_update.txt 2>/dev/null
 wget --no-check-certificate https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key="$LICENSE_KEY"&suffix=tar.gz -O 2>&1 >1 /tmp/GeoLite2-Country.tar.gz
 tar zxvf /tmp/GeoLite2-Country.tar.gz -C .
 mv /tmp/GeoLite2-Country_*/GeoLite2-Country.mmdb /etc/clash/Country.mmdb
+chmod 755 /etc/clash/Country.mmdb >/dev/null 2>&1
 rm -rf /tmp/GeoLite2-Country_*
 sleep 2
 touch /var/run/geoip_down_complete >/dev/null 2>&1

@@ -44,13 +44,15 @@ function index()
 	entry({"admin", "services", "clash", "doupdate"}, call("do_update")).leaf=true
 	entry({"admin", "services", "clash", "start"}, call("do_start")).leaf=true
 	entry({"admin", "services", "clash", "stop"}, call("do_stop")).leaf=true
-	entry({"admin", "services", "clash", "geo_ip_check"}, call("geoip_check")).leaf=true
+	entry({"admin", "services", "clash", "geo"}, call("geoip_check")).leaf=true
 	entry({"admin", "services", "clash", "geoipupdate"}, call("geoip_update")).leaf=true
 	entry({"admin", "services", "clash", "check_geoip"}, call("check_geoip_log")).leaf=true	
 	entry({"admin", "services", "clash", "corelog"},call("down_check")).leaf=true
 	entry({"admin", "services", "clash", "logstatus"},call("logstatus_check")).leaf=true
 	
 end
+
+local fss = require "luci.clash"
 
 local function dash_port()
 	return luci.sys.exec("uci get clash.config.dash_port 2>/dev/null")
@@ -132,6 +134,9 @@ local function readlog()
 	return luci.sys.exec("sed -n '$p' /usr/share/clash/clash_real.txt 2>/dev/null")
 end
 
+local function geo_data()
+	return os.date("%Y-%m-%d %H:%M:%S",fss.mtime("/etc/clash/Country.mmdb"))
+end
 
 local function downcheck()
 	if nixio.fs.access("/var/run/core_update_error") then
@@ -157,14 +162,6 @@ function down_check()
 	})
 end
 
-
-function geoip_check()
-	luci.http.prepare_content("application/json")
-	luci.http.write_json({
-	 geoipcheck = geoipcheck();
-	})
-end
-
 local function geoipcheck()
 	if nixio.fs.access("/var/run/geoip_update_error") then
 		return "0"
@@ -174,6 +171,15 @@ local function geoipcheck()
 		return "2"
 	end
 end
+
+function geoip_check()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+	 geoipcheck = geoipcheck();
+	})
+end
+
+
 
 
 function check_status()
