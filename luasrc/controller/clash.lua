@@ -227,7 +227,7 @@ end
 
 function geoip_update()
 	fs.writefile("/var/run/geoiplog","0")
-	luci.sys.exec("(rm /var/run/geoip_update_error ;  touch /var/run/geoip_update ; bash /usr/share/clash/geoip.sh >/tmp/geoip_update.txt 2>&1  || touch /var/run/geoip_update_error ;rm /var/run/geoip_update) &")
+	luci.sys.exec("(rm /var/run/geoip_update_error ;  touch /var/run/geoip_update ; sh /usr/share/clash/geoip.sh >/tmp/geoip_update.txt 2>&1  || touch /var/run/geoip_update_error ;rm /var/run/geoip_update) &")
 end
 
 

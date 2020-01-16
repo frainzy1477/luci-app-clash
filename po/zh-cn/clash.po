@@ -712,3 +712,6 @@ msgstr "每月的第四周"
 
 msgid "Update GeoIP"
 msgstr "更新GeoIP数据库"
+
+msgid "Release Time"
+msgstr "发布时间"
