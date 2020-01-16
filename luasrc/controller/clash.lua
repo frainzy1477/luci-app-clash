@@ -23,7 +23,8 @@ function index()
 	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 50)
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 60).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 70).leaf = true
-	entry({"admin", "services", "clash", "settings", "list"},cbi("clash/list"),_("Custom List"), 80).leaf = true
+	entry({"admin", "services", "clash", "settings", "geoip"},cbi("clash/geoip"),_("Update GeoIP"), 80).leaf = true
+	entry({"admin", "services", "clash", "settings", "list"},cbi("clash/list"),_("Custom List"), 90).leaf = true
 			
 	entry({"admin", "services", "clash", "config"},firstchild(),_("Config"), 100)
 	entry({"admin", "services", "clash", "config", "actconfig"},cbi("clash/actconfig"),_("Config In Use"), 110).leaf = true
@@ -43,7 +44,9 @@ function index()
 	entry({"admin", "services", "clash", "doupdate"}, call("do_update")).leaf=true
 	entry({"admin", "services", "clash", "start"}, call("do_start")).leaf=true
 	entry({"admin", "services", "clash", "stop"}, call("do_stop")).leaf=true
-	entry({"admin", "services", "clash", "getlog"}, call("get_log")).leaf=true
+	entry({"admin", "services", "clash", "geoipcheck"}, call("geoip_check")).leaf=true
+	entry({"admin", "services", "clash", "geoipupdate"}, call("geoipupdate")).leaf=true
+	entry({"admin", "services", "clash", "check_geoip"}, call("check_geoip_log")).leaf=true	
 	entry({"admin", "services", "clash", "corelog"},call("down_check")).leaf=true
 	entry({"admin", "services", "clash", "logstatus"},call("logstatus_check")).leaf=true
 	
@@ -143,16 +146,35 @@ end
 function action_read()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
-			readlog = readlog();
+	readlog = readlog();
 	})
 end
 
 function down_check()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
-		downcheck = downcheck();
+	 downcheck = downcheck();
 	})
 end
+
+
+function geoip_check()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+	 geoipcheck = geoipcheck();
+	})
+end
+
+local function geoipcheck()
+	if nixio.fs.access("/var/run/geoip_update_error") then
+		return "0"
+	elseif nixio.fs.access("/var/run/geoip_update") then
+		return "1"
+	elseif nixio.fs.access("/var/run/geoip_down_complete") then
+		return "2"
+	end
+end
+
 
 function check_status()
 	luci.http.prepare_content("application/json")
@@ -197,6 +219,11 @@ function act_ping()
 end
 
 
+function geoipupdate()
+	fs.writefile("/var/run/geoiplog","0")
+	luci.sys.exec("(rm /var/run/geoip_update_error ;  touch /var/run/geoip_update ; bash /usr/share/clash/geoip.sh >/tmp/geoip_update.txt 2>&1  || touch /var/run/geoip_update_error ;rm /var/run/geoip_update) &")
+end
+
 
 function do_update()
 	fs.writefile("/var/run/clashlog","0")
@@ -221,6 +248,22 @@ function check_update_log()
 	fs.writefile("/var/run/clashlog",tostring(fdp))
 	f:close()
 if fs.access("/var/run/core_update") then
+	luci.http.write(a)
+else
+	luci.http.write(a.."\0")
+end
+end
+
+function check_geoip_log()
+	luci.http.prepare_content("text/plain; charset=utf-8")
+	local fdp=tonumber(fs.readfile("/var/run/geoiplog")) or 0
+	local f=io.open("/tmp/geoip_update.txt", "r+")
+	f:seek("set",fdp)
+	local a=f:read(2048000) or ""
+	fdp=f:seek()
+	fs.writefile("/var/run/geoiplog",tostring(fdp))
+	f:close()
+if fs.access("/var/run/geoip_update") then
 	luci.http.write(a)
 else
 	luci.http.write(a.."\0")

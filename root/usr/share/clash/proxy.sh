@@ -1,6 +1,8 @@
 #!/bin/bash /etc/rc.common
 . /lib/functions.sh
 
+create_config(){
+
 REAL_LOG="/usr/share/clash/clash_real.txt"
 lang=$(uci get luci.main.lang 2>/dev/null)
 config_type=$(uci get clash.config.config_type 2>/dev/null)
@@ -36,17 +38,14 @@ CFG_FILE="/etc/config/clash"
 DNS_FILE="/usr/share/clash/dns.yaml" 
 PROVIDER_FILE="/tmp/yaml_provider.yaml"
 
-
-
-   servcount=$( grep -c "config servers" $CFG_FILE 2>/dev/null)
    gcount=$( grep -c "config groups" $CFG_FILE 2>/dev/null)
-   if [ $servcount -eq 0 ] || [ $gcount -eq 0 ];then
+   if [ $gcount -eq 0 ];then
  	if [ $lang == "en" ] || [ $lang == "auto" ];then
-		echo "No servers or group. Aborting Operation .." >$REAL_LOG 
+		echo "No policy group found. Aborting Operation .." >$REAL_LOG 
 		sleep 2
 		echo "Clash for OpenWRT" >$REAL_LOG
 	elif [ $lang == "zh_cn" ];then
-    	 echo "找不到代理或策略组。中止操作..." >$REAL_LOG
+    	 echo "找不到策略组。中止操作..." >$REAL_LOG
 		 sleep 2
 		echo "Clash for OpenWRT" >$REAL_LOG
 	fi
@@ -603,4 +602,5 @@ fi
 rm -rf $SERVER_FILE
 
 fi
-
+}
+create_config >/dev/null 2>&1

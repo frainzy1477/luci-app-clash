@@ -44,6 +44,10 @@ config_type=$(uci get clash.config.config_type 2>/dev/null)
 	[ -z "$(grep -w "/usr/share/clash/clash.sh" $CRON_FILE)" ] && echo "0 $(uci get clash.config.auto_update_time 2>/dev/null) * * * /usr/share/clash/clash.sh" >> $CRON_FILE
 	[ -z "$(grep -w "/usr/share/clash/v2ssr.sh" $CRON_FILE)" ] && echo "0 $(uci get clash.config.auto_update_time 2>/dev/null) * * * /usr/share/clash/v2ssr.sh" >> $CRON_FILE
 	fi
+	auto_geoip=$(uci get clash.config.auto_update_geoip 2>/dev/null)
+	if [ "${auto_geoip}" -eq 1 ]; then
+	[ -z "$(grep -w "/usr/share/clash/geoip.sh" $CRON_FILE)" ] && echo "0 $(uci get clash.config.auto_update_geoip_time 2>/dev/null) $(uci get clash.config.geo_update_week 2>/dev/null) * * /usr/share/clash/geoip.sh" >> $CRON_FILE
+	fi
 	crontab $CRON_FILE
 #=========================================================================================================================== 	
 }
