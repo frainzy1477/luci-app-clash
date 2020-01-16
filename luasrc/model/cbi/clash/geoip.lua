@@ -29,7 +29,7 @@ o.description = translate("NB: Upload GEOIP Database file Country.mmdb")
 .."<br />"
 ..translate("https://geolite.clash.dev/Country.mmdb")
 
-o.title = translate("Update GEOIP Database")
+o.title = translate("  ")
 o.template = "clash/clash_upload"
 um = s:option(DummyValue, "", nil)
 um.template = "clash/clash_dvalue"
