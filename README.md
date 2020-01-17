@@ -11,9 +11,9 @@
   <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.4.7">
     <img src="https://img.shields.io/badge/luci%20for%20clash-v1.4.7-blue.svg"> 	  
   </a>
-   <a href="https://github.com/frainzy1477/luci-app-clash/releases" target="_blank">
+  <!-- <a href="https://github.com/frainzy1477/luci-app-clash/releases" target="_blank">
         <img src="https://img.shields.io/github/downloads/frainzy1477/luci-app-clash/total.svg?style=flat-square"/>
-    </a>
+    </a>-->
   
   </p>
 
