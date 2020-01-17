@@ -5,7 +5,7 @@ if [ -f /var/run/geoip_down_complete ];then
   rm -rf /var/run/geoip_down_complete 2>/dev/null
 fi
 echo '' >/tmp/geoip_update.txt 2>/dev/null
-wget -c4 --no-check-certificate --timeout=300 --tries=5 --user-agent="Mozilla" "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key="$Key"&suffix=tar.gz" -O /tmp/ipdb.tar.gz
+wget -c4 --no-check-certificate --timeout=300 --user-agent="Mozilla" "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key="$Key"&suffix=tar.gz" -O /tmp/ipdb.tar.gz
 if [ "$?" -eq "0" ]; then
 tar zxvf /tmp/ipdb.tar.gz -C /tmp\
 && rm -rf /tmp/ipdb.tar.gz >/dev/null 2>&1\

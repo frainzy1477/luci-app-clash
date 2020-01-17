@@ -8,8 +8,8 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.4.7">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.4.7-blue.svg"> 	  
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.4.8">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.4.8-blue.svg"> 	  
   </a>
   <!-- <a href="https://github.com/frainzy1477/luci-app-clash/releases" target="_blank">
         <img src="https://img.shields.io/github/downloads/frainzy1477/luci-app-clash/total.svg?style=flat-square"/>
@@ -23,8 +23,8 @@
 
 - cd /tmp
 
-- opkg install luci-app-clash_1.4.7_all.ipk  
-- opkg install luci-app-clash_1.4.7_all.ipk --force-depends
+- opkg install luci-app-clash_1.4.8_all.ipk  
+- opkg install luci-app-clash_1.4.8_all.ipk --force-depends
 
 ## Features
 
