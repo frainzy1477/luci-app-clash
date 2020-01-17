@@ -713,8 +713,8 @@ msgstr "每月的第二十八天"
 msgid "Update GeoIP"
 msgstr "更新GeoIP数据库"
 
-msgid "Release Time"
-msgstr "发布时间"
+msgid "Update Time"
+msgstr "更新时间"
 
 msgid "Every Monday"
 msgstr "每周一"
@@ -751,3 +751,18 @@ msgstr "每周"
 
 msgid "Monthly"
 msgstr "每月"
+
+msgid "Upload Clash(Tun)"
+msgstr "上传Clash(Tun)"
+
+msgid "NB: Upload Clash Supported Tun (clash)"
+msgstr "注意：上传clash支持的Tun"
+
+msgid "Download Clash/Clashr"
+msgstr "下载Clash/Clashr"
+
+msgid "No file chosen"
+msgstr "未选择文件"
+
+msgid "Chose File"
+msgstr "选择文件"

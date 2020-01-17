@@ -105,7 +105,7 @@ o:value("5", translate("Every Friday"))
 o:value("6", translate("Every Saturday"))
 o:value("0", translate("Every Sunday"))
 update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
-o.description = translate("Release Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
+o.description = translate("Update Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
 o:depends("up_time", "weekly")
 
 o = s:option(ListValue, "geo_update_week", translate("Update Day (Day of Month)"))
@@ -115,7 +115,7 @@ o:value("14", translate("Every 14th Day"))
 o:value("21", translate("Every 21st Day"))
 o:value("28", translate("Every 28th Day"))
 update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
-o.description = translate("Release Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
+o.description = translate("Update Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
 o:depends("up_time", "monthly")
 
 
