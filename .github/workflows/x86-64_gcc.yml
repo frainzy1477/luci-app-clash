@@ -1,4 +1,4 @@
-name: x86_84
+name: x86_64
 on:
   release:
     types:
