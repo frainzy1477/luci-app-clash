@@ -690,7 +690,7 @@ msgid "Auto Update GeoIP Database"
 msgstr "自动更新GeoIP数据库"
 
 msgid "Update Day (Day of Month)"
-msgstr "更新时间(每月的日)"
+msgstr "更新(每月的日)"
 
 msgid "GeoIP Update Time"
 msgstr "GeoIP更新时间"
@@ -715,3 +715,39 @@ msgstr "更新GeoIP数据库"
 
 msgid "Release Time"
 msgstr "发布时间"
+
+msgid "Every Monday"
+msgstr "每周一"
+
+msgid "Every Tuesday"
+msgstr "每周二"
+
+msgid "Every Wednesday"
+msgstr "每周三"
+
+msgid "Every Thursday"
+msgstr "每周四"
+
+msgid "Every Friday"
+msgstr "每周五"
+
+msgid "Every Saturday"
+msgstr "每周六"
+
+msgid "Every Sunday"
+msgstr "每周日"
+
+msgid "Update Every (Week/Month)"
+msgstr "更新（每周/每月）"
+
+msgid "Update Day (Day of Week)"
+msgstr "更新的天"
+
+msgid "Time For Update (Once a week/Month)"
+msgstr "更新（每周一次/每月一次）"
+
+msgid "Weekly"
+msgstr "每周"
+
+msgid "Monthly"
+msgstr "每月"

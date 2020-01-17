@@ -89,15 +89,35 @@ end
 o.default=0
 o.description = translate("GeoIP Update Time")
 
+
+o = s:option(ListValue, "up_time", translate("Update Every (Week/Month)"))
+o.rmempty = false
+o.description = translate("Time For Update (Once a week/Month)")
+o:value("weekly", translate("Weekly"))
+o:value("monthly", translate("Monthly"))
+
+o = s:option(ListValue, "geoip_update_day", translate("Update Day (Day of Week)"))
+o:value("1", translate("Every Monday"))
+o:value("2", translate("Every Tuesday"))
+o:value("3", translate("Every Wednesday"))
+o:value("4", translate("Every Thursday"))
+o:value("5", translate("Every Friday"))
+o:value("6", translate("Every Saturday"))
+o:value("0", translate("Every Sunday"))
+update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
+o.description = translate("Release Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
+o:depends("up_time", "weekly")
+
 o = s:option(ListValue, "geo_update_week", translate("Update Day (Day of Month)"))
 o:value("1", translate("Every 1st Day"))
 o:value("7", translate("Every 7th Day"))
 o:value("14", translate("Every 14th Day"))
 o:value("21", translate("Every 21st Day"))
 o:value("28", translate("Every 28th Day"))
-o.default=1
 update_time = SYS.exec("ls -l --full-time /etc/clash/Country.mmdb|awk '{print $6,$7;}'")
 o.description = translate("Release Time")..'- ' ..font_red..bold_on..update_time..bold_off..font_off..' '
+o:depends("up_time", "monthly")
+
 
 o = s:option(Value, "license_key")
 o.title = translate("License Key")
