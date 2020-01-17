@@ -9,7 +9,7 @@ CLASHT="/etc/clash/clashtun/clash"
 CLASH_CONFIG="/etc/clash"
 CRON_FILE="/etc/crontabs/root"
 CONFIG_YAML="/etc/clash/config.yaml"
-CONFIG_YAML_OLD="/etc/clash/config.yml"
+CONFIG_YAML_OLD="/etc/clash/config.yml" 
 
 CONFIG_YAML_SUB="/usr/share/clash/config/sub/config.yaml"
 CONFIG_YAML_UPL="/usr/share/clash/config/upload/config.yaml"
@@ -621,6 +621,9 @@ remove_mark(){
         /etc/init.d/dnsmasq restart >/dev/null 2>&1
 }
 
+del_list() {
+	sh /usr/share/clash/del_servers.sh  >/dev/null 2>&1
+}
 
 stop(){
 #=========================================================================================================================== 
@@ -700,6 +703,7 @@ stop(){
 		elif [ "${lang}" == "zh_cn" ];then
 	    	echo "重启 Dnsmasq 程序" >$REAL_LOG
 		fi	
+		del_list >/dev/null 2>&1
 		revert_dns >/dev/null 2>&1
    	    	sleep 1
 
