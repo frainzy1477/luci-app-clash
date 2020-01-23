@@ -140,7 +140,7 @@ o.inputstyle = "apply"
 o.write = function()
   m.uci:commit("clash")
   luci.sys.call("bash /usr/share/clash/load_groups.sh >/dev/null 2>&1 &")
-  luci.sys.call("Sleep 5")
+  luci.sys.call("sleep 3")
   HTTP.redirect(luci.dispatcher.build_url("admin", "services", "clash", "settings", "grules"))   
 end
 
