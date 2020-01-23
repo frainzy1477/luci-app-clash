@@ -270,9 +270,9 @@ rules(){
 			
 			TUN_DEVICE=$(egrep '^ {0,}device-url:' /etc/clash/config.yaml |grep device-url: |awk -F '//' '{print $2}')
 			if [ -z $TUN_DEVICE ];then
-			TUN_DEVICE_NAME == "clash0"
+			TUN_DEVICE_NAME="clash0"
 			else
-			TUN_DEVICE_NAME == $TUN_DEVICE
+			TUN_DEVICE_NAME=$TUN_DEVICE
 			fi
 		
 			ipset create localnetwork hash:net
@@ -622,9 +622,9 @@ remove_mark(){
 		PROXY_ROUTE_TABLE="0x162" 2>/dev/null
 		TUN_DEVICE=$(egrep '^ {0,}device-url:' /etc/clash/config.yaml |grep device-url: |awk -F '//' '{print $2}')
 		if [ -z $TUN_DEVICE ];then
-		TUN_DEVICE_NAME == "clash0"
+		TUN_DEVICE_NAME="clash0"
 		else
-		TUN_DEVICE_NAME == $TUN_DEVICE
+		TUN_DEVICE_NAME=$TUN_DEVICE
 		fi
 		
 		ip link set dev $TUN_DEVICE_NAME down 2>/dev/null
