@@ -125,8 +125,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/*.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	
-	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/* $(1)/usr/share/clash/rules/g_rules
-	$(INSTALL_BIN) ./root//usr/share/clash/rules/* $(1)/usr/share/clash/rules
+	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/Steam.rules $(1)/usr/share/clash/rules/g_rules
+	$(INSTALL_BIN) ./root//usr/share/clash/rules/rules.list $(1)/usr/share/clash/rules
 
 	$(INSTALL_BIN) ./root/usr/share/clash/tundns_2.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/tundns_3.yaml $(1)/usr/share/clash/
