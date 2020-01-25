@@ -656,7 +656,7 @@ stop(){
 
 		echo "0" > /usr/share/clash/logstatus_check >/dev/null 2>&1
 		
-		#rm -rf /etc/clash/*.yaml /etc/clash/*.yml >/dev/null 2>&1
+		rm -rf /etc/clash/*.yaml /etc/clash/*.yml >/dev/null 2>&1
 
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "  $(date "+%Y-%m-%d %H:%M:%S") - CLIENT IS DISABLED " >> /tmp/clash.txt
