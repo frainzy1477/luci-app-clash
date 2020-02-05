@@ -17,7 +17,7 @@ fi
 
 if [ -z "$(grep "^ \{0,\}tun:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
 #===========================================================================================================================
-if [ "${core}" -eq 3 ];then
+if [ "${core}" -eq 3 ] || [ "${core}" -eq 4 ];then
 	uci set clash.config.mode="0" && uci set clash.config.tun_mode="1" && uci commit clash
 else
 	uci set clash.config.mode="1" && uci set clash.config.tun_mode="0" && uci commit clash

@@ -1,6 +1,7 @@
 #!/bin/bash /etc/rc.common
 . /lib/functions.sh
 
+dnsforwader=$(uci get clash.config.dnsforwader 2>/dev/null)
 enable_list=$(uci get clash.config.cus_list 2>/dev/null)
 if [  $enable_list -eq 1 ];then 
 
