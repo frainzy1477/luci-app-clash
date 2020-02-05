@@ -24,7 +24,7 @@ else
 fi	
 #===========================================================================================================================	
 fi
- 
+  
 sleep 2
 #===========================================================================================================================
 		mode=$(uci get clash.config.mode 2>/dev/null)
@@ -49,9 +49,13 @@ if [ "${mode}" -eq 1 ];  then
 	fi
 	sleep 2
 	echo "Clash for OpenWRT" >$REAL_LOG
-	
+	    if [ ! -z "$(grep "^Proxy:" "$CONFIG_YAML")" ]; then
 		sed -i "/Proxy:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
-                sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
+		elif [ ! -z "$(grep "^proxy-provider:" "$CONFIG_YAML")" ]; then
+		sed -i "/proxy-provider:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+		fi
+		
+        sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
 		sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
 		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML 2>/dev/null		
 		mv /etc/clash/config.yaml /etc/clash/dns.yaml
@@ -102,7 +106,11 @@ elif [ "${tun_mode}" -eq 1 ];  then
 	sleep 2
 	echo "Clash for OpenWRT" >$REAL_LOG
 	
+		if [ ! -z "$(grep "^Proxy:" "$CONFIG_YAML")" ]; then
 		sed -i "/Proxy:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+		elif [ ! -z "$(grep "^proxy-provider:" "$CONFIG_YAML")" ]; then
+		sed -i "/proxy-provider:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+		fi
                 sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
 		sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
 		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML 2>/dev/null		
