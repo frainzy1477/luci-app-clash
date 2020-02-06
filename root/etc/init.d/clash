@@ -221,7 +221,7 @@ rules(){
 			iptables -t nat -A clash -d 240.0.0.0/4 -j RETURN
 			iptables -t nat -A clash -d "${lan_ip}" -j RETURN
 			if [ ! -z "$wan" ]; then
-                	iptables -t nat -A clash -d "$wan_ip4" -j RETURN
+                	iptables -t nat -A clash -d "${wan}" -j RETURN
                 	fi
 			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
 			iptables -t nat -A PREROUTING -p tcp -j clash
@@ -264,7 +264,7 @@ rules(){
 			ipset add localnetwork 172.16.0.0/12
 			ipset add localnetwork "${lan_ip}"
 			if [ ! -z "$wan" ]; then
-                	ipset add localnetwork "$wan_ip4"
+                	ipset add localnetwork "${wan}"
                 	fi
 			if [ "${core}" -eq 3 ];then
 			ip tuntap add user root mode tun $TUN_DEVICE_NAME
