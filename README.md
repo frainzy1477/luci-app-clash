@@ -8,13 +8,12 @@
 	A rule based custom proxy for Openwrt based on <a href="https://github.com/Dreamacro/clash" target="_blank">Clash</a>.
   </p>
   <p align="center">
-  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.5.2">
-    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.5.2-blue.svg"> 	  
+  <a target="_blank" href="https://github.com/frainzy1477/luci-app-clash/releases/tag/v1.5.3">
+    <img src="https://img.shields.io/badge/luci%20for%20clash-v1.5.3-blue.svg"> 	  
   </a>
   <!-- <a href="https://github.com/frainzy1477/luci-app-clash/releases" target="_blank">
         <img src="https://img.shields.io/github/downloads/frainzy1477/luci-app-clash/total.svg?style=flat-square"/>
     </a>-->
-  
   </p>
 
   
@@ -22,24 +21,22 @@
 - Upload ipk file to tmp folder
 
 - cd /tmp
-
-- opkg install luci-app-clash_1.5.2_all.ipk  
-- opkg install luci-app-clash_1.5.2_all.ipk --force-depends
+- opkg update
+- opkg install luci-app-clash_1.5.3_all.ipk  
+- opkg install luci-app-clash_1.5.3_all.ipk --force-depends
 
 ## Features
 
-- Support Manually config upload (config.yaml / config.yml)
+- Support Manually config upload
 - GeoIP Database Update
 - Iptables udp redirect
 - IP Query / Website Access Check
-- Proxy Lan IP(Client IP) that go through Proxy
-- Bypass Lan IP(Client IP) that can't go through Proxy
 - DNS Forwarding
 - Ping Custom proxy servers
 - Create v2ray & ssr clash config from subscription url
 - Create Custom Clash Config
 - Tun Support
-- Support Proxy Provider [Thanks to @vernesong ](https://github.com/vernesong/OpenClash)
+- Support Proxy Provider & Restore Config [Thanks to @vernesong ](https://github.com/vernesong/OpenClash)
 
 ## Dependency
 
@@ -55,6 +52,9 @@
 - libustream-openssl 
 - libopenssl 
 - openssl-util
+- curl
+- jsonfilter
+- ca-certificates
 
 ## Clash on Other Platforms
 
