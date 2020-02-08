@@ -275,30 +275,20 @@ rules(){
 			ip route replace default dev utun table "$PROXY_ROUTE_TABLE"
 			fi
 
-			ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"		
-			
-			iptables -t mangle -N clash
-			iptables -t mangle -F clash
-			iptables -t mangle -A clash -m owner --uid-owner "$PROXY_BYPASS_USER" -j RETURN
-			iptables -t mangle -A clash -d 198.18.0.0/16 -j MARK --set-mark "$PROXY_FWMARK"
-			iptables -t mangle -A clash -m set --match-set localnetwork dst -j RETURN
-			iptables -t mangle -A clash -j MARK --set-mark "$PROXY_FWMARK"
-
-
-			iptables -t nat -N CLASH_DNS
-			iptables -t nat -F CLASH_DNS 
-			iptables -t nat -A CLASH_DNS -m owner --uid-owner "$PROXY_BYPASS_USER" -j RETURN
-			iptables -t nat -A CLASH_DNS -p udp -j DNAT --to "127.0.0.1:$dns_port"			
-
-			iptables -t mangle -I OUTPUT -j clash
-			iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"	
-
-			iptables -t nat -I OUTPUT -p udp --dport 53 -j CLASH_DNS
-			iptables -t nat -I PREROUTING -p udp --dport 53 -j DNAT --to "127.0.0.1:$dns_port"			
+                	ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"
+            
+                	iptables -t mangle -N clash
+                	iptables -t mangle -F clash
+                	iptables -t mangle -A clash -d 198.18.0.0/16 -j MARK --set-mark "$PROXY_FWMARK"
+               	 	iptables -t mangle -A clash -m set --match-set localnetwork dst -j RETURN
+                	iptables -t mangle -I OUTPUT -j clash
+                	iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"	
+						
 			
 			if [ -f /usr/sbin/ip6tables ] && [ "${ipv6}" -eq 1 ]; then
 			ip6tables -t mangle -I PREROUTING -j MARK --set-mark "$PROXY_FWMARK"		
 			fi
+
 		fi
 #=========================================================================================================================== 
 }	 
