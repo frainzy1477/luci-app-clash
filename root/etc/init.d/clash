@@ -12,7 +12,6 @@ CRON_FILE="/etc/crontabs/root"
 CONFIG_YAML="/etc/clash/config.yaml"
 CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null) 
 
-
 CUSLIST="/tmp/dnsmasq.d/custom_list.conf"
 CUSLITT="/tmp/dnsmasq.clash"
 CUSLISTV="/var/dnsmasq.d/custom_list.conf" 
@@ -298,6 +297,9 @@ custom_list() {
 	sh /usr/share/clash/list.sh  >/dev/null 2>&1
 }
 
+watchdog() {
+	nohup /usr/share/clash/clash-watchdog.sh >/dev/null 2>&1
+}
 start(){
 #=========================================================================================================================== 
 lang=$(uci get luci.main.lang 2>/dev/null)
@@ -446,8 +448,19 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi
 		
 	fi
+	
+	sleep 2
+	
+	
+	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+		echo "Setting Cron Job" >$REAL_LOG 
+		add_cron
+	elif [ "${lang}" == "zh_cn" ];then
+		echo "设置Cron" >$REAL_LOG
+		add_cron
 
-	bash /usr/share/clash/restore.sh >/dev/null 2>&1
+	fi
+		
 
 	sleep 1	
 
@@ -457,18 +470,17 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		echo "设置 Clash iptables" >$REAL_LOG
 	fi
 
-    	if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
+    if [ "$(uci get firewall.@defaults[0].forward)" != "ACCEPT" ]; then
        		uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
        		uci commit firewall >/dev/null 2>&1
        		/etc/init.d/firewall restart >/dev/null 2>&1
-    	fi
+    fi
 
-        sleep 2
+    sleep 2
 	rules >/dev/null 2>&1
 
 	custom_list >/dev/null 2>&1
 	sleep 1
-	
 	
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "Restarting Dnsmasq " >$REAL_LOG 
@@ -478,29 +490,21 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 			
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 	sleep 1
-
-	if pidof clash >/dev/null; then
-	add_cron
+	
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-		echo "Setting Cron Job" >$REAL_LOG 
-		sleep 1
 		echo "Clash Started Successfully " >$REAL_LOG
 		sleep 2
 		echo "Clash is Running " >$REAL_LOG
 		sleep 2
 		echo "Clash for OpenWRT" >$REAL_LOG
 	elif [ "${lang}" == "zh_cn" ];then
-		echo "设置Cron" >$REAL_LOG
-		sleep 1
 		echo "Clash 启动成功，请等待服务器上线！" >$REAL_LOG
 		sleep 2
 		echo "Clash运行中" >$REAL_LOG
 		sleep 2
 		echo "Clash for OpenWRT" >$REAL_LOG
 	fi
-	nohup /usr/share/clash/clash-watchdog.sh >/dev/null 2>&1	
-
-	fi	
+	watchdog >/dev/null 2>&1
 else
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "  $(date "+%Y-%m-%d %H:%M:%S") -  problem with config.yaml,  config.yaml is either empty or not found " >> /usr/share/clash/clash.txt
