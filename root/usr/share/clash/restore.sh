@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash /etc/rc.common
+. /lib/functions.sh  
 
 if [ -f /usr/share/clashbackup/history ];then
 HISTORY_PATH="/usr/share/clashbackup/history"

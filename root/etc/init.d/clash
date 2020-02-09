@@ -447,7 +447,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		
 	fi
 
-	sh /usr/share/clash/restore.sh >/dev/null 2>&1
+	bash /usr/share/clash/restore.sh >/dev/null 2>&1
 
 	sleep 1	
 
@@ -629,7 +629,7 @@ stop(){
 
 		remove_mark >/dev/null 2>&1
 
-		sh /usr/share/clash/backup.sh >/dev/null 2>&1
+		bash /usr/share/clash/backup.sh >/dev/null 2>&1
 
 		kill -9 $(ps | grep clash-watchdog.sh | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 		
