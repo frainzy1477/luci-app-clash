@@ -36,7 +36,7 @@
 - Create v2ray & ssr clash config from subscription url
 - Create Custom Clash Config
 - Tun Support
-- Support Proxy Provider & Restore Config [Thanks to @vernesong ](https://github.com/vernesong/OpenClash)
+- Support Proxy Provider,Game rules & Restore Config [Thanks to @vernesong ](https://github.com/vernesong/OpenClash)
 
 ## Dependency
 
