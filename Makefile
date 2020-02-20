@@ -84,7 +84,7 @@ if [ -z "$${IPKG_INSTROOT}" ]; then
 	mv /usr/share/clashbackup/config.bak2 /usr/share/clash/config/upload/config.yaml 2>/dev/null
 	mv /usr/share/clashbackup/config.bak3 /usr/share/clash/config/custom/config.yaml 2>/dev/null
 	/etc/init.d/clash disable 2>/dev/null
-	uci set clash.config.p_mode="Rule" && uci commit clash 2>/dev/null
+	uci set clash.config.p_mode="Rule" && uci set clash.config.auto_clear_log="1" && uci set clash.config.auto_update="1" && uci set clash.config.auto_update_time="12" && uci set clash.config.clear_time="12" && uci commit clash 2>/dev/null
 fi
 
 exit 0

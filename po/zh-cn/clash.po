@@ -992,7 +992,7 @@ msgstr "清除日志时间"
 msgid "Other Settings"
 msgstr "其他设置"
 
-msgid "Type"
+msgid " Type"
 msgstr "类型"
 
 msgid "Choose Type"
@@ -1003,3 +1003,12 @@ msgstr "在“设置”=>“其他”下设置自定义规则，将在客户端�
 
 msgid "Append Customs Rules"
 msgstr "附加自定义规则"
+
+msgid "Edit Custom Rule & Group"
+msgstr "编辑自定义规则组"
+
+msgid "Custom Rules"
+msgstr "自定义规则"
+
+msgid "IP/Domain/Address/Keyword/Port"
+msgstr "IP/域/地址/关键字/端口"

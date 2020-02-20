@@ -10,21 +10,21 @@ local http = luci.http
 local clash = "clash"
 
 kk = Map(clash)
-r = kk:section(TypedSection, "clash", translate("Auto Update Config"))
-r.anonymous = true
+s = kk:section(TypedSection, "clash", translate("Auto Update Config"))
+s.anonymous = true
 kk.pageaction = false
 
-o = r:option(Flag, "auto_update", translate("Auto Update"))
+o = s:option(Flag, "auto_update", translate("Auto Update"))
 o.description = translate("Auto Update Server subscription")
 
-o = r:option(ListValue, "auto_update_time", translate("Update time (every day)"))
+o = s:option(ListValue, "auto_update_time", translate("Update time (every day)"))
 o:value("1", translate("Every Hour"))
 o:value("6", translate("Every 6 Hours"))
 o:value("12", translate("Every 12 Hours"))
 o:value("24", translate("Every 24 Hours"))
 o.description = translate("Daily Server subscription update time. Only update config in use")
 
-o = r:option(Button, "Apply")
+o = s:option(Button, "Apply")
 o.title = translate("Save & Apply")
 o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
@@ -37,9 +37,7 @@ end
 
 m = Map("clash")
 s = m:section(TypedSection, "clash" , translate("Clear Clash Log"))
-m.pageaction = false
 s.anonymous = true
-s.addremove=false
 
 o = s:option(Flag, "auto_clear_log", translate("Auto Clear Log"))
 o.description = translate("Auto Clear Log")
@@ -61,30 +59,37 @@ o.write = function()
 end
 
 
-r = m:section(TypedSection, "addtype", translate("IP Rules"))
-r.anonymous = true
-r.addremove = true
-r.sortable = false
-r.template = "cbi/tblsection"
-r.extedit = luci.dispatcher.build_url("admin/services/clash/ip-rules/%s")
-function r.create(...)
+y = Map("clash")
+x = y:section(TypedSection, "addtype", translate("Custom Rules"))
+x.anonymous = true
+x.addremove = true
+x.sortable = false
+x.template = "cbi/tblsection"
+x.extedit = luci.dispatcher.build_url("admin/services/clash/ip-rules/%s")
+function x.create(...)
 	local sid = TypedSection.create(...)
 	if sid then
-		luci.http.redirect(r.extedit % sid)
+		luci.http.redirect(x.extedit % sid)
 		return
 	end
 end
 
-o = r:option(DummyValue, "type", translate("Type"))
+o = x:option(DummyValue, "type", translate(" Type"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = x:option(DummyValue, "ipaaddr", translate("IP/Domain/Address/Keyword/Port"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
 
-o = r:option(DummyValue, "p-group", translate("Policy Groups"))
+o = x:option(DummyValue, "pgroup", translate("Policy Groups"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
+
 
 
 local t = {
@@ -120,4 +125,4 @@ o.write = function()
   end
 end
 
-return kk, m, r, k
+return kk, m,y,k

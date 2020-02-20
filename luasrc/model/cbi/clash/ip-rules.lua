@@ -1,12 +1,12 @@
 local m, s, o
 local clash = "clash"
 local uci = luci.model.uci.cursor()
---local fs = require "nixio.fs"
+local fs = require "nixio.fs"
 local sys = require "luci.sys"
 local sid = arg[1]
-local fs = require "luci.clash"
 
-m = Map(clash, translate("Edit IP Rule & Group"))
+
+m = Map(clash, translate("Edit Custom Rule & Group"))
 --m.pageaction = false
 m.redirect = luci.dispatcher.build_url("admin/services/clash/settings/other")
 if m.uci:get(clash, sid) ~= "addtype" then
@@ -15,14 +15,12 @@ if m.uci:get(clash, sid) ~= "addtype" then
 end
 
 
-
-
-
 s = m:section(NamedSection, sid, "addtype")
 s.anonymous = true
 s.addremove   = false
 
-o = s:option(ListValue, "type", translate("Type"))
+
+o = s:option(ListValue, "type", translate(" Type"))
 o.rmempty = false
 o.description = translate("Choose Type")
 o:value("DST-PORT", translate("DST-PORT"))
@@ -34,7 +32,7 @@ o:value("DOMAIN-KEYWORD", translate("DOMAIN-KEYWORD"))
 o:value("DOMAIN-SUFFIX", translate("DOMAIN-SUFFIX"))
 
 
-o = s:option(ListValue, "p-group", translate("Select Proxy Group"))
+o = s:option(ListValue, "pgroup", translate("Select Proxy Group"))
 uci:foreach("clash", "conf_groups",
 		function(s)
 		  if s.name ~= "" and s.name ~= nil then
@@ -43,11 +41,11 @@ uci:foreach("clash", "conf_groups",
 		end)
 o:value("DIRECT")
 o:value("REJECT")
-o.rmempty = true
+o.rmempty = false
 o.description = translate("Select a policy group to add rule")
 
 
-o = s:option(DynamicList, "ip-addr", translate("IP/Domain/Address"))
+o = s:option(Value, "ipaaddr", translate("IP/Domain/Address/Keyword/Port"))
 o.rmempty = false
 
 
