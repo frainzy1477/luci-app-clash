@@ -992,8 +992,8 @@ msgstr "清除日志时间"
 msgid "Other Settings"
 msgstr "其他设置"
 
-msgid " Type"
-msgstr "类型"
+msgid "Rule Type"
+msgstr "规则类型"
 
 msgid "Choose Type"
 msgstr "选择类型"
