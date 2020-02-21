@@ -20,7 +20,7 @@ s.anonymous = true
 s.addremove   = false
 
 
-o = s:option(ListValue, "type", translate(" Type"))
+o = s:option(ListValue, "type", translate("Rule Type"))
 o.rmempty = false
 o.description = translate("Choose Type")
 o:value("DST-PORT", translate("DST-PORT"))
