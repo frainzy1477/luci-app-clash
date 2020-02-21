@@ -74,7 +74,7 @@ function x.create(...)
 	end
 end
 
-o = x:option(DummyValue, "type", translate(" Type"))
+o = x:option(DummyValue, "type", translate("Rule Type"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
