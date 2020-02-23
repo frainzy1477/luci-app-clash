@@ -18,7 +18,7 @@ bold_off = [[</strong>]]
 ko = Map("clash")
 ko.reset = false
 ko.submit = false
-sul =ko:section(TypedSection, "clash","Manual Upload")
+sul =ko:section(TypedSection, "clash",translate("Manual Upload"))
 sul.anonymous = true
 sul.addremove=false
 o = sul:option(FileUpload, "")
@@ -108,7 +108,7 @@ m:section(SimpleSection).template  = "clash/update"
 m.pageaction = false
 
 k = Map("clash")
-s = k:section(TypedSection, "clash","Download Online")
+s = k:section(TypedSection, "clash",translate("Download Online"))
 s.anonymous = true
 o = s:option(ListValue, "dcore", translate("Core Type"))
 o.default = "clashcore"
