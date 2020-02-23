@@ -1,4 +1,4 @@
-#!/bin/bash /etc/rc.common
+#!/bin/sh /etc/rc.common
 
 sleeptime=150
 enable=$(uci get clash.config.enable 2>/dev/null)

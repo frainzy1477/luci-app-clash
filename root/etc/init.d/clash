@@ -461,7 +461,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi
 		
 	fi
-	
+	ln -s /usr/share/clash/yacd /www/luci-static/clash 2>/dev/null
 	sleep 2
 	
 	
@@ -658,7 +658,7 @@ stop(){
 		fi
 
 		kill -9 `pidof clash|sed "s/$//g"` 2>/dev/null
-		
+		rm -rf /www/luci-static/clash 2>/dev/null
 		sleep 1
 
 		if [ ! -z "${delandns}" ];then
