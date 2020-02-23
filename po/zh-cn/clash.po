@@ -1019,5 +1019,5 @@ msgstr "手动上载"
 msgid "Download Online"
 msgstr "在线下载"
 
-msgid "yacd Dashboard"
-msgstr "yacd控制面板"
+msgid "Yacd Dashboard"
+msgstr "Yacd控制面板"
