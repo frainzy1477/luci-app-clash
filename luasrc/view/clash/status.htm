@@ -74,7 +74,7 @@ let IP = {
             },
 
             getIpipnetIP: () => {
-                IP.get(`https://myip.ipip.net/?z=${random}`, 'text')
+                IP.get(`http://myip.ipip.net/?z=${random}`, 'text')
                     .then((resp) => {
                         let data = resp.data.replace('当前 IP：', '').split(' 来自于：');
                         document.getElementById('d-ip').innerHTML = `${data[0]} ${data[1]}`;
@@ -130,7 +130,7 @@ var HTTP = {
 	         var tbip = document.getElementsByTagName('HEAD').item(0);
 	         var tbipScript= document.createElement("script");
 	         tbipScript.async = "async";
-	         tbipScript.src='https://myip.ipip.net/?z=${random}';
+	         tbipScript.src='http://myip.ipip.net/?z=${random}';
 	         tbip.appendChild( tbipScript);
 
 	         var sbip = document.getElementsByTagName('HEAD').item(0);
@@ -143,7 +143,7 @@ var HTTP = {
 
 	         const $$ = document;
 	         random = parseInt(Math.random() * 100000000);
-       	            setTimeout("Load()",1000*8);
+       	     setTimeout("Load()",1000*8);
 		   }
 	var web = document.getElementById('_web');
 	var clash = document.getElementById('_clash');
