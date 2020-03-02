@@ -269,10 +269,7 @@ msgid "DASHBOARD"
 msgstr "外部控制"
 
 msgid "Clash Dashboard"
-msgstr "Clash外部控制"
-
-msgid "Yac Dashboard"
-msgstr "Yacd外部控制"
+msgstr "Clash控制面板"
 
 msgid "Client"
 msgstr "客户端"
@@ -1012,3 +1009,21 @@ msgstr "自定义规则"
 
 msgid "IP/Domain/Address/Keyword/Port"
 msgstr "IP/域/地址/关键字/端口"
+
+msgid "Manually download, unzip and rename clash core from links below and upload"
+msgstr "从下面的链接手动下载、解压和重命名到clash然后上载"
+
+msgid "Manual Upload"
+msgstr "手动上载"
+
+msgid "Download Online"
+msgstr "在线下载"
+
+msgid "Yacd Dashboard"
+msgstr "Yacd控制面板"
+
+msgid "Enable Ping Servers"
+msgstr "启用Ping服务器"
+
+msgid "DISABLED"
+msgstr "禁用"
