@@ -248,7 +248,9 @@ rules(){
                       iptables -t mangle -A clash -d "$wan_ip" -j RETURN 2>/dev/null
                 done
             fi
-	    iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
+            iptables -t nat -I PREROUTING -p tcp -d 8.8.8.8 -j REDIRECT --to-ports "${redir_port}"
+            iptables -t nat -I PREROUTING -p tcp -d 8.8.4.4 -j REDIRECT --to-ports "${redir_port}"			
+			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
             iptables -t nat -A PREROUTING -p tcp -j clash
 				
 				
@@ -272,7 +274,7 @@ rules(){
                       iptables -t mangle -A clash -d "$wan_ip" -j RETURN 2>/dev/null
                 done
             fi
-                
+   
             iptables -t mangle -A clash -p udp -j TPROXY --on-port "${redir_port}" --tproxy-mark 1
 			#iptables -t mangle -A clash -p udp --dport 53 -j TPROXY --on-port "${redir_port}" --tproxy-mark 0x01/0x01
             iptables -t mangle -A PREROUTING -p udp -j clash
@@ -346,8 +348,11 @@ rules(){
 			ip link set $TUN_DEVICE_NAME up
 			ip address replace 198.18.0.0/16 dev $TUN_DEVICE_NAME
 			ip route replace default dev $TUN_DEVICE_NAME table "$PROXY_ROUTE_TABLE"
+			iptables -t nat -I PREROUTING -p tcp --dport 53 -j ACCEPT
 			elif [ "${core}" -eq 4 ];then
 			ip route replace default dev utun table "$PROXY_ROUTE_TABLE"
+			iptables -t nat -I PREROUTING -p tcp -d 8.8.8.8 -j REDIRECT --to-ports "${redir_port}"
+            iptables -t nat -I PREROUTING -p tcp -d 8.8.4.4 -j REDIRECT --to-ports "${redir_port}"
 			fi
 
             ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"

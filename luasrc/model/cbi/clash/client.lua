@@ -31,7 +31,6 @@ o.description = translate("Select core, clashr support ssr while clash does not.
 
 
 o = s:option(ListValue, "new_conf", translate("New Config(Rename fields)"))
-o.default = "0"
 o:value("0", translate("Disable"))
 o:value("1", translate("Enable"))
 o.description = translate("https://github.com/Dreamacro/clash/commit/88d8f937938d7aba774b1af638df6910b1a1a14d")
