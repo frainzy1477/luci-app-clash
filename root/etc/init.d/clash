@@ -217,6 +217,7 @@ check(){
 	   sed -i 's/Rule:/rules:/g' "$CONFIG_YAML"
 
 }
+
 rules(){
 #===========================================================================================================================
 
@@ -247,9 +248,7 @@ rules(){
                       iptables -t mangle -A clash -d "$wan_ip" -j RETURN 2>/dev/null
                 done
             fi
-			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
-			iptables -t nat -I PREROUTING -p tcp -d 8.8.8.8 -j REDIRECT --to-ports "${redir_port}"
-            iptables -t nat -I PREROUTING -p tcp -d 8.8.4.4 -j REDIRECT --to-ports "${redir_port}"
+	    iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
             iptables -t nat -A PREROUTING -p tcp -j clash
 				
 				
@@ -387,7 +386,7 @@ landns=$(uci get clash.config.landns 2>/dev/null)
 enable=$(uci get clash.config.enable 2>/dev/null)
 core=$(uci get clash.config.core 2>/dev/null)
 tun_mode=$(uci get clash.config.tun_mode 2>/dev/null)
-new_conf=$(uci get clash.config.new_conf 2>/dev/null)
+
 
 if [ -f /etc/clash/config.yaml ];then
  rm -rf /etc/clash/config.yaml >/dev/null 2>&1
@@ -438,14 +437,14 @@ elif  [ "${core}" -eq 3 ] && [ ! -f /etc/clash/clashtun/clash ]; then
 	exit 0
 else
 if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
-	
-	if [ "${new_conf}" -eq 1 ];then
+	new_conf=$(uci get clash.config.new_conf 2>/dev/null)
+   	yml_change >/dev/null 2>&1
+	if [ "$new_conf" -eq 1 ];then
 	check >/dev/null 2>&1
 	fi
-   	yml_change >/dev/null 2>&1
 
 	checktype=$(grep -c "type: ssr" /etc/clash/config.yaml 2>/dev/null)
-	if [ "${checktype}" -gt 0 ] && [ "${core}" -eq 1 ] || [ "${checktype}" -gt 0 ] && [ "${core}" -eq 3 ]; then
+	if [ "${checktype}" -gt 0 ] && [ "${core}" -ne 2 ]; then
 	 	
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Clash Core does not Support Config, use clashr core" >$REAL_LOG
@@ -705,14 +704,18 @@ stop(){
 										
 		iptables -t nat -F clash >/dev/null 2>&1 && iptables -t nat -X clash >/dev/null 2>&1
 		
-		iptables -t mangle -F openclash >/dev/null 2>&1
-		iptables -t mangle -D PREROUTING -p udp -j openclash >/dev/null 2>&1
-		iptables -t mangle -X openclash >/dev/null 2>&1
+		iptables -t mangle -F clash >/dev/null 2>&1
+		iptables -t mangle -D PREROUTING -p udp -j clash >/dev/null 2>&1
+		iptables -t mangle -X clash >/dev/null 2>&1
 		
+		sleep 1
+
 		ip rule del fwmark 1 table 100 >/dev/null 2>&1
 		ip route del local default dev lo table 100 >/dev/null 2>&1
 
-		iptables -t nat -D PREROUTING -p tcp --dport 53 -j ACCEPT >/dev/null 2>&1
+		iptables -t nat -D PREROUTING -p tcp REDIRECT --dport 53 -j ACCEPT >/dev/null 2>&1
+
+		sleep 1
 		
 		ip6tables -t mangle -F clash >/dev/null 2>&1
 		ip6tables -t mangle -D PREROUTING -p udp -j clash >/dev/null 2>&1
