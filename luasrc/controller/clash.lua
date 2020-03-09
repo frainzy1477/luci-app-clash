@@ -137,7 +137,7 @@ local function is_web()
 end
 
 local function localip()
-	return luci.sys.exec("ifstatus lan 2>/dev/null |jsonfilter -e '@[\"ipv4-address\"][0].address' 2>/dev/null")
+	return luci.sys.exec("uci get network.lan.ipaddr")
 end
 
 local function check_version()
