@@ -1025,8 +1025,8 @@ msgstr "Yacd控制面板"
 msgid "Enable Ping Servers"
 msgstr "启用Ping服务器"
 
-msgid "New Config"
-msgstr "新配置"
+msgid "New Config(Rename fields)"
+msgstr "新配置(重命名字段)"
 
 msgid "Enable UDP"
 msgstr "启用UDP"
