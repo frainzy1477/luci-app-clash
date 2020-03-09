@@ -713,7 +713,7 @@ stop(){
 		ip rule del fwmark 1 table 100 >/dev/null 2>&1
 		ip route del local default dev lo table 100 >/dev/null 2>&1
 
-		iptables -t nat -D PREROUTING -p tcp REDIRECT --dport 53 -j ACCEPT >/dev/null 2>&1
+		iptables -t nat -D PREROUTING -p tcp --dport 53 -j ACCEPT >/dev/null 2>&1
 
 		sleep 1
 		
