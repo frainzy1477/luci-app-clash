@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.6.0
+PKG_VERSION:=1.6.1
 PKG_MAINTAINER:=frainzy1477
 
 
@@ -12,7 +12,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
 	TITLE:=LuCI app for clash
-	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util +curl +jsonfilter +ca-certificates
+	DEPENDS:=+luci +luci-base +wget +iptables +coreutils-base64 +coreutils +coreutils-nohup +bash +ipset +libustream-openssl +libopenssl +openssl-util +curl +jsonfilter +ca-certificates +iptables-mod-tproxy
 	PKGARCH:=all
 	MAINTAINER:=frainzy1477
 endef

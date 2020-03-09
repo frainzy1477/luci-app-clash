@@ -21,6 +21,11 @@ y:value("0", translate("disabled"))
 y:value("1", translate("enabled"))
 y.description = translate("Set custom DNS forwarder in DHCP and DNS Settings and forward all dns traffic to clash")
 
+y = s:option(ListValue, "enable_udp", translate("Enable UDP"))
+y:value("0", translate("disabled"))
+y:value("1", translate("enabled"))
+y.description = translate("Enable udp traffic ,make sure your server support udp")
+
 deldns = s:option(Flag, "delan", translate("Remove Lan DNS"))
 deldns.description = translate("Remove Lan custom DNS Servers when client is disabled")
 
