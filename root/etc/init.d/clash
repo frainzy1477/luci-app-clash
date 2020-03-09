@@ -248,9 +248,8 @@ rules(){
                       iptables -t mangle -A clash -d "$wan_ip" -j RETURN 2>/dev/null
                 done
             fi
-            iptables -t nat -I PREROUTING -p tcp -d 8.8.8.8 -j REDIRECT --to-ports "${redir_port}"
-            iptables -t nat -I PREROUTING -p tcp -d 8.8.4.4 -j REDIRECT --to-ports "${redir_port}"			
-			iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
+			
+	    iptables -t nat -A clash -p tcp -j REDIRECT --to-ports "${redir_port}"
             iptables -t nat -A PREROUTING -p tcp -j clash
 				
 				
@@ -351,8 +350,6 @@ rules(){
 			iptables -t nat -I PREROUTING -p tcp --dport 53 -j ACCEPT
 			elif [ "${core}" -eq 4 ];then
 			ip route replace default dev utun table "$PROXY_ROUTE_TABLE"
-			iptables -t nat -I PREROUTING -p tcp -d 8.8.8.8 -j REDIRECT --to-ports "${redir_port}"
-            iptables -t nat -I PREROUTING -p tcp -d 8.8.4.4 -j REDIRECT --to-ports "${redir_port}"
 			fi
 
             ip rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE"
@@ -707,11 +704,12 @@ stop(){
 	    	echo "删除clash iptables规则" >$REAL_LOG
 		fi
 										
-		iptables -t nat -F clash >/dev/null 2>&1 && iptables -t nat -X clash >/dev/null 2>&1
-		
-		iptables -t mangle -F clash >/dev/null 2>&1
-		iptables -t mangle -D PREROUTING -p udp -j clash >/dev/null 2>&1
-		iptables -t mangle -X clash >/dev/null 2>&1
+		nat_indexs=$(iptables -nvL PREROUTING -t nat | sed 1,2d | sed -n '/clash/=' | sort -r)
+		for nat_index in $nat_indexs; do
+			iptables -t nat -D PREROUTING $nat_index >/dev/null 2>&1
+			iptables -t nat -F clash >/dev/null 2>&1 && iptables -t nat -X clash >/dev/null 2>&1
+			iptables -t mangle -F clash >/dev/null 2>&1 && iptables -t mangle -D PREROUTING -p udp -j clash >/dev/null 2>&1 && iptables -t mangle -X clash >/dev/null 2>&1
+		done
 		
 		sleep 1
 
@@ -726,10 +724,6 @@ stop(){
 		ip6tables -t mangle -D PREROUTING -p udp -j clash >/dev/null 2>&1
 		ip6tables -t mangle -X clash >/dev/null 2>&1
 		
-		out_lines=$(iptables -nvL PREROUTING -t nat |sed 1,2d |sed -n '/8.8./=' 2>/dev/null |sort -rn)
-		for out_line in $out_lines; do
-        iptables -t nat -D PREROUTING "$out_line" >/dev/null 2>&1
-		done
 		
 		out_linese=$(iptables -nvL OUTPUT -t mangle |sed 1,2d |sed -n '/198.18.0.1\/16/=' 2>/dev/null |sort -rn)
 		for out_linee in $out_linese; do
@@ -746,12 +740,7 @@ stop(){
 			iptables -t nat -D PREROUTING $nat_index >/dev/null 2>&1
 		done
 		
-		
-		nat_indexsx=$(iptables -nvL PREROUTING -t mangle | sed 1,2d | sed -n '/clash/=' | sort -r)
-		for nat_indexx in $nat_indexsx; do
-			iptables -t mangle -D PREROUTING $nat_indexx >/dev/null 2>&1
-		done
-		
+				
 
 		fake=$(iptables -nvL OUTPUT -t nat |sed 1,2d |sed -n '/198.18.0.0\/16/=' |sort -r)
        	for fake in $fake; do
