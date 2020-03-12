@@ -162,7 +162,7 @@ yml_dns_change(){
 	          uci add_list dhcp.@dnsmasq[0].server=127.0.0.1#5300 >/dev/null 2>&1
 	          uci delete dhcp.@dnsmasq[0].resolvfile
 	          uci set dhcp.@dnsmasq[0].noresolv=1
-		  if [ "${dnscache}" -eq 1 ];then
+		  if [ "${dnscache}" -eq 0 ];then
 			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 				echo "Disabling dns cache" >$REAL_LOG 
 			elif [ "${lang}" == "zh_cn" ];then
@@ -181,7 +181,7 @@ yml_dns_change(){
 	          uci delete dhcp.@dnsmasq[0].resolvfile
 	          uci set dhcp.@dnsmasq[0].noresolv=1
 			  
-		  if [ "${dnscache}"  -eq 1 ];then
+		  if [ "${dnscache}"  -eq 0 ];then
 			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 				echo "Disabling dns cache" >$REAL_LOG 
 			elif [ "${lang}" == "zh_cn" ];then
@@ -193,7 +193,7 @@ yml_dns_change(){
 		  fi	      
 	   fi
 	elif [ "${dnsforwader}" -eq 0 ]; then
-		if [ "${dnscache}"  -eq 1 ];then
+		if [ "${dnscache}"  -eq 0 ];then
 			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 				echo "Disabling dns cache" >$REAL_LOG 
 			elif [ "${lang}" == "zh_cn" ];then
@@ -396,7 +396,7 @@ if [ "${enable}" -eq 1 ]; then
 	elif [ "${lang}" == "zh_cn" ];then
     	 echo "启动客户端..." >$REAL_LOG
 	fi	
-	
+	sleep 1
 	select_config >/dev/null 2>&1
 
 if [ "${core}" -eq 1 ] && [ ! -f /etc/clash/clash ]; then
@@ -435,7 +435,9 @@ elif  [ "${core}" -eq 3 ] && [ ! -f /etc/clash/clashtun/clash ]; then
 else
 if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
 	new_conf=$(uci get clash.config.new_conf 2>/dev/null)
+	
    	yml_change >/dev/null 2>&1
+	
 	if [ "$new_conf" -eq 1 ];then
 	check >/dev/null 2>&1
 	fi
