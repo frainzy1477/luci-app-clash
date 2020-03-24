@@ -6,6 +6,7 @@ loadgroups=$(uci get clash.config.loadgroups 2>/dev/null)
 loadservers=$(uci get clash.config.loadservers 2>/dev/null)
 loadprovider=$(uci get clash.config.loadprovider 2>/dev/null)
 new_conf=$(uci get clash.config.new_conff 2>/dev/null)
+SERVER_RELAY="/tmp/relay_server"
 
 run_load(){
 
@@ -27,7 +28,7 @@ CFG_FILE="/etc/config/clash"
 REAL_LOG="/usr/share/clash/clash_real.txt"
 
 
-rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
+rm -rf /tmp/relay_serve /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
 
 
 	if [ $lang == "zh_cn" ];then
@@ -158,7 +159,8 @@ num=$(grep -c "name:" $group_file)
    
 cfg_get()
 {
-	echo "$(grep "$1" "$2" 2>/dev/null |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed 's/ \{0,\}\}\{0,\}$//g' 2>/dev/null)"
+	#echo "$(grep "$1" "$2" 2>/dev/null |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed 's/ \{0,\}\}\{0,\}$//g' 2>/dev/null)"
+	echo "$(grep "$1" "$2" 2>/dev/null |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/\}.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed "s/^\'//g" 2>/dev/null |sed "s/\'$//g" 2>/dev/null)"
 }
 
 
@@ -215,8 +217,11 @@ do
         continue
       fi
       
-      group_name1=$(echo "$line" |grep -v "name:" 2>/dev/null |grep "^ \{0,\}-" 2>/dev/null |awk -F '^ \{0,\}-' '{print $2}' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null)
-      group_name2=$(echo "$line" |awk -F 'proxies: \\[' '{print $2}' 2>/dev/null |sed 's/].*//' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null |sed 's/ \{0,\}, \{0,\}/#,#/g' 2>/dev/null)	
+      #group_name1=$(echo "$line" |grep -v "name:" 2>/dev/null |grep "^ \{0,\}-" 2>/dev/null |awk -F '^ \{0,\}-' '{print $2}' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null)
+      #group_name2=$(echo "$line" |awk -F 'proxies: \\[' '{print $2}' 2>/dev/null |sed 's/].*//' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null |sed 's/ \{0,\}, \{0,\}/#,#/g' 2>/dev/null)	
+	  group_name1=$(echo "$line" |grep -v "name:" 2>/dev/null |grep "^ \{0,\}-" 2>/dev/null |awk -F '^ \{0,\}-' '{print $2}' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null |sed "s/^\'//g" 2>/dev/null |sed "s/\'$//g" 2>/dev/null)
+      group_name2=$(echo "$line" |awk -F 'proxies: \\[' '{print $2}' 2>/dev/null |sed 's/].*//' 2>/dev/null |sed 's/^ \{0,\}//' 2>/dev/null |sed 's/ \{0,\}$//' 2>/dev/null |sed "s/^\'//g" 2>/dev/null |sed "s/\'$//g" 2>/dev/null |sed 's/ \{0,\}, \{0,\}/#,#/g' 2>/dev/null)
+	  
 	  proxies_len=$(sed -n '/proxies:/=' $single_group 2>/dev/null)
       use_len=$(sed -n '/use:/=' $single_group 2>/dev/null)
       name1_len=$(sed -n "/${group_name1}/=" $single_group 2>/dev/null)
@@ -354,9 +359,12 @@ server_file="/tmp/yaml_proxy.yaml"
 single_server="/tmp/servers.yaml"
 
 
-line=$(sed -n '/^ \{0,\}-/=' $server_file)
-num=$(grep -c "^ \{0,\}-" $server_file)
+line=$(sed -n '/^ \{0,\}- name:/=' $server_file 2>/dev/null)
+num=$(grep -c "^ \{0,\}- name:" $server_file 2>/dev/null)
 count=1
+
+
+
 
 sed -i '/^ *$/d' $provider_file 2>/dev/null
 sed -i '/^ \{0,\}#/d' $provider_file 2>/dev/null
@@ -369,6 +377,10 @@ fi
 provider_num=$(grep -c "^ \{0,\}type:" $provider_file)
 provider_count=1
 
+cfg_get_alpn()
+{
+	echo "$(grep "^ \{0,\}$1" "$2" 2>/dev/null |grep -v "^ \{0,\}- name:" |awk -v tag=$1 'BEGIN{FS=tag} {print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/\}.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null |sed "s/^\'//g" 2>/dev/null |sed "s/\'$//g" 2>/dev/null)"
+}
 
 cfg_get()
 {
@@ -466,6 +478,10 @@ do
    #tls_custom:
    tls_custom="$(cfg_gett "tls:")"
    
+   #sni:
+   sni="$(cfg_get "sni:" "$single_server")"
+   #alpn:
+   alpns="$(cfg_get_alpn "-" "$single_server")"
    
  	  	if [ $lang == "en" ] || [ $lang == "auto" ];then
 			echo "Now Reading 【$server_type】-【$server_name】 Proxies..." >$REAL_LOG
@@ -519,12 +535,20 @@ do
 	   
 	[ -z "$mode" ] && [ -z "$network" ] && ${uci_set}obfs_vmess="none"
    fi
-   ${uci_set}obfs_snell="$mode"
-   [ -z "$obfs" ] && ${uci_set}obfs="$mode"
-   [ -z "$obfs" ] && [ -z "$mode" ] && ${uci_set}obfs="none"
-   [ -z "$mode" ] && ${uci_set}obfs_snell="none"
-   [ -z "$obfs_host" ] && ${uci_set}host="$host"
+   
 
+    [ -z "$obfs_host" ] && ${uci_set}host="$host"
+
+	[ -z "$mode" ] && [ "$server_type" = "snell" ] && ${uci_set}obfs_snell="$mode"
+	
+    [ -z "$obfs" ] && [ "$server_type" = "ss" ] && ${uci_set}obfs="$mode"
+	
+    [ -z "$obfs" ] && [ "$server_type" = "ss" ] && [ -z "$mode" ] && ${uci_set}obfs="none"
+	
+    [ -z "$mode" ] && [ "$server_type" = "snell" ] &&  ${uci_set}obfs_snell="none"
+
+	  
+	  
    if [ $tls ] && [ "$server_type" != "ss" ];then 
    ${uci_set}tls="$tls"
    fi
@@ -552,7 +576,13 @@ do
    else
      ${uci_set}password="$password"
    fi
-	
+	if [ "$server_type" = "trojan" ]; then
+       ${uci_set}sni="$sni"
+       ${uci_del}alpn >/dev/null 2>&1
+       for alpn in $alpns; do
+        ${uci_add}alpn="$alpn" >/dev/null 2>&1
+       done
+	fi
 done
 uci commit clash
 
@@ -594,7 +624,7 @@ yml_provider_name_get()
    local section="$1"
    config_get "name" "$section" "name" ""
    [ ! -z "$name" ] && {
-      echo "$provider_nums"."$name" >>"$match_provider"
+       echo "$provider_nums.$name" >>"$match_provider"
    }
    provider_nums=$(( $provider_nums + 1 ))
 }
@@ -686,18 +716,21 @@ do
             proxies_line=$(sed -n '/^ \{0,\}proxies:/=' $single_group)
             if [ "$use_line" -le "$proxies_line" ]; then
                if [ ! -z "$(sed -n "${use_line},${proxies_line}p" "$single_group" |grep -F "$provider_name")" ]; then
-                  group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
+                  #group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
+				  group_name=$(cfg_get "name:" "$single_group")
                   ${uci_add}groups="$group_name"
                fi
             elif [ "$use_line" -ge "$proxies_line" ]; then
                if [ ! -z "$(sed -n "${use_line},\$p" "$single_group" |grep -F "$provider_name")" ]; then
-                  group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
-                  ${uci_add}groups="$group_name"
+                  #group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
+                  group_name=$(cfg_get "name:" "$single_group")
+				  ${uci_add}groups="$group_name"
                fi
             elif [ ! -z "$use_line" ] && [ -z "$proxies_line" ]; then
          	    if [ ! -z "$(grep -F "$provider_name" $single_group)" ]; then
-                  group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
-                  ${uci_add}groups="$group_name"
+                  #group_name=$(grep "name:" $single_group 2>/dev/null |awk -F 'name:' '{print $2}' 2>/dev/null |sed 's/,.*//' 2>/dev/null |sed 's/^ \{0,\}//g' 2>/dev/null |sed 's/ \{0,\}$//g' 2>/dev/null)
+                  group_name=$(cfg_get "name:" "$single_group")
+				  ${uci_add}groups="$group_name"
                 fi
             fi
 	    done
@@ -721,7 +754,7 @@ fi
 fi
 
 
-rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list 2>/dev/null
+rm -rf /tmp/Proxy_Group /tmp/servers.yaml /tmp/yaml_proxy.yaml /tmp/group_*.yaml /tmp/yaml_group.yaml /tmp/match_servers.list /tmp/yaml_provider.yaml /tmp/provider.yaml /tmp/provider_gen.yaml /tmp/provider_che.yaml /tmp/match_provider.list /tmp/relay_server 2>/dev/null 2>/dev/null
 
 /usr/share/clash/proxy.sh >/dev/null 2>&1
 
