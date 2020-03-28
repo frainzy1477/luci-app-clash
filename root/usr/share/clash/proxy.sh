@@ -178,22 +178,6 @@ set_groups()
 
 }
 
-set_relay_groups()
-{
-  if [ -z "$1" ]; then
-     return
-  fi
-
-  if [ ! -z "$(echo "$1" |grep "#relay#")" ]; then
-     server_relay_num=$(echo "$1" |awk -F '#relay#' '{print $2}')
-     server_group_name=$(echo "$1" |awk -F '#relay#' '{print $1}')
-  fi
-
-  if [ ! -z "$server_relay_num" ] && [ "$server_group_name" = "$3" ]; then
-     set_group=1
-     echo "$server_relay_num #  - \"${2}\"" >>/tmp/relay_server
-	fi
-}
 
 
 servers_set()
@@ -569,7 +553,6 @@ yml_groups_set()
    
    echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
-   
    group_name="$name"
    echo "  proxies: " >>$GROUP_FILE
 
@@ -590,27 +573,22 @@ yml_groups_set()
    set_group=0
    set_proxy_provider=0   
    
-	if [ "$type" = "select" ]; then
-      config_list_foreach "$section" "other_group" set_other_groups #加入其他策略组
-   fi
+
+    config_list_foreach "$section" "other_group" set_other_groups #加入其他策略组
+   
 
    config_foreach yml_servers_add "servers" "$name" "$type" #加入服务器节点
 
-	if [ "$type" = "relay" ] && [ -s "/tmp/relay_server" ]; then
-	    cat /tmp/relay_server |sort -k 1 |awk -F '#' '{print $2}' > /tmp/relay_server.list 2>/dev/null
-	    sed -i "/^ \{0,\}proxies: ${group_name}/r/tmp/relay_server.list" "$GROUP_FILE" 2>/dev/null
-	    rm -rf /tmp/relay_server 2>/dev/null
-	fi 
    
    if [ "$( grep -c "config provider" $CFG_FILE )" -ne 0 ];then
    
 		echo "  use: $group_name" >>$GROUP_FILE
 	   
-		#config_foreach set_proxy_provider "provider" "$group_name" 
+	   
 	   
 	    if [ "$type" != "relay" ]; then
-			config_foreach set_proxy_provider "proxy-provider" "$group_name" #加入代理集
-		fi
+			 config_foreach set_proxy_provider "provider" "$group_name" #加入代理集
+	    fi
 
 	   if [ "$set_group" -eq 1 ]; then
 		  sed -i "/^ \{0,\}proxies: ${group_name}/c\  proxies:" $GROUP_FILE
