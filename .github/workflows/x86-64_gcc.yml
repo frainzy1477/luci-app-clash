@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     env:
-      URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+      URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.4.0_musl.Linux-x86_64.tar.xz
       REPF: ${{ github.repository }}
       PKGN: ${{ 'luci-app-clash' }}
 
