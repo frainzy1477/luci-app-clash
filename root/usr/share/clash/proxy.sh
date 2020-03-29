@@ -24,7 +24,6 @@ if  [ $config_name == "" ] || [ -z $config_name ];then
 	
 fi
 
-
 if [ ! -z $check_name ] && [ "${same_tag}" -eq 0 ];then
 
 	if [ $lang == "en" ] || [ $lang == "auto" ];then
