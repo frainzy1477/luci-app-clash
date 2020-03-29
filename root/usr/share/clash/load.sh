@@ -1,5 +1,4 @@
 #!/bin/bash /etc/rc.common
-. /lib/functions.sh
 
 lang=$(uci get luci.main.lang 2>/dev/null)
 loadgroups=$(uci get clash.config.loadgroups 2>/dev/null)
@@ -7,7 +6,6 @@ loadservers=$(uci get clash.config.loadservers 2>/dev/null)
 loadprovider=$(uci get clash.config.loadprovider 2>/dev/null)
 
 run_load(){
-
 
 load="/etc/clash/config.yaml"
 CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null)
@@ -293,8 +291,8 @@ server_file="/tmp/yaml_proxy.yaml"
 single_server="/tmp/servers.yaml"
 
 
-line=$(sed -n '/^ \{0,\}-/=' $server_file)
-num=$(grep -c "^ \{0,\}-" $server_file)
+line=$(sed -n '/name:/=' $server_file 2>/dev/null)
+num=$(grep -c "name:" $server_file 2>/dev/null)
 count=1
 
 sed -i '/^ *$/d' $provider_file 2>/dev/null
@@ -407,7 +405,7 @@ do
    #sni:
    sni="$(cfg_gett "sni:")"
    #alpn:
-   alpns="$(cfg_get_alpn "-")"   
+   alpns="$(cfg_get_alpn "-" "$single_server")"   
    
  	  	if [ $lang == "en" ] || [ $lang == "auto" ];then
 			echo "Now Reading 【$server_type】-【$server_name】 Proxies..." >$REAL_LOG
