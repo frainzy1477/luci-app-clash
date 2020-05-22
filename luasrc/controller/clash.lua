@@ -11,7 +11,9 @@ function index()
 		return
 	end
 
-	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 10).dependent = false
+	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 5)
+	page.dependent = true
+	page.acl_depends = { "luci-app-openclash" }	
 	entry({"admin", "services", "clash", "overview"},cbi("clash/overview"),_("Overview"), 10).leaf = true
 	entry({"admin", "services", "clash", "client"},cbi("clash/client"),_("Client"), 20).leaf = true
 
@@ -61,6 +63,13 @@ function index()
 end
 
 local fss = require "luci.clash"
+
+local function uhttp_port()
+	local uhttp_port = luci.sys.exec("uci get uhttpd.main.listen_http |awk -F ':' '{print $NF}'")
+	if uhttp_port ~= "80" then
+		return ":" .. uhttp_port
+	end
+end
 
 
 local function download_rule()
@@ -310,6 +319,7 @@ function action_status()
 		web = is_web(),
 		clash = is_running(),
 		localip = localip(),
+		uhttp_port = uhttp_port(),
 		dash_port = dash_port(),
 		current_version = current_version(),
 		clash_core = clash_core(),

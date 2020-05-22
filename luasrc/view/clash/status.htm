@@ -63,13 +63,9 @@ let IP = {
                     throw error;
                 }),
           parseIPIpip: (ip, elID) => {
-                IP.get(`https://api.skk.moe/network/parseIp/ipip/v3/${ip}`, 'json')
+                IP.get(`https://qqwry.api.skk.moe/${ip}`, 'json')
                     .then(resp => {
-                        let x = '';
-                        for (let i of resp.data) {
-                            x += (i !== '') ? `${i} ` : '';
-                        }
-                        document.getElementById(elID).innerHTML = x;
+						 document.getElementById(elID).innerHTML = resp.data.geo;
                         //$$.getElementById(elID).innerHTML = `${resp.data.country} ${resp.data.regionName} ${resp.data.city} ${resp.data.isp}`;
                     })
             },
@@ -126,8 +122,8 @@ var HTTP = {
 
 }
 
-          function Load()
-	      {
+        function Load()
+	    {
 	         var tbip = document.getElementsByTagName('HEAD').item(0);
 	         var tbipScript= document.createElement("script");
 	         tbipScript.async = "async";
@@ -137,7 +133,7 @@ var HTTP = {
 	         var sbip = document.getElementsByTagName('HEAD').item(0);
 	         var sbipScript= document.createElement("script");
 	         sbipScript.async = "async";
-	         sbipScript.src='https://api.skk.moe/network/parseIp/ipip/v3';
+	         sbipScript.src='https://qqwry.api.skk.moe/';
 	         sbip.appendChild( sbipScript);
 
 
@@ -145,7 +141,11 @@ var HTTP = {
 	         const $$ = document;
 	         random = parseInt(Math.random() * 100000000);
        	     setTimeout("Load()",1000*8);
-		   }
+		}
+		   
+		   		   
+		   
+		   
 	var web = document.getElementById('_web');
 	var webb = document.getElementById('_webb');
 	var clash = document.getElementById('_clash');
@@ -161,7 +161,7 @@ var HTTP = {
 	XHR.poll(1, '<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
 		if ( x && x.status == 200 ) {
 			web.innerHTML = status.clash ? '<a type="button" class="btn" style="background-color:black;padding: 5px;"  href="http://'+window.location.hostname+':'+status.dash_port+'/ui" target="_blank"/><b><font color="green"><%:DASHBOARD%></font></b></a>' : '<b><font color="red"><%:NOT RUNNING%></font></b>';
-			webb.innerHTML = status.clash ? '<a type="button" class="btn" style="background-color:black;padding: 5px;"  href="http://'+window.location.hostname+'/luci-static/yacd?hostname='+ status.localip + '&port=' + status.dash_port + '&secret=' + status.dash_pass +'" target="_blank"/><b><font color="green"><%:DASHBOARD%></font></b></a>' : '<b><font color="red"><%:NOT RUNNING%></font></b>';
+			webb.innerHTML = status.clash ? '<a type="button" class="btn" style="background-color:black;padding: 5px;"  href="http://'+window.location.hostname+status.uhttp_port+'/luci-static/yacd?hostname='+ status.localip + '&port=' + status.dash_port + '&secret=' + status.dash_pass +'" target="_blank"/><b><font color="green"><%:DASHBOARD%></font></b></a>' : '<b><font color="red"><%:NOT RUNNING%></font></b>';
 			clash.innerHTML = status.clash ? '<b><font color="green"><%:RUNNING%></font> </b>' : '<b><font color="red"><%:NOT RUNNING%></font></b>';
 			ip.innerHTML = status.localip ? '<b><font color="green">'+status.localip+'</font> </b>' : '<em><b><font color="red"><%:NOT SET%></font></b></em>';
 			port.innerHTML = status.dash_port ? '<b><font color="green">'+status.dash_port+'</font> </b>' : '<em><b><font color="red"><%:NOT SET%></font></b></em>';
