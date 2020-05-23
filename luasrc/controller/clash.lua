@@ -91,7 +91,7 @@ function action_update_rule()
 end
 
 function action_update()
-	luci.sys.exec("kill $(pgrep /usr/share/clash/update.sh) ; (bash /usr/share/clash/update.sh >/tmp/clash.txt 2>&1) &")
+	luci.sys.exec("kill $(pgrep /usr/share/clash/update.sh) ; (bash /usr/share/clash/update.sh >>/usr/share/clash/clash.txt 2>&1) &")
 end
 
 
@@ -392,15 +392,11 @@ function check_geoip_log()
 	local fdp=tonumber(fs.readfile("/var/run/geoiplog")) or 0
 	local f=io.open("/tmp/geoip_update.txt", "r+")
 	f:seek("set",fdp)
-	local a=f:read(2048000) or ""
+	local a=f:read(2048000) or "."
 	fdp=f:seek()
 	fs.writefile("/var/run/geoiplog",tostring(fdp))
 	f:close()
-if fs.access("/var/run/geoip_update") then
 	luci.http.write(a)
-else
-	luci.http.write(a.."\0")
-end
 end
 
 
