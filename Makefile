@@ -101,8 +101,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/usr/share/
 	$(INSTALL_DIR) $(1)/usr/share/clash
-	$(INSTALL_DIR) $(1)/usr/rpcd	
-	$(INSTALL_DIR) $(1)/usr/rpcd/acl.d
+	$(INSTALL_DIR) $(1)/usr/share/rpcd	
+	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
 	$(INSTALL_DIR) $(1)/usr/share/clash/rules
 	$(INSTALL_DIR) $(1)/usr/share/clash/rules/g_rules
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard
