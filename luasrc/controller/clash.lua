@@ -11,7 +11,7 @@ function index()
 		return
 	end
 
-	entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 5)
+	local page = entry({"admin", "services", "clash"},alias("admin", "services", "clash", "overview"), _("Clash"), 5)
 	page.dependent = true
 	page.acl_depends = { "luci-app-openclash" }	
 	entry({"admin", "services", "clash", "overview"},cbi("clash/overview"),_("Overview"), 10).leaf = true
@@ -405,14 +405,10 @@ function logstatus_check()
 	local fdp=tonumber(fs.readfile("/usr/share/clash/logstatus_check")) or 0
 	local f=io.open("/usr/share/clash/clash.txt", "r+")
 	f:seek("set",fdp)
-	local a=f:read(2048000) or ""
+	local a=f:read(2048000) or "."
 	fdp=f:seek()
 	fs.writefile("/usr/share/clash/logstatus_check",tostring(fdp))
 	f:close()
-if fs.access("/var/run/logstatus") then
 	luci.http.write(a)
-else
-	luci.http.write(a.."\0")
-end
 end
 
