@@ -508,7 +508,7 @@ elif  [ "${core}" -eq 3 ] && [ ! -f /etc/clash/clashtun/clash ]; then
 	echo "Clash for OpenWRT" >$REAL_LOG
 	exit 0
 else
-if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')" -ne 0 ] ; then
+if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 0 ] ; then
 
 	if [ -z "$old_conf" ];then
 	check >/dev/null 2>&1
@@ -566,9 +566,9 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	
 	game_rules >/dev/null 2>&1
 	
-    ip_rules >/dev/null 2>&1
+    	ip_rules >/dev/null 2>&1
 	
-    if [ "${core}" -eq 1 ];then
+    	if [ "${core}" -eq 1 ];then
         	nohup $CLASH -d "$CLASH_CONFIG" > /usr/share/clash/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -615,7 +615,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
        		uci set firewall.@defaults[0].forward=ACCEPT >/dev/null 2>&1
        		uci commit firewall >/dev/null 2>&1
        		/etc/init.d/firewall restart >/dev/null 2>&1
-    fi
+    	fi
 
 	rules >/dev/null 2>&1
 
