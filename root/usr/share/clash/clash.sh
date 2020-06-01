@@ -61,7 +61,7 @@ else
     fi
 	
 	if [ "$subtype" = "ssr2clash" ];then
-	wget -c4 --no-check-certificate --user-agent="Clash/OpenWRT" "https://ssrsub2clashr.herokuapp.com/ssrsub2clash?sub=$ssr_url" -O 2>&1 >1 $CONFIG_YAML
+	wget -c4 --no-check-certificate --user-agent="Clash/OpenWRT" "https://gfwsb.114514.best/sub?target=clashr&url=$ssr_url" -O 2>&1 >1 $CONFIG_YAML
 	if [ "$?" -eq "0" ]; then
 	echo "${config_name}.yaml#$ssr_url#$subtype" >>/usr/share/clashbackup/confit_list.conf
 		CONFIG_YAMLL="/tmp/conf"
