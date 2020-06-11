@@ -1108,3 +1108,12 @@ msgstr "删除规则集"
 
 msgid "Delete Rules"
 msgstr "删除规则"
+
+msgid "Use Script"
+msgstr "使用脚本"
+
+msgid "Script"
+msgstr "脚本"
+
+msgid "NB: Set Clash Mode to Script if want to use"
+msgstr "注意：如果要使用，请将Clash模式,设置为脚本"
