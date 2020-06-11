@@ -9,4 +9,4 @@ script:
       if code == "LAN" or code == "CN":
         return "DIRECT"
       
-      return "GATLX-PROVIDER" # default policy for requests which are not matched by any other script
+      return "Proxy" # default policy for requests which are not matched by any other script
