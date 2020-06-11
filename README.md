@@ -22,7 +22,7 @@
 
 - cd /tmp
 - opkg update
-- opkg install luci-app-clashp_1.7.2_all.ipk  
+- opkg install luci-app-clash_1.7.2_all.ipk  
 - opkg install luci-app-clash_1.7.2_all.ipk --force-depends
 
 ## Features
