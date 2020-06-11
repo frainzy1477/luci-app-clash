@@ -696,6 +696,12 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		sleep 1
 		echo "Clash for OpenWRT" >$REAL_LOG
 	fi
+	if ! pidof clash >/dev/null; then
+      		remove_mark 2>/dev/null
+      		kill -9 `pidof clash|sed "s/$//g"` 2>/dev/null
+	  	sleep 1
+	  	echo "Clash for OpenWRT" >$REAL_LOG
+    fi
 else
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 		echo "  $(date "+%Y-%m-%d %H:%M:%S") -  problem with config.yaml,  config.yaml is either empty or not found " >> /usr/share/clash/clash.txt

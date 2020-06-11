@@ -9,7 +9,7 @@ CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null)
 if [  -f $CONFIG_YAML_PATH ] && [ "$(ls -l $CONFIG_YAML_PATH|awk '{print int($5)}')" -ne 0 ];then
 	cp $CONFIG_YAML_PATH $CLASH_CONFIG 2>/dev/null		
 fi
-
+SCRIPT="/usr/share/clash/provider/script.yaml"
 rule_providers=$(uci get clash.config.rule_providers 2>/dev/null)
 CFG_FILE="/etc/config/clash"
 config_name=$(uci get clash.config.name_tag 2>/dev/null)
@@ -348,6 +348,7 @@ if [ -f $RULE_FILE ];then
 fi 
 
 mode=$(uci get clash.config.mode 2>/dev/null)
+p_mode=$(uci get clash.config.p_mode 2>/dev/null)
 da_password=$(uci get clash.config.dash_pass 2>/dev/null)
 redir_port=$(uci get clash.config.redir_port 2>/dev/null)
 http_port=$(uci get clash.config.http_port 2>/dev/null)
@@ -370,16 +371,16 @@ EOF
 		sed -i "/redir-port: ${redir_port}/a\allow-lan: ${allow_lan}" $TEMP_FILE 2>/dev/null 
 		if [ $allow_lan == "true" ];  then
 		sed -i "/allow-lan: ${allow_lan}/a\bind-address: \"${bind_addr}\"" $TEMP_FILE 2>/dev/null 
-		sed -i "/bind-address: \"${bind_addr}\"/a\mode: Rule" $TEMP_FILE 2>/dev/null
-		sed -i "/mode: Rule/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
+		sed -i "/bind-address: \"${bind_addr}\"/a\mode: ${p_mode}" $TEMP_FILE 2>/dev/null
+		sed -i "/mode: ${p_mode}/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
 		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE 2>/dev/null 
 		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $TEMP_FILE 2>/dev/null 
 		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $TEMP_FILE 2>/dev/null 
 		sed -i "external-ui: \"/usr/share/clash/dashboard\"/a\  " $TEMP_FILE 2>/dev/null 
 		sed -i "   /a\   " $TEMP_FILE 2>/dev/null
 		else
-		sed -i "/allow-lan: ${allow_lan}/a\mode: Rule" $TEMP_FILE 2>/dev/null
-		sed -i "/mode: Rule/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
+		sed -i "/allow-lan: ${allow_lan}/a\mode: ${p_mode}" $TEMP_FILE 2>/dev/null
+		sed -i "/mode: ${p_mode}/a\log-level: ${log_level}" $TEMP_FILE 2>/dev/null 
 		sed -i "/log-level: ${log_level}/a\external-controller: 0.0.0.0:${dash_port}" $TEMP_FILE 2>/dev/null 
 		sed -i "/external-controller: 0.0.0.0:${dash_port}/a\secret: \"${da_password}\"" $TEMP_FILE 2>/dev/null 
 		sed -i "/secret: \"${da_password}\"/a\external-ui: \"/usr/share/clash/dashboard\"" $TEMP_FILE 2>/dev/null 
@@ -389,7 +390,7 @@ EOF
 		
 cat $DNS_FILE >> $TEMP_FILE  2>/dev/null
 
-SCRIPT="/usr/share/clash/provider/script.yaml"
+
 script=$(uci get clash.config.script 2>/dev/null)
 ruleprovider=$(uci get clash.config.rulprp 2>/dev/null)
 ppro=$(uci get clash.config.ppro 2>/dev/null)
@@ -400,6 +401,11 @@ if [ -f $PROVIDER_FILE ];then
 cat $PROVIDER_FILE >> $TEMP_FILE 2>/dev/null
 fi
 fi
+
+if [ -f $GROUP_FILE ];then
+cat $GROUP_FILE >> $TEMP_FILE 2>/dev/null
+fi
+
 
 if [ $ruleprovider -eq 1 ];then
 if [ -f $RULE_PROVIDER ];then
@@ -415,9 +421,6 @@ sed -i -e '$a\' $TEMP_FILE  2>/dev/null
 fi
 fi
 
-if [ -f $GROUP_FILE ];then
-cat $GROUP_FILE >> $TEMP_FILE 2>/dev/null
-fi
 
 if [ $rul -eq 1 ];then
 if [ -f $RULE_FILE ];then

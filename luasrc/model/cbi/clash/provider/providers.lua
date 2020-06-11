@@ -227,8 +227,8 @@ y.anonymous = true
 y.addremove=false
 m.pageaction = false
 
-local script = "/usr/share/clash/provider/script.yaml"
-sev = y:option(TextValue, "script")
+local script="/usr/share/clash/provider/script.yaml"
+sev = y:option(TextValue, "scriptt")
 sev.description = translate("NB: Set Clash Mode to Script if want to use")
 sev.rows = 10
 sev.wrap = "off"
