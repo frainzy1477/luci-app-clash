@@ -1115,5 +1115,8 @@ msgstr "使用脚本"
 msgid "Script"
 msgstr "脚本"
 
+msgid "SCRIPT"
+msgstr "脚本模式"
+
 msgid "NB: Set Clash Mode to Script if want to use"
 msgstr "注意：如果要使用，请将Clash模式,设置为脚本"

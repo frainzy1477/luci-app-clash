@@ -618,7 +618,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "$(uci get clash.config.p_mode 2>/dev/null)" != "Script" ];then
 		uci set clash.config.p_mode="Script"&& uci commit clash
 	elif [ "$(uci get clash.config.p_mode )" == "Script" ] && [ -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ];then
-		uci set clash.config.p_mode="Rule"&& uci commit clash
+		uci set clash.config.p_mode="Rule" && uci commit clash
 	fi
 
     if [ "${core}" -eq 1 ];then
