@@ -161,7 +161,7 @@ fi
 
 if [ -f $PROVIDER_FILE ];then 
 	sed -i "1i\   " $PROVIDER_FILE 2>/dev/null 
-	sed -i "2i\proxy-provider:" $PROVIDER_FILE 2>/dev/null
+	sed -i "2i\proxy-providers:" $PROVIDER_FILE 2>/dev/null
 	rm -rf /tmp/Proxy_Provider
 fi
 
