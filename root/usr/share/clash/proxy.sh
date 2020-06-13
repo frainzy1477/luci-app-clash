@@ -634,20 +634,14 @@ yml_groups_set()
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
    group_name="$name"
    echo "  proxies: " >>$GROUP_FILE
-
-   #if [ "$type" == "url-test" ] || [ "$type" == "load-balance" ] || [ "$type" == "fallback" ] ; then
-   #  echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
-   #   cat $Proxy_Group >> $GROUP_FILE 2>/dev/null
-   #else
-   #  echo "  proxies:" >>$GROUP_FILE 2>/dev/null 
-   #fi       
+      
  
-   if [ "$name" != "$old_name" ]; then
-      sed -i "s/,${old_name}$/,${name}#d/g" $load 2>/dev/null
-      sed -i "s/:${old_name}$/:${name}#d/g" $load 2>/dev/null
-      sed -i "s/\'${old_name}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
-      config_load "clash"
-   fi
+   #if [ "$name" != "$old_name" ]; then
+   #   sed -i "s/,${old_name}$/,${name}#d/g" $load 2>/dev/null
+   #   sed -i "s/:${old_name}$/:${name}#d/g" $load 2>/dev/null
+   #   sed -i "s/\'${old_name}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
+   #   config_load "clash"
+   #fi
    
    set_group=0
    set_proxy_provider=0   

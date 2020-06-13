@@ -238,13 +238,14 @@ yml_groups_set()
    echo "- name: $name" >>$GROUP_FILE 2>/dev/null 
    echo "  type: $type" >>$GROUP_FILE 2>/dev/null 
    group_name="$name"
-   
+   echo "  proxies: " >>$GROUP_FILE
    
    set_group=0
    set_proxy_provider=0 
    
    
-   
+  	
+   config_list_foreach "$section" "other_group" set_other_groups
 
    if [ "$( grep -c "config proxyprovider" $CFG_FILE )" -gt 0 ];then  
 
@@ -264,25 +265,9 @@ yml_groups_set()
 			  sed -i "/^ \{0,\}proxies: ${group_name}/c\  proxies:" $GROUP_FILE
 		    else
 			  sed -i "/proxies: ${group_name}/d" $GROUP_FILE 
-		    fi
-	   
-   
+		    fi	     
    fi      
  
-   if [ "$name" != "$old_name" ]; then
-      sed -i "s/,${old_name}$/,${name}#d/g" $CLASH_CONFIG 2>/dev/null
-      sed -i "s/:${old_name}$/:${name}#d/g" $CLASH_CONFIG 2>/dev/null
-      sed -i "s/\'${old_name}\'/\'${name}\'/g" $CFG_FILE 2>/dev/null
-      config_load "clash"
-   fi
-   
-   if [ ! -z $other_group ]; then
-	echo "  proxies: " >>$GROUP_FILE
-	config_list_foreach "$section" "other_group" set_other_groups 
-   fi
-   
-
-   
    
     [ ! -z "$test_url" ] && {
 		echo "  url: $test_url" >>$GROUP_FILE 2>/dev/null 
