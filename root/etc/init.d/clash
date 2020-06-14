@@ -403,27 +403,6 @@ rules(){
 }	 
 
 
-proxy_ip() {
-#===========================================================================================================================
-lan_ac_ips=$(uci get clash.config.proxy_lan_ips)
-	ipset -! -R <<-EOF
-	create clash_lan_ac hash:net
-	$(for ip in $lan_ac_ips; do echo "add clash_lan_ac $ip"; done)
-EOF
-#===========================================================================================================================
-}
-
-
-reject_ip() {
-#===========================================================================================================================
-lan_ac=$(uci get clash.config.reject_lan_ips)
-	ipset -! -R <<-EOF
-	create clash_lan hash:net
-	$(for ip in $lan_ac; do echo "add clash_lan $ip"; done)
-EOF
-#===========================================================================================================================
-}
-
 custom_list() {
 	sh /usr/share/clash/list.sh  >/dev/null 2>&1
 }
@@ -839,10 +818,8 @@ remove_mark(){
 	    iptables -t nat -F clash_output >/dev/null 2>&1
 	    iptables -t nat -X clash_output >/dev/null 2>&1
 		
-		ipset -! flush proxy_lan >/dev/null 2>&1
-		ipset -! flush reject_lan >/dev/null 2>&1
-		ipset destroy reject_lan >/dev/null 2>&1
-		ipset destroy proxy_lan >/dev/null 2>&1
+		ipset destroy reject_lan 2>/dev/null 2>&1
+		ipset destroy proxy_lan 2>/dev/null 2>&1
 	   
 	    iptables -t nat -D OUTPUT -p tcp -j clash_output >/dev/null 2>&1
 		
