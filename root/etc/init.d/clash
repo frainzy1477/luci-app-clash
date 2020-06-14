@@ -818,6 +818,11 @@ remove_mark(){
 	    iptables -t nat -F clash_output >/dev/null 2>&1
 	    iptables -t nat -X clash_output >/dev/null 2>&1
 		
+		ipset -! flush proxy_lan >/dev/null 2>&1
+		ipset -! flush reject_lan >/dev/null 2>&1
+		ipset destroy reject_lan >/dev/null 2>&1
+		ipset destroy proxy_lan >/dev/null 2>&1
+		
 		proxy_lan=$(iptables -nvL PREROUTING -t mangle | sed 1,2d | sed -n '/! match-set proxy_lan src/=' | sort -r)
 		for natx in $proxy_lan; do
 			iptables -t mangle -D PREROUTING $natx >/dev/null 2>&1
@@ -849,6 +854,7 @@ remove_mark(){
 		done
 		
 	    iptables -t nat -D OUTPUT -p tcp -j clash_output >/dev/null 2>&1
+		
 		
 		ipset destroy localnetwork 2>/dev/null
 		
