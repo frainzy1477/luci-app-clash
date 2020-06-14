@@ -818,9 +818,36 @@ remove_mark(){
 	    iptables -t nat -F clash_output >/dev/null 2>&1
 	    iptables -t nat -X clash_output >/dev/null 2>&1
 		
-		ipset destroy reject_lan 2>/dev/null 2>&1
-		ipset destroy proxy_lan 2>/dev/null 2>&1
-	   
+		proxy_lan=$(iptables -nvL PREROUTING -t mangle | sed 1,2d | sed -n '/! match-set proxy_lan src/=' | sort -r)
+		for natx in $proxy_lan; do
+			iptables -t mangle -D PREROUTING $natx >/dev/null 2>&1
+		done
+		
+		reject_lan=$(iptables -nvL PREROUTING -t mangle | sed 1,2d | sed -n '/match-set reject_lan src/=' | sort -r)
+		for natx in $reject_lan; do
+			iptables -t mangle -D PREROUTING $natx >/dev/null 2>&1
+		done		
+		
+		proxy_lann=$(iptables -nvL clash -t nat | sed 1,2d | sed -n '/! match-set proxy_lan src/=' | sort -r)
+		for natx in $proxy_lann; do
+			iptables -t nat -D PREROUTING $natx >/dev/null 2>&1
+		done
+		
+		reject_lann=$(iptables -nvL clash -t nat | sed 1,2d | sed -n '/match-set reject_lan src/=' | sort -r)
+		for natx in $reject_lann; do
+			iptables -t nat -D PREROUTING $natx >/dev/null 2>&1
+		done
+		
+		proxy_lannn=$(iptables -nvL clash -t nat | sed 1,2d | sed -n '/! match-set proxy_lan src/=' | sort -r)
+		for natx in $proxy_lannn; do
+			iptables -t mangle -D PREROUTING $natx >/dev/null 2>&1
+		done
+		
+		reject_lannn=$(iptables -nvL clash -t nat | sed 1,2d | sed -n '/match-set reject_lan src/=' | sort -r)
+		for natx in $reject_lannn; do
+			iptables -t mangle -D PREROUTING $natx >/dev/null 2>&1
+		done
+		
 	    iptables -t nat -D OUTPUT -p tcp -j clash_output >/dev/null 2>&1
 		
 		ipset destroy localnetwork 2>/dev/null
