@@ -109,7 +109,7 @@ o.inputstyle = "apply"
 o.write = function()
   krk.uci:commit("clash")
   luci.sys.call("bash /usr/share/clash/proxy.sh >/dev/null 2>&1 &")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "config", "clash"))
 end
 
 o = b:option(Button,"Apply")
@@ -117,7 +117,7 @@ o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Delete_Severs")
@@ -126,7 +126,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "servers", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Delete_Provider")
@@ -135,7 +135,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "provider", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 
@@ -145,7 +145,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "groups", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "create"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 
