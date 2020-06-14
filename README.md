@@ -25,6 +25,10 @@
 - opkg install luci-app-clash_1.7.3_all.ipk  
 - opkg install luci-app-clash_1.7.3_all.ipk --force-depends
 
+ ## Uninstall
+- opkg remove luci-app-clash 
+- opkg remove luci-app-clash --force-remove
+
 ## Features
 - Suport Subscription Config
 - Support Config Upload
