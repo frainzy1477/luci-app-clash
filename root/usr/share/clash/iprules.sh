@@ -47,6 +47,15 @@ ipadd()
 	   config_get "ipaaddr" "$section" "ipaaddr" ""
 	   config_get "type" "$section" "type" ""
 	   config_get "res" "$section" "res" ""
+	   
+	   if [ -z "$type" ]; then
+		  return
+	   fi
+ 
+	   if [ -z "$pgroup" ]; then
+		  return
+	   fi
+	   
 	   if [ "${res}" -eq 1 ];then
 		echo "- $type,$ipaaddr,$pgroup,no-resolve">>/tmp/ipadd.conf
 	   else
