@@ -13,6 +13,10 @@ CLASH_CONFIG="/tmp/config.yaml"
 append=$(uci get clash.config.append_rules 2>/dev/null)
 if [ "${append}" -eq 1 ];then
 
+if [ -f $CLASH_CONFIG ];then
+	rm -rf $CLASH_CONFIG 2>/dev/null
+fi
+
 cp $CONFIG_YAML $CLASH_CONFIG 2>/dev/null
 if [ ! -z "$(grep "^Rule:" "$CLASH_CONFIG")" ]; then
 	sed -i "/^Rule:/i\#RULESTART#" $CLASH_CONFIG 2>/dev/null
