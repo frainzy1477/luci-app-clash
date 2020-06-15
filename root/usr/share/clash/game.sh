@@ -80,23 +80,23 @@ config_foreach yml_game_rule_get "game"
 
 if [ -f $GAME_RULE_FILE ];then
 
-sed -i -e "\$a#*******GAME-RULE-END**********#" $GAME_RULE_FILE 2>/dev/null
-sed -i '/#*******GAME-RULE-START**********#/,/#*******GAME-RULE-END**********#/d' "$CLASH_CONFIG" 2>/dev/null
+sed -i -e "\$a#GAMERULEEND#" $GAME_RULE_FILE 2>/dev/null
+sed -i '/#GAMERULESTART#/,/#GAMERULEEND#/d' "$CLASH_CONFIG" 2>/dev/null
 
 if [ ! -z "$(grep "^ \{0,\}- GEOIP" "$CLASH_CONFIG")" ]; then
-   sed -i '1,/^ \{0,\}- GEOIP,/{/^ \{0,\}- GEOIP,/s/^ \{0,\}- GEOIP,/#*******GAME-RULE-START**********#\n&/}' "$CLASH_CONFIG" 2>/dev/null
+   sed -i '1,/^ \{0,\}- GEOIP,/{/^ \{0,\}- GEOIP,/s/^ \{0,\}- GEOIP,/#GAMERULESTART#\n&/}' "$CLASH_CONFIG" 2>/dev/null
 elif [ ! -z "$(grep "^ \{0,\}- MATCH," "$CLASH_CONFIG")" ]; then
-   sed -i '1,/^ \{0,\}- MATCH,/{/^ \{0,\}- MATCH,/s/^ \{0,\}- MATCH,/#*******GAME-RULE-START**********#\n&/}' "$CLASH_CONFIG" 2>/dev/null
+   sed -i '1,/^ \{0,\}- MATCH,/{/^ \{0,\}- MATCH,/s/^ \{0,\}- MATCH,/#GAMERULESTART#\n&/}' "$CLASH_CONFIG" 2>/dev/null
 else
-   echo "#*******GAME RULE START**********#" >> "$CLASH_CONFIG" 2>/dev/null
+   echo "#GAMERULESTART#" >> "$CLASH_CONFIG" 2>/dev/null
 fi
 
-sed -i '/GAME-RULE-START/r/tmp/yaml_game_rule_group.yaml' "$CLASH_CONFIG" 2>/dev/null
+sed -i '/GAMERULESTART/r/tmp/yaml_game_rule_group.yaml' "$CLASH_CONFIG" 2>/dev/null
 mv 	$CLASH_CONFIG $CONFIG_YAML 2>/dev/null
 fi
 
 else
-sed -i '/#*******GAME-RULE-START**********#/,/#*******GAME-RULE-END**********#/d' "$CONFIG_YAML" 2>/dev/null
+sed -i '/#GAMERULESTART#/,/#GAMERULEEND#/d' "$CONFIG_YAML" 2>/dev/null
 fi
 
 
