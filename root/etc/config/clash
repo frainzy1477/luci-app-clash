@@ -360,7 +360,7 @@ config rules
 
 config rules
 	option type 'GEOIP'
-	option rulenamee 'CN
+	option rulenamee 'CN'
 	option res '0'
 	option rulegroups 'DIRECT'
 	option rulename 'CN'
