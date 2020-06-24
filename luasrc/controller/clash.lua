@@ -29,7 +29,7 @@ function index()
 	entry({"admin", "services", "clash", "provider"},cbi("clash/provider-config"), nil).leaf = true
     entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
 
-	entry({"admin", "services", "clash", "config","config", "providers"},cbi("clash/provider/providers"),_("Provider Config"), 40).leaf = true
+	entry({"admin", "services", "clash", "config", "providers"},cbi("clash/provider/providers"),_("Provider Config"), 40).leaf = true
 	entry({"admin", "services", "clash", "proxyprovider"},cbi("clash/provider/proxy_provider"), nil).leaf = true
     entry({"admin", "services", "clash", "ruleprovider"},cbi("clash/provider/rule_provider"), nil).leaf = true	
 	entry({"admin", "services", "clash", "rules"},cbi("clash/provider/rules"), nil).leaf = true
