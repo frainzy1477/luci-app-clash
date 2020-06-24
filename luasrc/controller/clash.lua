@@ -67,6 +67,7 @@ function index()
 	entry({"admin", "services", "clash", "conf"},call("action_conf")).leaf=true
 	entry({"admin", "services", "clash", "update_config"},call("action_update")).leaf=true
 	entry({"admin", "services", "clash", "game_rule"},call("action_update_rule")).leaf=true
+	entry({"admin", "services", "clash", "ruleproviders"},call("action_update_rule_providers")).leaf=true
 	entry({"admin", "services", "clash", "ping_check"},call("action_ping_status")).leaf=true
 	
 end
@@ -299,7 +300,23 @@ function geoip_check()
 end
 
 
+local function download_rule_provider()
+	local filename = luci.http.formvalue("filename")
+	local rule_file_dir="/etc/clash/ruleprovider/" .. filename
+        luci.sys.call(string.format('sh /usr/share/clash/provider/clash_rule_provider.sh "%s" >/dev/null 2>&1',filename))
+	if not fss.isfile(rule_file_dir) then
+		return "0"
+	else
+		return "1"
+	end
+end
 
+function action_update_rule_providers()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+	rulep = download_rule_provider()
+})
+end
 
 function check_status()
 	luci.http.prepare_content("application/json")

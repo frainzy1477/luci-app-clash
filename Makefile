@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=1.7.3.2
+PKG_VERSION:=1.7.3.3
 PKG_MAINTAINER:=frainzy1477
 
 
@@ -68,7 +68,9 @@ if [ -z "$${IPKG_INSTROOT}" ]; then
 	mv /usr/share/clash/config/sub/config.yaml /usr/share/clashbackup/config.bak1 2>/dev/null
 	mv /usr/share/clash/config/upload/config.yaml /usr/share/clashbackup/config.bak2 2>/dev/null
 	mv /usr/share/clash/config/custom/config.yaml /usr/share/clashbackup/config.bak3 2>/dev/null
-	
+	mv /usr/share/clash/dns.yaml /usr/share/clashbackup/dns.bak 2>/dev/null
+	mv /usr/share/clash/tundns.yaml /usr/share/clashbackup/tundns.bak 2>/dev/null
+	mv /usr/share/clash/custom_rule.yaml /usr/share/clashbackup/custom_rule.bak 2>/dev/null
 fi
 
 exit 0
@@ -83,8 +85,10 @@ if [ -z "$${IPKG_INSTROOT}" ]; then
 	mv /usr/share/clashbackup/config.bak1 /usr/share/clash/config/sub/config.yaml 2>/dev/null
 	mv /usr/share/clashbackup/config.bak2 /usr/share/clash/config/upload/config.yaml 2>/dev/null
 	mv /usr/share/clashbackup/config.bak3 /usr/share/clash/config/custom/config.yaml 2>/dev/null
+	mv /usr/share/clashbackup/dns.bak /usr/share/clash/dns.yaml 2>/dev/null
+	mv /usr/share/clashbackup/tundns.bak /usr/share/clash/tundns.yaml 2>/dev/null
+	mv /usr/share/clashbackup/custom_rule.bak /usr/share/clash/custom_rule.yaml 2>/dev/null
 	/etc/init.d/clash disable 2>/dev/null
-	uci set clash.config.p_mode="Rule" && uci set clash.config.auto_clear_log="1" && uci set clash.config.auto_update="1" && uci set clash.config.auto_update_time="12" && uci set clash.config.clear_time="12" && uci commit clash 2>/dev/null
 fi
 
 exit 0
@@ -115,6 +119,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/usr/share/clashbackup
 	$(INSTALL_DIR) $(1)/usr/share/clash/provider
+	$(INSTALL_DIR) $(1)/usr/share/clash/provider/ruleproviders
 	$(INSTALL_DIR) $(1)/etc/clash/provider
 	$(INSTALL_DIR) $(1)/etc/clash/proxyprovider
 	$(INSTALL_DIR) $(1)/etc/clash/ruleprovider
@@ -129,6 +134,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_CONF) ./root/etc/clash/Country.mmdb $(1)/etc/clash/
 	$(INSTALL_CONF) ./root/etc/clash/ruleprovider/* $(1)/etc/clash/ruleprovider/
 	$(INSTALL_BIN) ./root/usr/share/clash/provider/* $(1)/usr/share/clash/provider/
+	$(INSTALL_BIN) ./root/usr/share/clash/provider/ruleproviders/* $(1)/usr/share/clash/provider/ruleproviders/
 	$(INSTALL_BIN) ./root/usr/share/clash/*.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/rpcd/acl.d/luci-app-clash.json $(1)/usr/share/rpcd/acl.d/	
