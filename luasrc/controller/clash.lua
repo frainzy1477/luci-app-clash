@@ -29,12 +29,14 @@ function index()
 	entry({"admin", "services", "clash", "provider"},cbi("clash/provider-config"), nil).leaf = true
     entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
 
-	entry({"admin", "services", "clash", "config", "providers"},cbi("clash/provider/providers"),_("Provider Config"), 40).leaf = true
+	entry({"admin", "services", "clash", "config","config", "providers"},cbi("clash/provider/providers"),_("Provider Config"), 40).leaf = true
 	entry({"admin", "services", "clash", "proxyprovider"},cbi("clash/provider/proxy_provider"), nil).leaf = true
     entry({"admin", "services", "clash", "ruleprovider"},cbi("clash/provider/rule_provider"), nil).leaf = true	
 	entry({"admin", "services", "clash", "rules"},cbi("clash/provider/rules"), nil).leaf = true
-	    entry({"admin", "services", "clash", "pgroups"},cbi("clash/provider/groups"), nil).leaf = true
-
+	entry({"admin", "services", "clash", "pgroups"},cbi("clash/provider/groups"), nil).leaf = true
+	
+	entry({"admin", "services", "clash", "rule", "ruleproviders"},cbi("clash/provider/ruleprovider_manager"), nil).leaf = true
+	
 	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 50)
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 60).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 70).leaf = true
@@ -300,16 +302,12 @@ function geoip_check()
 end
 
 
-local function download_rule_provider()
+function download_rule_provider()
 	local filename = luci.http.formvalue("filename")
-	local rule_file_dir="/etc/clash/ruleprovider/" .. filename
-        luci.sys.call(string.format('sh /usr/share/clash/provider/clash_rule_provider.sh "%s" >/dev/null 2>&1',filename))
-	if not fss.isfile(rule_file_dir) then
-		return "0"
-	else
-		return "1"
-	end
+  	local status = luci.sys.call(string.format('/usr/share/clash/provider/clash_rule_provider.sh "%s" >/dev/null 2>&1',filename))
+  	return status
 end
+
 
 function action_update_rule_providers()
 	luci.http.prepare_content("application/json")
@@ -317,6 +315,7 @@ function action_update_rule_providers()
 	rulep = download_rule_provider()
 })
 end
+
 
 function check_status()
 	luci.http.prepare_content("application/json")

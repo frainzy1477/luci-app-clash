@@ -41,7 +41,7 @@ o = s:option(Button,"Manager")
 o.inputtitle = translate("Rule Providers Manager")
 o.inputstyle = "reload"
 o.write = function()
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "ruleproviders"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "rule", "ruleproviders"))
 end
 
 
