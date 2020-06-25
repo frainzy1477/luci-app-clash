@@ -27,7 +27,7 @@ end
 
 m = Map(clash, translate("Edit Rule Provider"))
 m.pageaction = false
-m.redirect = luci.dispatcher.build_url("admin/services/clash/config/providers")
+m.redirect = luci.dispatcher.build_url("admin/services/clash/config/create")
 if m.uci:get(clash, sid) ~= "ruleprovider" then
 	luci.http.redirect(m.redirect)
 	return
