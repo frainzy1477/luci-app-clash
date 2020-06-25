@@ -88,11 +88,14 @@ if [ -s "$CUSTOM_FILE" ]; then
 	count_num=1
 	while [[ $count_num -le $num ]]
 	do 
-	line=$(sed -n "$count_num"p /usr/share/clash/server.list)	
+	line=$(sed -n "$count_num"p /usr/share/clash/server.list)
+	if [ -z "$(echo $line |grep '^ \{0,\}#' 2>/dev/null)" ]; then	
          echo "  - '$line'" >> "$FAKE_FILTER_FILE"
+	fi
     count_num=$(( $count_num + 1))	
     done	  
   
  
 fi
 fi
+	
