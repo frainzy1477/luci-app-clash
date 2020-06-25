@@ -853,7 +853,7 @@ elif [ -z $check_name ] && [ "${same_tag}" -eq 0 ];then
 echo "${config_name}.yaml" >>/usr/share/clashbackup/create_list.conf
 fi
 
-rm -rf $RULE_PROVIDER $PROVIDER_FILE $GROUP_FILE  $RULE_FILE $SERVER_FILE
+rm -rf $RULE_PROVIDER $PROVIDER_FILE $GROUP_FILE  $RULE_FILE $SERVER_FILE $Proxy_Group
 
 if [ $lang == "en" ] || [ $lang == "auto" ];then
 		echo "Completed Creating Custom Config.. " >$REAL_LOG 
