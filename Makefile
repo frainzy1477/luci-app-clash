@@ -129,17 +129,17 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/share/clash/config/custom
 
 	
-	$(INSTALL_BIN) 	./root/etc/init.d/clash $(1)/etc/init.d/clash
-	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
+	$(INSTALL_BIN) 	./root/etc/init.d/clash $(1)/etc/init.d/clash/
+	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash/
 	$(INSTALL_CONF) ./root/etc/clash/Country.mmdb $(1)/etc/clash/
 	$(INSTALL_CONF) ./root/etc/clash/ruleprovider/* $(1)/etc/clash/ruleprovider/
 	$(INSTALL_BIN) ./root/usr/share/clash/provider/* $(1)/usr/share/clash/provider/
-	$(INSTALL_BIN) ./root/usr/share/clash/provider/ruleproviders/* $(1)/usr/share/clash/provider/ruleproviders/
+	$(INSTALL_BIN) ./root/usr/share/clash/provider/ruleproviders/rule_providers.list $(1)/usr/share/clash/provider/ruleproviders/
 	$(INSTALL_BIN) ./root/usr/share/clash/*.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/rpcd/acl.d/luci-app-clash.json $(1)/usr/share/rpcd/acl.d/	
-	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/Steam.rules $(1)/usr/share/clash/rules/g_rules
-	$(INSTALL_BIN) ./root//usr/share/clash/rules/rules.list $(1)/usr/share/clash/rules
+	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/Steam.rules $(1)/usr/share/clash/rules/g_rules/
+	$(INSTALL_BIN) ./root//usr/share/clash/rules/rules.list $(1)/usr/share/clash/rules/
 
 	$(INSTALL_BIN) ./root/usr/share/clash/tundns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/custom_rule.yaml $(1)/usr/share/clash/
