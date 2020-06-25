@@ -1156,3 +1156,9 @@ msgstr "其他规则"
 
 msgid "Use Other Rule"
 msgstr "启用其他规则"
+
+msgid "Delete Proxy Provider"
+msgstr "删除代理集"
+
+msgid "All Servers"
+msgstr "所有节点"

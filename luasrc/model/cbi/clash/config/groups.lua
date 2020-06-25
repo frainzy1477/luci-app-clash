@@ -49,13 +49,19 @@ o:depends("type", "load-balance")
 o = s:option(DynamicList, "other_group", translate("Other Group"))
 o.rmempty = true
 o.description = translate("Proxy Groups Must Exist In Rule")
-o:value("", translate("None"))
+o:value("ALL", translate("All Servers"))
 uci:foreach("clash", "pgroups",
 		function(s)
 		  if s.name ~= "" and s.name ~= nil and s.name ~= m.uci:get(clash, sid, "name") then
 			   o:value(s.name)
 			end
 		end)
+uci:foreach("clash", "servers",
+		function(s)
+		  if s.name ~= "" and s.name ~= nil and s.name ~= m.uci:get(clash, sid, "name") then
+			   o:value(s.name)
+			end
+		end)		
 o:value("DIRECT")
 o:value("REJECT")
 

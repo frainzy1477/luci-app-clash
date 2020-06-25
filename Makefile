@@ -131,7 +131,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) 	./root/etc/init.d/clash $(1)/etc/init.d/clash
 	$(INSTALL_CONF) ./root/etc/config/clash $(1)/etc/config/clash
 	$(INSTALL_CONF) ./root/etc/clash/Country.mmdb $(1)/etc/clash
-	$(INSTALL_CONF) ./root/etc/clash/ruleprovider/* $(1)/etc/clash/ruleprovider
 	$(INSTALL_BIN) ./root/usr/share/clash/provider/* $(1)/usr/share/clash/provider
 	$(INSTALL_BIN) ./root/usr/share/clash/*.sh $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash

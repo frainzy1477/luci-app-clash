@@ -264,6 +264,8 @@ rules(){
 			  done
 		    fi			
 
+
+		
 		if [ "$(iptables -t nat -nL PREROUTING --line-number |grep "udp dpt:53" |grep "0.0.0.0/0 \{0,\}0.0.0.0/0" |wc -l)" -gt 1 ] && [ "$dnsforwader" -eq "1" ]; then
 		   pre_lines=$(iptables -nvL PREROUTING -t nat |sed 1,2d |sed -n '/0.0.0.0\/0 \{0,\}0.0.0.0\/0 \{0,\}udp dpt:53/=' 2>/dev/null |sort -rn)
 		   for pre_line in $pre_lines; do
@@ -351,6 +353,10 @@ rules(){
 			
 			
 		elif [ "${core}" -eq 3 ] || [ "${core}" -eq 4 ];then
+			natr=$(iptables -nvL PREROUTING -t nat | sed 1,2d | sed -n '/tcp dpt:53/=' | sort -r)
+			for natx in $natr; do
+				iptables -t nat -D PREROUTING $natx >/dev/null 2>&1
+			done
 			
 			TUN_DEVICE=$(egrep '^ {0,}device-url:' /etc/clash/config.yaml |grep device-url: |awk -F '//' '{print $2}')
 			if [ -z $TUN_DEVICE ];then
@@ -479,7 +485,6 @@ fi
 start(){
 #=========================================================================================================================== 
 lang=$(uci get luci.main.lang 2>/dev/null)
-landns=$(uci get clash.config.landns 2>/dev/null)
 enable=$(uci get clash.config.enable 2>/dev/null)
 core=$(uci get clash.config.core 2>/dev/null)
 mode=$(uci get clash.config.mode 2>/dev/null)
@@ -571,15 +576,6 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		exit 0
 	fi
 		
-
-	if [ ! -z "${landns}" ];then
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Setting up Custom lan dns server " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-			echo "设置自定义lan dns服务器" >$REAL_LOG
-		fi
-		uci set network.lan.dns="${landns}" && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
-	fi
 	
 	
 	if [ ! -f /etc/clash/Country.mmdb ];then
@@ -906,15 +902,7 @@ remove_mark(){
         done	
 		
 		iptables -t nat -I PREROUTING -p tcp --dport 53 -j ACCEPT
-		
-		if [ ! -z "${delandns}" ];then
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-				echo "Removing Custom lan dns server " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-				echo "删除自定义lan dns服务器" >$REAL_LOG
-		fi
-		uci delete network.lan.dns && uci commit network && /etc/init.d/network reload >/dev/null 2>&1
-		fi		
+				
 		revert_dns >/dev/null 2>&1
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -926,8 +914,7 @@ remove_mark(){
 
 stop(){
 #=========================================================================================================================== 
-		delandns=$(uci get clash.config.delan 2>/dev/null)
-		landns=$(uci get clash.config.landns 2>/dev/null)
+		
 		lang=$(uci get luci.main.lang 2>/dev/null)
 		tun_mode=$(uci get clash.config.tun_mode 2>/dev/null)
 		ipv6=$(uci get clash.config.ipv6 2>/dev/null)

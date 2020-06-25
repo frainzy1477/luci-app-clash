@@ -15,13 +15,17 @@ bold_on  = [[<strong>]]
 bold_off = [[</strong>]]
 
 krk = Map(clash)
-s = krk:section(TypedSection, "clash", translate("Provider Config"))
+s = krk:section(TypedSection, "clash", translate("Create Config"))
 s.anonymous = true
 krk.pageaction = false
 
 o = s:option(Flag, "provider_config", translate("Enable Create"))
 o.default = 1
 o.description = translate("Enable to create configuration")
+
+o = s:option(Flag, "prox", translate("Use Proxy"))
+o.description = translate("Use Proxy")
+
 
 o = s:option(Flag, "ppro", translate("Use Proxy Provider"))
 o.description = translate("Use Proxy Provider")
@@ -364,6 +368,8 @@ o.inputtitle = translate("Delete Rule")
 o.write = function()
   SYS.call("rm -rf /usr/share/clash/custom_rule.yaml >/dev/null 2>&1 &")
 end
+
+krk:append(Template("clash/list"))
 
 return krk,m,l
 
