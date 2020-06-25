@@ -97,7 +97,7 @@ endef
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/controller
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/clash
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/clash/provider
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/clash/config
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/view/clash
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
 	$(INSTALL_DIR) $(1)/etc/init.d
@@ -158,7 +158,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DATA) ./luasrc/clash.lua $(1)/usr/lib/lua/luci
 	$(INSTALL_DATA) ./luasrc/controller/*.lua $(1)/usr/lib/lua/luci/controller
 	$(INSTALL_DATA) ./luasrc/model/cbi/clash/*.lua $(1)/usr/lib/lua/luci/model/cbi/clash
-	$(INSTALL_DATA) ./luasrc/model/cbi/clash/provider/*.lua $(1)/usr/lib/lua/luci/model/cbi/clash/provider
+	$(INSTALL_DATA) ./luasrc/model/cbi/clash/config/*.lua $(1)/usr/lib/lua/luci/model/cbi/clash/config
 	$(INSTALL_DATA) ./luasrc/view/clash/* $(1)/usr/lib/lua/luci/view/clash
 	$(INSTALL_DATA) ./po/zh-cn/clash.zh-cn.lmo $(1)/usr/lib/lua/luci/i18n
 endef

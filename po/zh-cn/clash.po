@@ -1129,3 +1129,30 @@ msgstr "启用黑名单IP"
 
 msgid "Whitelist or Blacklist IPs to use Clash ( Only support enhanced-mode: redir-host )"
 msgstr "启用白名单或黑名单IP ( 仅支持enhanced-mode: redir-host )"
+
+msgid "Rule Providers Manager"
+msgstr "规则集经理"
+
+msgid "Rule Providers List"
+msgstr "规则集表"
+
+msgid "Type"
+msgstr "规则类型"
+
+msgid "Not Updated"
+msgstr "规则没更新"
+
+msgid "Update Rule Providers"
+msgstr "更新规则集"
+
+msgid "Proxy Groups"
+msgstr "代理组"
+
+msgid "Use Proxy"
+msgstr "启用代理"
+
+msgid "Other Rules"
+msgstr "其他规则"
+
+msgid "Use Other Rule"
+msgstr "启用其他规则"

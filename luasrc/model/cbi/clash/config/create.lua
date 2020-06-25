@@ -9,6 +9,10 @@ local s, o, krk, z, r
 local clash = "clash"
 local http = luci.http
 
+font_blue = [[<font color="blue">]]
+font_off = [[</font>]]
+bold_on  = [[<strong>]]
+bold_off = [[</strong>]]
 
 krk = Map(clash)
 s = krk:section(TypedSection, "clash", translate("Provider Config"))
@@ -24,9 +28,16 @@ o.description = translate("Use Proxy Provider")
 
 o = s:option(Flag, "rulprp", translate("Use Rule Provider"))
 o.description = translate("Use Rule Provider")
+o:depends("orul", 0)
 
 o = s:option(Flag, "rul", translate("Use Rules"))
 o.description = translate("Use Rules")
+o:depends("orul", 0)
+
+o = s:option(Flag, "orul", translate("Use Other Rules"))
+o.description = translate("Use Other Rules")
+o:depends("rul", 0)
+
 
 o = s:option(Flag, "script", translate("Use Script"))
 o.description = translate("Use Script")
@@ -36,6 +47,10 @@ o = s:option(Value, "name_tag")
 o.title = translate("Config Name")
 o.rmempty = true
 o.description = translate("Give a name for your config")
+
+cc = s:option(Flag, "same_tag", translate("Force Same Name"))
+cc.default = 1
+cc.description = translate("Enable to overwrite config file")
 
 o = s:option(Button,"Manager")
 o.title = translate("Rule Providers Manager")
@@ -67,7 +82,16 @@ o.inputtitle = translate("Save & Apply")
 o.inputstyle = "apply"
 o.write = function()
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
+end
+
+o = b:option(Button,"Delete Severs")
+o.inputtitle = translate("Delete Severs")
+o.inputstyle = "reset"
+o.write = function()
+  krk.uci:delete_all("clash", "servers", function(s) return true end)
+  krk.uci:commit("clash")
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Delete_ProxyPro")
@@ -76,7 +100,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "proxyprovider", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Delete_RulePro")
@@ -85,7 +109,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "ruleprovider", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 
@@ -95,7 +119,7 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "rules", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Delete_Groups")
@@ -104,11 +128,54 @@ o.inputstyle = "reset"
 o.write = function()
   krk.uci:delete_all("clash", "pgroups", function(s) return true end)
   krk.uci:commit("clash")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
+
+
+-- [[ Proxies ]]--
+s = krk:section(TypedSection, "servers", translate("Proxies"))
+s.anonymous = true
+s.addremove = true
+s.sortable = false
+s.template = "cbi/tblsection"
+s.extedit = luci.dispatcher.build_url("admin/services/clash/servers/%s")
+function s.create(...)
+	local sid = TypedSection.create(...)
+	if sid then
+		luci.http.redirect(s.extedit % sid)
+		return
+	end
+end
+
+
+o = s:option(DummyValue, "type", translate("Type"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = s:option(DummyValue, "name", translate("Alias"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = s:option(DummyValue, "server", translate("Server Address"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = s:option(DummyValue, "port", translate("Server Port"))
+function o.cfgvalue(...)
+	return Value.cfgvalue(...) or translate("None")
+end
+
+o = s:option(DummyValue, "server" ,translate("Latency"))
+o.template="clash/ping"
+o.width="10%"
+
 
 -- [[ Groups Manage ]]--
 x = krk:section(TypedSection, "pgroups", translate("Policy Groups"))
+x.description = font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/proxy-groups")..bold_off..font_off..' '
 x.anonymous = true
 x.addremove = true
 x.sortable = true
@@ -136,6 +203,7 @@ end
 
 -- [[ Proxy-Provider Manage ]]--
 z = krk:section(TypedSection, "proxyprovider", translate("Proxy Provider"))
+z.description = font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/proxy-provider")..bold_off..font_off..' '
 z.anonymous = true
 z.addremove = true
 z.sortable = true
@@ -167,6 +235,7 @@ end
 
 -- [[ Rule-Provider Manage ]]--
 r = krk:section(TypedSection, "ruleprovider", translate("Rule Provider"))
+r.description = font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/rule-provider")..bold_off..font_off..' '
 r.anonymous = true
 r.addremove = true
 r.sortable = true
@@ -199,6 +268,7 @@ end
 
 -- [[ Rule Manage ]]--
 q = krk:section(TypedSection, "rules", translate("Rules"))
+q.description = font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/rules")..bold_off..font_off..' '
 q.anonymous = true
 q.addremove = true
 q.sortable = true
@@ -237,7 +307,7 @@ m.pageaction = false
 
 local script="/usr/share/clash/provider/script.yaml"
 sev = y:option(TextValue, "scriptt")
-sev.description = translate("NB: Set Clash Mode to Script if want to use")
+sev.description =translate("NB: Set Clash Mode to Script if want to use")..font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/script")..bold_off..font_off..' '
 sev.rows = 10
 sev.wrap = "off"
 sev.cfgvalue = function(self, section)
@@ -255,5 +325,45 @@ o.write = function()
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
 end
 
-return krk,m
+
+l = Map("clash")
+v = l:section(TypedSection, "clash" , translate("Other Rules"))
+v.anonymous = true
+v.addremove=false
+l.pageaction = false
+
+o = v:option(Value, "rule_url")
+o.title = translate("Custom Rule Url")
+o.description = translate("Insert your custom rule Url and click download")
+o.rmempty = true
+
+o = v:option(Button,"rule_update")
+o.title = translate("Download Rule")
+o.inputtitle = translate("Download Rule")
+o.description = translate("Download Rule")
+o.inputstyle = "reload"
+o.write = function()
+  uci:commit("clash")
+  luci.sys.call("bash /usr/share/clash/rule.sh >>/usr/share/clash/clash.txt >/dev/null 2>&1 &")
+end
+
+local rule = "/usr/share/clash/custom_rule.yaml"
+sev = v:option(TextValue, "rule")
+sev.description = translate("NB: Attention to Proxy Group and Rule when making changes to this section")
+sev.rows = 20
+sev.wrap = "off"
+sev.cfgvalue = function(self, section)
+	return NXFS.readfile(rule) or ""
+end
+sev.write = function(self, section, value)
+	NXFS.writefile(rule, value:gsub("\r\n", "\n"))
+end
+
+o = v:option(Button,"del_rule")
+o.inputtitle = translate("Delete Rule")
+o.write = function()
+  SYS.call("rm -rf /usr/share/clash/custom_rule.yaml >/dev/null 2>&1 &")
+end
+
+return krk,m,l
 

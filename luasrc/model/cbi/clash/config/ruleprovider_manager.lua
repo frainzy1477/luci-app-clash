@@ -27,7 +27,7 @@ o = a:option(Button, "Apply")
 o.inputtitle = translate("Back to Overview")
 o.inputstyle = "reset"
 o.write = function()
-  HTTP.redirect(DISP.build_url("admin", "services", "clash",  "config", "providers"))
+  HTTP.redirect(DISP.build_url("admin", "services", "clash",  "config", "create"))
 end
 
 

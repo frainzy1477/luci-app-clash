@@ -22,42 +22,33 @@ function index()
 	entry({"admin", "services", "clash", "config", "import"},cbi("clash/import"),_("Import Config"), 25).leaf = true
 	entry({"admin", "services", "clash", "config", "config"},cbi("clash/config"),_("Select Config"), 30).leaf = true
 	
-
+	entry({"admin", "services", "clash", "config", "create"},cbi("clash/config/create"),_("Create Config"), 35).leaf = true
+	entry({"admin", "services", "clash", "proxyprovider"},cbi("clash/config/proxy_provider"), nil).leaf = true
+	entry({"admin", "services", "clash", "servers"},cbi("clash/config/servers-config"), nil).leaf = true
+    entry({"admin", "services", "clash", "ruleprovider"},cbi("clash/config/rule_provider"), nil).leaf = true	
+	entry({"admin", "services", "clash", "rules"},cbi("clash/config/rules"), nil).leaf = true
+	entry({"admin", "services", "clash", "pgroups"},cbi("clash/config/groups"), nil).leaf = true
+	entry({"admin", "services", "clash", "rulemanager"},cbi("clash/config/ruleprovider_manager"), nil).leaf = true
 	
-	entry({"admin", "services", "clash", "config", "create"},cbi("clash/create"),_("Standard Config"), 35).leaf = true
-    entry({"admin", "services", "clash", "servers"},cbi("clash/servers-config"), nil).leaf = true
-	entry({"admin", "services", "clash", "provider"},cbi("clash/provider-config"), nil).leaf = true
-    entry({"admin", "services", "clash", "groups"},cbi("clash/groups"), nil).leaf = true
-
-	entry({"admin", "services", "clash", "config", "providers"},cbi("clash/provider/providers"),_("Provider Config"), 40).leaf = true
-	entry({"admin", "services", "clash", "proxyprovider"},cbi("clash/provider/proxy_provider"), nil).leaf = true
-    entry({"admin", "services", "clash", "ruleprovider"},cbi("clash/provider/rule_provider"), nil).leaf = true	
-	entry({"admin", "services", "clash", "rules"},cbi("clash/provider/rules"), nil).leaf = true
-	entry({"admin", "services", "clash", "pgroups"},cbi("clash/provider/groups"), nil).leaf = true
-	entry({"admin", "services", "clash", "rulemanager"},cbi("clash/provider/ruleprovider_manager"), nil).leaf = true
 	
-	entry({"admin", "services", "clash", "rule", "ruleproviders"},cbi("clash/provider/ruleprovider_manager"), nil).leaf = true
-	
-	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 50)
+	entry({"admin", "services", "clash", "settings"}, firstchild(),_("Settings"), 40)
 	entry({"admin", "services", "clash", "settings", "port"},cbi("clash/port"),_("Proxy Ports"), 60).leaf = true
 	entry({"admin", "services", "clash", "settings", "dns"},cbi("clash/dns"),_("DNS Settings"), 70).leaf = true
 	entry({"admin", "services", "clash", "settings", "geoip"},cbi("clash/geoip"),_("Update GeoIP"), 80).leaf = true
 	entry({"admin", "services", "clash", "settings", "list"},cbi("clash/list"),_("Custom List"), 90).leaf = true
-
 	entry({"admin", "services", "clash", "settings", "grules"},cbi("clash/game-settings"),_("Game Rules"), 91).dependent = false
     entry({"admin", "services", "clash", "g-rules"},cbi("clash/game-rule"), nil).leaf = true
 	entry({"admin", "services", "clash", "settings", "other"},cbi("clash/other"),_("Other Settings"), 92).leaf = true
     entry({"admin", "services", "clash", "ip-rules"},cbi("clash/ip-rules"), nil).leaf = true
 	
+	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 45).leaf = true
+	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 50).leaf = true
 	
-	entry({"admin","services","clash","status"},call("action_status")).leaf=true
-	entry({"admin", "services", "clash", "log"},cbi("clash/log"),_("Log"), 150).leaf = true
-	entry({"admin", "services", "clash", "update"},cbi("clash/update"),_("Update"), 160).leaf = true
 
 	entry({"admin","services","clash","check_status"},call("check_status")).leaf=true
 	entry({"admin", "services", "clash", "ping"}, call("act_ping")).leaf=true
 	entry({"admin", "services", "clash", "readlog"},call("action_read")).leaf=true
-
+	entry({"admin","services","clash", "status"},call("action_status")).leaf=true
 	entry({"admin", "services", "clash", "check"}, call("check_update_log")).leaf=true
 	entry({"admin", "services", "clash", "doupdate"}, call("do_update")).leaf=true
 	entry({"admin", "services", "clash", "start"}, call("do_start")).leaf=true
@@ -76,6 +67,21 @@ function index()
 end
 
 local fss = require "luci.clash"
+
+local function download_rule_provider()
+	local filename = luci.http.formvalue("filename")
+  	local status = luci.sys.call(string.format('/usr/share/clash/provider/clash_rule_provider.sh "%s" >/dev/null 2>&1',filename))
+  	return status
+end
+
+
+function action_update_rule_providers()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+	rulep = download_rule_provider();
+})
+end
+
 
 local function uhttp_port()
 	local uhttp_port = luci.sys.exec("uci get uhttpd.main.listen_http |awk -F ':' '{print $NF}'")
@@ -303,19 +309,6 @@ function geoip_check()
 end
 
 
-function download_rule_provider()
-	local filename = luci.http.formvalue("filename")
-  	local status = luci.sys.call(string.format('/usr/share/clash/provider/clash_rule_provider.sh "%s" >/dev/null 2>&1',filename))
-  	return status
-end
-
-
-function action_update_rule_providers()
-	luci.http.prepare_content("application/json")
-	luci.http.write_json({
-	rulep = download_rule_provider()
-})
-end
 
 
 function check_status()

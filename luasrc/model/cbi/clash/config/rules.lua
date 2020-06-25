@@ -8,7 +8,7 @@ local sid = arg[1]
 
 m = Map(clash, translate("Edit Rules"))
 --m.pageaction = false
-m.redirect = luci.dispatcher.build_url("admin/services/clash/config/providers")
+m.redirect = luci.dispatcher.build_url("admin/services/clash/config/create")
 if m.uci:get(clash, sid) ~= "rules" then
 	luci.http.redirect(m.redirect)
 	return
@@ -94,7 +94,7 @@ o.inputstyle = "apply"
 o.write = function()
   m.uci:commit("clash")
   sys.call("/usr/share/clash/provider/rules.sh start >/dev/null 2>&1 &")
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "providers"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "config", "create"))
 end
 
 o = b:option(Button,"Return")
