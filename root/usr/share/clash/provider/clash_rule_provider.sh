@@ -2,12 +2,12 @@
 . /lib/functions.sh
 
    RULE_FILE_NAME="$1" 
-   RULE_FILE_ENNAME=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/ruleproviders/rule_provider.list |awk -F ',' '{print $4}' 2>/dev/null)
+   RULE_FILE_ENNAME=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/rule_provider.list |awk -F ',' '{print $4}' 2>/dev/null)
    
    if [ ! -z "$RULE_FILE_ENNAME" ]; then
-      DOWNLOAD_PATH=$(grep -F ",$RULE_FILE_NAME" /usr/share/clash/provider/ruleproviders/rule_provider.list |awk -F ',' '{print $3$4}' 2>/dev/null)
+      DOWNLOAD_PATH=$(grep -F ",$RULE_FILE_NAME" /usr/share/clash/provider/rule_provider.list |awk -F ',' '{print $3$4}' 2>/dev/null)
    else
-      DOWNLOAD_PATH=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/ruleproviders/rule_provider.list |awk -F ',' '{print $3$4}' 2>/dev/null)
+      DOWNLOAD_PATH=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/rule_provider.list |awk -F ',' '{print $3$4}' 2>/dev/null)
    fi
    
    RULE_FILE_DIR="/etc/clash/ruleprovider/$RULE_FILE_NAME"
@@ -16,7 +16,7 @@
    REAL_LOG="/usr/share/clash/clash_real.txt"
    
    url="https://raw.githubusercontent.com/$DOWNLOAD_PATH"
-   behavior=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/ruleproviders/rule_provider.list |awk -F ',' '{print $2}' 2>/dev/null)
+   behavior=$(grep -F $RULE_FILE_NAME /usr/share/clash/provider/rule_provider.list |awk -F ',' '{print $2}' 2>/dev/null)
    name=$RULE_FILE_NAME
    path="./ruleprovider/"$RULE_FILE_NAME""
    

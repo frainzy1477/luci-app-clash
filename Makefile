@@ -119,7 +119,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/usr/share/clashbackup
 	$(INSTALL_DIR) $(1)/usr/share/clash/provider
-	$(INSTALL_DIR) $(1)/usr/share/clash/provider/ruleproviders
 	$(INSTALL_DIR) $(1)/etc/clash/provider
 	$(INSTALL_DIR) $(1)/etc/clash/proxyprovider
 	$(INSTALL_DIR) $(1)/etc/clash/ruleprovider
@@ -134,7 +133,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_CONF) ./root/etc/clash/Country.mmdb $(1)/etc/clash/
 	$(INSTALL_CONF) ./root/etc/clash/ruleprovider/* $(1)/etc/clash/ruleprovider/
 	$(INSTALL_BIN) ./root/usr/share/clash/provider/* $(1)/usr/share/clash/provider/
-	$(INSTALL_BIN) ./root/usr/share/clash/provider/ruleproviders/rule_providers.list $(1)/usr/share/clash/provider/ruleproviders/
 	$(INSTALL_BIN) ./root/usr/share/clash/*.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/dns.yaml $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/rpcd/acl.d/luci-app-clash.json $(1)/usr/share/rpcd/acl.d/	
