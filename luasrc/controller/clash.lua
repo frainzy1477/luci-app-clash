@@ -34,6 +34,7 @@ function index()
     entry({"admin", "services", "clash", "ruleprovider"},cbi("clash/provider/rule_provider"), nil).leaf = true	
 	entry({"admin", "services", "clash", "rules"},cbi("clash/provider/rules"), nil).leaf = true
 	entry({"admin", "services", "clash", "pgroups"},cbi("clash/provider/groups"), nil).leaf = true
+	entry({"admin", "services", "clash", "rulemanager"},cbi("clash/provider/ruleprovider_manager"), nil).leaf = true
 	
 	entry({"admin", "services", "clash", "rule", "ruleproviders"},cbi("clash/provider/ruleprovider_manager"), nil).leaf = true
 	

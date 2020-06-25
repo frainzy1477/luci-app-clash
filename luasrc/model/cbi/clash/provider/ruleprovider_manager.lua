@@ -13,7 +13,7 @@ local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 
 
-m = SimpleForm("openclash", translate("Rule Providers List"))
+m = Map("clash", translate("Rule Providers List"))
 m.reset = false
 m.submit = false
 
@@ -90,7 +90,7 @@ Button.render(e,t,a)
 end
 btnrm.write=function(a,t)
 local a=fs.unlink("/etc/clash/ruleprovider/"..e[t].filename)
-HTTP.redirect(luci.dispatcher.build_url("admin", "services", "clash", "settings", "grules"))
+HTTP.redirect(luci.dispatcher.build_url("admin", "services", "clash", "rulemanager"))
 end
 
 return m, f

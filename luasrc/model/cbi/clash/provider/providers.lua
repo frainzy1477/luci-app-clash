@@ -38,10 +38,11 @@ o.rmempty = true
 o.description = translate("Give a name for your config")
 
 o = s:option(Button,"Manager")
+o.title = translate("Rule Providers Manager")
 o.inputtitle = translate("Rule Providers Manager")
 o.inputstyle = "reload"
 o.write = function()
-  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "rule", "ruleproviders"))
+  luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash", "rulemanager"))
 end
 
 
