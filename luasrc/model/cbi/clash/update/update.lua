@@ -118,7 +118,7 @@ o.default = "clashcore"
 o:value("1", translate("Clash"))
 o:value("2", translate("Clashr"))
 o:value("3", translate("Clash(ctun)"))
-o:value("3", translate("Clash(dtun)"))
+o:value("4", translate("Clash(dtun)"))
 o.description = translate("Select core, clashr support ssr while clash does not.")
 
 

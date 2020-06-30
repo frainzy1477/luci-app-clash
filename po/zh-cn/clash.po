@@ -1264,3 +1264,12 @@ msgstr "启用IPv6"
 
 msgid "Filter List"
 msgstr "自定义过滤器列表"
+
+msgid "Installed Version"
+msgstr "当前内核版本"
+
+msgid "New Version"
+msgstr "最新内核版本"
+
+msgid "Download Update"
+msgstr "下载最新版本客户端"

@@ -207,6 +207,14 @@ local function new_clashtun_core_version()
 	return luci.sys.exec("sed -n 1p /usr/share/clash/new_clashtun_core_version")
 end
 
+local function check_dtun_core()
+	return luci.sys.exec("sh /usr/share/clash/check_dtun_core_version.sh")
+end
+
+local function new_dtun_core()
+	return luci.sys.exec("sed -n 1p /usr/share/clash/new_clashdtun_core_version")
+end
+
 local function e_mode()
 	return luci.sys.exec("egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}'")
 end
@@ -256,7 +264,12 @@ end
 
 local function dtun_core()
 	if nixio.fs.access("/etc/clash/dtun/clash") then
-		return luci.sys.exec("/etc/clash/dtun/clash -v 2>/dev/null |awk -F ' ' '{print $2}'")
+		local tun=luci.sys.exec("/etc/clash/dtun/clash -v 2>/dev/null |awk -F ' ' '{print $2}'")
+		if tun ~= "" then
+			return luci.sys.exec("/etc/clash/dtun/clash -v 2>/dev/null |awk -F ' ' '{print $2}'")
+		else 
+			return luci.sys.exec("sed -n 1p /usr/share/clash/dtun_core_version")
+		end		
 	else
 		return "0"
 	end
@@ -326,6 +339,8 @@ function check_status()
 		new_clashr_core_version = new_clashr_core_version(),
 		clash_core = clash_core(),
 		clashr_core = clashr_core(),
+		check_dtun_core = check_dtun_core(),
+		new_dtun_core = new_dtun_core(),
 		clashtun_core = clashtun_core(),
 		dtun_core = dtun_core(),
 		new_core_version = new_core_version(),
