@@ -61,14 +61,15 @@
 		fi
 
 cat $CONFIG_START >> $TEMP_FILE 2>/dev/null
-
 if [ "$interf" -eq 1 ] && [ ! -z "$interf_name" ] ;then
 
 cat >> "/tmp/interf_name.yaml" <<-EOF
 interface-name: ${interf_name} 
 EOF
+
 cat /tmp/interf_name.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null
+
 fi
 
 authentication_set()
@@ -98,9 +99,9 @@ sed -i -e "\$a " $TEMP_FILE 2>/dev/null
 
 
 
-if [ "$tun_mode" -eq 1 ];then
+if [ "${tun_mode}" -eq 1 ];then
 
-if [ "$core" -eq 4 ] || [ "$core" -eq 3 ];then
+if [ "${core}" -eq 4 ] || [ "${core}" -eq 3 ];then
 
 cat >> "/tmp/tun.yaml" <<-EOF
 tun:
@@ -178,26 +179,9 @@ fi
 cat /tmp/hosts.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null
 
+sleep 1
 
 enable_dns=$(uci get clash.config.enable_dns 2>/dev/null) 
-if [ ! -z $core ] ;then
-
-if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ];then
-
-if [ $enable_dns -eq 0 ];then
-uci set clash.config.enable_dns="1" && uci commit clash
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Custom Dns" >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义DNS" >$REAL_LOG
-		fi
-fi
-
-
-fi
-fi
-
-
 
 if [ "$enable_dns" -eq 1 ];then
 
@@ -239,7 +223,6 @@ cat /tmp/default_nameserver.yaml >> $TEMP_FILE 2>/dev/null
 if [ "$enhanced_mode" == "fake-ip" ];then
 
 fake_ip_range=$(uci get clash.config.fake_ip_range 2>/dev/null)
-
 cat >> "/tmp/fake_ip_range.yaml" <<-EOF
   fake-ip-range: $fake_ip_range
 EOF
@@ -248,8 +231,8 @@ cat /tmp/fake_ip_range.yaml >> $TEMP_FILE 2>/dev/null
 fi
 
 if [ "$enhanced_mode" == "fake-ip" ];then
-fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)
-		
+
+fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)		
 for list in $fake_ip_filter; do 
 echo "   - \"$list\"">>/tmp/fake_ip_filter.yaml
 done
@@ -257,8 +240,8 @@ done
 if [ -f /tmp/fake_ip_filter.yaml ];then
 sed -i "1i\  fake-ip-filter:" /tmp/fake_ip_filter.yaml
 fi
-cat /tmp/fake_ip_filter.yaml >> $TEMP_FILE 2>/dev/null
 
+cat /tmp/fake_ip_filter.yaml >> $TEMP_FILE 2>/dev/null
 fi
 	
 dnsservers_set()
@@ -297,13 +280,11 @@ dnsservers_set()
    config_foreach dnsservers_set "dnsservers"
    
 if [ -f /tmp/nameservers.yaml ];then
-	sed -i "1i\  nameserver:" /tmp/nameservers.yaml 
+sed -i "1i\  nameserver:" /tmp/nameservers.yaml 
 fi
-
 cat /tmp/nameservers.yaml >> $TEMP_FILE 2>/dev/null
 
 if [ -f /tmp/fallback.yaml ];then
-
 sed -i "1i\  fallback:" /tmp/fallback.yaml 
 
 cat >> "/tmp/fallback.yaml" <<-EOF
@@ -319,7 +300,9 @@ cat /tmp/fallback.yaml >> $TEMP_FILE 2>/dev/null
 
 fi
 
-sleep 1	
+rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.yaml /tmp/fake_ip_filter.yaml /tmp/default_nameserver.yaml /tmp/hosts.yaml /tmp/authentication.yaml /tmp/dnshijack.yaml /tmp/fake_ip_range.yaml /tmp/dns.yaml /tmp/interf_name.yaml
+		
+	
 		if [ "${enable_dns}" == "0" ];then
 		
 			if [ ! -z "$(grep "^dns:" "$CONFIG_YAML")" ]; then
@@ -332,7 +315,7 @@ sleep 1
 			cat $CONFIG_YAML >> $TEMP_FILE 2>/dev/null
 			mv $TEMP_FILE $CONFIG_YAML 2>/dev/null
 			
-		elif [ "$[enable_dns}" == "1" ];then
+		elif [ "${enable_dns}" == "1" ];then
 		
 
 			if [ ! -z "$(grep "^proxies:" "$CONFIG_YAML")" ]; then
