@@ -1276,3 +1276,6 @@ msgstr "最新内核版本"
 
 msgid "Download Update"
 msgstr "下载最新版本客户端"
+
+msgid "No Protocol"
+msgstr "不带协议"
