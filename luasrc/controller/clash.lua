@@ -208,7 +208,7 @@ local function new_clashtun_core_version()
 end
 
 local function check_dtun_core()
-	return luci.sys.exec("sh /usr/share/clash/check_dtun_core_version.sh")
+	return luci.sys.call(string.format("sh /usr/share/clash/check_dtun_core_version.sh")
 end
 
 local function new_dtun_core()
