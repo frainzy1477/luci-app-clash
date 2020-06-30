@@ -28,8 +28,8 @@ y.default = 0
 y.description = translate("Enable Tun and make sure you are using tun supported core")
 
 y = s:option(ListValue, "stack", translate("Stack"))
-y:value("system", translate("System"))
-y:value("gvisor", translate("Gvisor"))
+y:value("system", translate("system"))
+y:value("gvisor", translate("gvisor"))
 y.description = translate("Select Stack Mode")
 y:depends("tun_mode", 1)
 
@@ -76,7 +76,7 @@ o.cfgvalue    = function(...)
 end
 
 o = s:option(ListValue, "type", translate("Protocol"))
-o:value("none", translate("None"))
+o:value("none", translate("No Protocol"))
 o:value("tcp://", translate("TCP"))
 o:value("udp://", translate("UDP"))
 o:value("tls://", translate("TLS"))
@@ -161,7 +161,7 @@ o:value("nameserver", translate("NameServer"))
 o:value("fallback", translate("FallBack"))
 
 o = s:option(ListValue, "protocol", translate("Protocol"))
-o:value("none", translate("None"))
+o:value("none", translate("No Protocol"))
 o:value("tcp://", translate("TCP"))
 o:value("udp://", translate("UDP"))
 o:value("tls://", translate("TLS"))

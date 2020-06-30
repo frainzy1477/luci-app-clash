@@ -135,12 +135,18 @@ dnshijack_set()
       return
     fi
 
-	if [ -z "$port" ]; then
+
+	if [ "$type" == "none" ] && [ ! -z "$port" ]; then
+			echo "   - $ip:$port">>/tmp/dnshijack.yaml
+	elif [ "$type" == "none" ] && [ -z "$port" ]; then
+			echo "   - $ip">>/tmp/dnshijack.yaml
+	elif [ -z "$port" ]; then
 			echo "   - $type$ip">>/tmp/dnshijack.yaml
 	else
 			echo "   - $type$ip:$port">>/tmp/dnshijack.yaml
 	fi
-	   
+	
+	
 }
    config_load "clash"
    config_foreach dnshijack_set "dnshijack"
@@ -261,18 +267,29 @@ dnsservers_set()
       return
    fi
    
+   
+
+	
     if [ "$ser_type" == "nameserver" ]; then
-	   if [ -z "$ser_port" ]; then
-			echo "   - $protocol$ser_address" >>/tmp/nameservers.yaml
-	   else
-			echo "   - $protocol$ser_address:$ser_port" >>/tmp/nameservers.yaml
-	   fi
+		if [ "$protocol" == "none" ] && [ ! -z "$ser_port" ]; then
+				echo "   - $ser_address:$ser_port" >>/tmp/nameservers.yaml
+		elif [ "$protocol" == "none" ] && [ -z "$ser_port" ]; then
+				echo "   - $ser_address" >>/tmp/nameservers.yaml
+		elif [ -z "$ser_port" ]; then
+				echo "   - $protocol$ser_address" >>/tmp/nameservers.yaml
+		else
+				echo "   - $protocol$ser_address:$ser_port" >>/tmp/nameservers.yaml
+		fi
     elif [ "$ser_type" == "fallback" ]; then
-	   if [ -z "$ser_port" ]; then
-			echo "   - $protocol$ser_address" >>/tmp/fallback.yaml
-	   else
-			echo "   - $protocol$ser_address:$ser_port" >>/tmp/fallback.yaml
-	   fi	
+		if [ "$protocol" == "none" ] && [ ! -z "$ser_port" ]; then
+				echo "   - $ser_address:$ser_port" >>/tmp/fallback.yaml
+		elif [ "$protocol" == "none" ] && [ -z "$ser_port" ]; then
+				echo "   - $ser_address" >>/tmp/fallback.yaml
+		elif [ -z "$ser_port" ]; then
+				echo "   - $protocol$ser_address" >>/tmp/fallback.yaml
+		else
+				echo "   - $protocol$ser_address:$ser_port" >>/tmp/fallback.yaml
+		fi	  
    fi
 	
 }
