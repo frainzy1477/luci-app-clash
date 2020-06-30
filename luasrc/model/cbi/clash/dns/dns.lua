@@ -56,8 +56,8 @@ y.description = translate("Set Fake IP Range")
 y.default  = "198.18.0.1/16"
 y:depends("enhanced_mode", "fake-ip")
 
-y = s:option(DynamicList, "fake_ip_filter", translate("Fake IP  Filter"))
-y.description = translate("Fake IP  Filter List")
+y = s:option(DynamicList, "fake_ip_filter", translate("Fake IP Filter"))
+y.description = translate("Fake IP Filter List")
 y.default  = "*.lan"
 y:depends("enhanced_mode", "fake-ip")
 

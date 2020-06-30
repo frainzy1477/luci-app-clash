@@ -1211,10 +1211,10 @@ msgstr "假IP范围"
 msgid "Set Fake IP Range"
 msgstr "设置假IP范围"
 
-msgid "Fake IP  Filter List"
+msgid "Fake IP Filter List"
 msgstr "假IP过滤器列表"
 
-msgid "Fake IP  Filter"
+msgid "Fake IP Filter"
 msgstr "假IP过滤器"
 
 msgid "DNS Hijack"
