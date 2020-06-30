@@ -949,25 +949,8 @@ cat /tmp/hosts.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null
 
 
-
-if [ ! -z $core ] ;then
-if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ];then
-
-if [ $enable_dns -eq 0 ];then
-uci set clash.config.enable_dns="1" && uci commit clash
-fi
-
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Custom Dns" >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义DNS" >$REAL_LOG
-		fi
-fi
-fi
-
-
 enable_dns=$(uci get clash.config.enable_dns 2>/dev/null) 
-if [ "$enable_dns" -eq 1 ];then
+
 
 
 cat >> "/tmp/enable_dns.yaml" <<-EOF
@@ -1082,7 +1065,7 @@ sed -i -e "\$a " /tmp/fallback.yaml 2>/dev/null
 fi
 cat /tmp/fallback.yaml >> $TEMP_FILE 2>/dev/null
 
-fi
+
 
 rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.yaml /tmp/fake_ip_filter.yaml /tmp/default_nameserver.yaml /tmp/hosts.yaml /tmp/authentication.yaml /tmp/dnshijack.yaml /tmp/fake_ip_range.yaml /tmp/dns.yaml /tmp/interf_name.yaml
 		
