@@ -81,7 +81,7 @@ authentication_set()
       return
     fi
 
-	echo "  - \"$username:$password\"" >>/tmp/authentication.yaml
+	echo "   - \"$username:$password\"" >>/tmp/authentication.yaml
 
 	   
 }
@@ -177,7 +177,7 @@ hosts_set()
       return
     fi
 
-	echo "  - '$adress':'$ip'" >>/tmp/hosts.yaml
+	echo "  '$address': '$ip'" >>/tmp/hosts.yaml
 
 	   
 }
@@ -343,7 +343,7 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 		mv /etc/clash/config.yaml /etc/clash/dns.yaml
 		cat $TEMP_FILE /etc/clash/dns.yaml > $CONFIG_YAML 2>/dev/null
 		rm -rf /etc/clash/dns.yaml
-		
+		sed -i '/#=============/ d' $CONFIG_YAML 2>/dev/null
 	
 		
 
@@ -365,7 +365,7 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 				do 
 				line=$(sed -n "$count_num"p /usr/share/clash/server.list)
 				if [ -z "$(echo $line |grep '^ \{0,\}#' 2>/dev/null)" ]; then	
-					 echo "  - '$line'" >> "$FAKE_FILTER_FILE"
+					 echo "   - \"$line\"" >> "$FAKE_FILTER_FILE"
 				fi
 				count_num=$(( $count_num + 1))	
 				done	  
@@ -385,10 +385,10 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 			sleep 1
 			sed -i '/fake-ip-filter:/d' "/etc/clash/config.yaml" 2>/dev/null
 			if [ ! -z "$(egrep '^ {0,}fake-ip-range:' "/etc/clash/config.yaml")" ];then	
-				sed -i '/fake-ip-range/a\ fake-ip-filter:' /etc/clash/config.yaml 2>/dev/null
+				sed -i '/fake-ip-range/a\  fake-ip-filter:' /etc/clash/config.yaml 2>/dev/null
 				sed -i '/fake-ip-filter:/r/usr/share/clash/fake_filter.list' "/etc/clash/config.yaml" 2>/dev/null	
 			elif [ ! -z "$(egrep '^ {0,}enhanced-mode:' "/etc/clash/config.yaml")" ];then
-				sed -i '/^enhanced-mode:/a\ fake-ip-filter:' /etc/clash/config.yaml 2>/dev/null
+				sed -i '/^enhanced-mode:/a\  fake-ip-filter:' /etc/clash/config.yaml 2>/dev/null
 				sed -i '/fake-ip-filter:/r/usr/share/clash/fake_filter.list' "/etc/clash/config.yaml" 2>/dev/null
 			fi	
 		fi		

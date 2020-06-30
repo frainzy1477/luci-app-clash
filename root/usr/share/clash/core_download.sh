@@ -32,9 +32,9 @@ echo $new_clashdtun_core_version > /usr/share/clash/download_dtun_version 2>&1 &
 elif [ $new_clashdtun_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_dtun_version 2>&1 & >/dev/null
 fi
-sleep 8
+sleep 5
 if [ -f /usr/share/clash/download_dtun_version ];then
-CLASHDTUN=$(sed -n 1p /usr/share/clash/download_dtun_version 2>/dev/null) 
+CLASHDTUNC=$(sed -n 1p /usr/share/clash/download_dtun_version 2>/dev/null) 
 fi
 fi
 
@@ -54,7 +54,7 @@ echo $new_clashtun_core_version > /usr/share/clash/download_tun_version 2>&1 & >
 elif [ $new_clashtun_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_tun_version 2>&1 & >/dev/null
 fi
-sleep 8
+sleep 5
 if [ -f /usr/share/clash/download_tun_version ];then
 CLASHTUN=$(sed -n 1p /usr/share/clash/download_tun_version 2>/dev/null) 
 fi
@@ -77,7 +77,7 @@ echo $new_clashr_core_version > /usr/share/clash/download_corer_version 2>&1 & >
 elif [ $new_clashr_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_corer_version 2>&1 & >/dev/null
 fi
-sleep 8
+sleep 5
 if [ -f /usr/share/clash/download_corer_version ];then
 CLASHRVER=$(sed -n 1p /usr/share/clash/download_corer_version 2>/dev/null) 
 fi
@@ -99,7 +99,7 @@ echo $new_clashr_core_version > /usr/share/clash/download_core_version 2>&1 & >/
 elif [ $new_clashr_core_version =="" ]; then
 echo 0 > /usr/share/clash/download_core_version 2>&1 & >/dev/null
 fi
-sleep 8
+sleep 5
 if [ -f /usr/share/clash/download_core_version ];then
 CLASHVER=$(sed -n 1p /usr/share/clash/download_core_version 2>/dev/null) 
 fi
@@ -123,7 +123,7 @@ update(){
 	   elif [ $CORETYPE -eq 3 ];then 
 		wget --no-check-certificate  https://github.com/frainzy1477/clashtun/releases/download/"$CLASHTUN"/clash-"$MODELTYPE".gz -O 2>&1 >1 /tmp/clash.gz
 	   elif [ $CORETYPE -eq 4 ];then 
-		wget --no-check-certificate  https://github.com/frainzy1477/clashdtun/releases/download/"$CLASHDTUN"/clash-"$MODELTYPE".gz -O 2>&1 >1 /tmp/clash.gz
+		wget --no-check-certificate  https://github.com/frainzy1477/clashdtun/releases/download/"$CLASHDTUNC"/clash-"$MODELTYPE".gz -O 2>&1 >1 /tmp/clash.gz
 	   fi
 	   
 	   if [ "$?" -eq "0" ] && [ "$(ls -l /tmp/clash.gz |awk '{print int($5)}')" -ne 0 ]; then
@@ -207,7 +207,7 @@ update(){
 		fi
 }
 
-if [ $CORETYPE -eq 1 ] || [ $CORETYPE -eq 2 ] || [ $CORETYPE -eq 3 ]; then
+if [ $CORETYPE -eq 1 ] || [ $CORETYPE -eq 2 ] || [ $CORETYPE -eq 3 ] || [ $CORETYPE -eq 4 ]; then
 	    update
 fi
 

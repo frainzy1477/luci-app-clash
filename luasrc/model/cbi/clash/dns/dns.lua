@@ -10,7 +10,7 @@ local http = luci.http
 
 m = Map("clash")
 s = m:section(TypedSection, "clash")
-m.pageaction = false
+--m.pageaction = false
 s.anonymous = true
 s.addremove=false
 
@@ -56,7 +56,7 @@ y.description = translate("Set Fake IP Range")
 y.default  = "198.18.0.1/16"
 y:depends("enhanced_mode", "fake-ip")
 
-y = s:option(DynamicList, "fake_ip_filter", translate("Fake IP  Filter List"))
+y = s:option(DynamicList, "fake_ip_filter", translate("Fake IP  Filter"))
 y.description = translate("Fake IP  Filter List")
 y.default  = "*.lan"
 y:depends("enhanced_mode", "fake-ip")
@@ -173,20 +173,17 @@ o.rmempty = false
 
 o = s:option(Value, "ser_port", translate("Port"))
 
-o = s:option(Button, "Apply")
-o.title = luci.util.pcdata(translate("Save & Apply"))
-o.inputtitle = translate("Save & Apply")
-o.inputstyle = "apply"
-o.write = function()
-m.uci:commit("clash")
+
+local apply = luci.http.formvalue("cbi.apply")
+if apply then
+  m.uci:commit("clash")
 if luci.sys.call("pidof clash >/dev/null") == 0 then
 	SYS.call("/etc/init.d/clash restart >/dev/null 2>&1 &")
-    luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
-else
-    SYS.call("sh /usr/share/clash/clash_dns.sh >/dev/null 2>&1 &")
-  	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash" , "settings", "dns", "dns"))
+	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "clash"))
+end  
 end
-end
+
+
 
 return m
 

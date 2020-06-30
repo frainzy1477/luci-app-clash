@@ -327,7 +327,7 @@ y.anonymous = true
 y.addremove=false
 
 
-local script="/usr/share/clash/provider/script.yaml"
+local script="/usr/share/clash/create/script.yaml"
 sev = y:option(TextValue, "scriptt")
 sev.description =translate("NB: Set Clash Mode to Script if want to use")..font_blue..bold_on..translate(" https://lancellc.gitbook.io/clash/clash-config-file/script")..bold_off..font_off..' '
 sev.rows = 10

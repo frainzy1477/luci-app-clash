@@ -1214,6 +1214,9 @@ msgstr "设置假IP范围"
 msgid "Fake IP  Filter List"
 msgstr "假IP过滤器列表"
 
+msgid "Fake IP  Filter"
+msgstr "假IP过滤器"
+
 msgid "DNS Hijack"
 msgstr "DNS劫持"
 
@@ -1230,7 +1233,7 @@ msgid "Port"
 msgstr "端口"
 
 msgid "Authentication"
-msgstr "认证方式"
+msgstr "HTTP(S)和SOCKS5认证方式"
 
 msgid "Username"
 msgstr "用户名"
@@ -1257,7 +1260,7 @@ msgid "Clash DNS"
 msgstr "配置DNS设置"
 
 msgid "Mixed Port"
-msgstr "HTTP（S）和SOCKS5同一端口上"
+msgstr "HTTP(S)和SOCKS5同一端口上"
 
 msgid "Enable IPv6"
 msgstr "启用IPv6"
