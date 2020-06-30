@@ -4,11 +4,7 @@
 
 RULE_PROVIDER="/tmp/rule_provider.yaml"
 GROUP_FILE="/tmp/groups.yaml"
-CLASH_CONFIG="/etc/clash/config.yaml"
-CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null)
-if [  -f $CONFIG_YAML_PATH ] && [ "$(ls -l $CONFIG_YAML_PATH|awk '{print int($5)}')" -ne 0 ];then
-	cp $CONFIG_YAML_PATH $CLASH_CONFIG 2>/dev/null		
-fi
+
 SCRIPT="/usr/share/clash/create/script.yaml"
 rule_providers=$(uci get clash.config.rule_providers 2>/dev/null)
 CFG_FILE="/etc/config/clash"
@@ -24,6 +20,8 @@ SERVER_FILE="/tmp/servers.yaml"
 Proxy_Group="/tmp/Proxy_Group"
 
 if [ "${create}" -eq 1 ];then
+
+create(){
 
 if  [ $config_name == "" ] || [ -z $config_name ];then
 
@@ -1136,15 +1134,28 @@ fi
 rm -rf $RULE_PROVIDER $PROVIDER_FILE $GROUP_FILE  $RULE_FILE $SERVER_FILE $Proxy_Group
 
 if [ $lang == "en" ] || [ $lang == "auto" ];then
-		echo "Completed Creating Custom Config.. " >$REAL_LOG 
-		 sleep 2
+		echo "Completed Creating Custom Config " >$REAL_LOG 
+		 sleep 1
 			echo "Clash for OpenWRT" >$REAL_LOG
 elif [ $lang == "zh_cn" ];then
-    	echo "创建自定义配置完成..." >$REAL_LOG
-		sleep 2
+    	echo "创建自定义配置完成." >$REAL_LOG
+		sleep 1
 		echo "Clash for OpenWRT" >$REAL_LOG
 fi
+
+
+use=$(uci get clash.config.use_config 2>/dev/null)
+config_type=$(uci get clash.config.config_type 2>/dev/null)
+
+if [  "$use" == "$CONFIG_YAML" ] && [ "$config_type" == "3" ];then
+	if pidof clash >/dev/null; then
+			/etc/init.d/clash restart 2>/dev/null
+	fi
 fi
+}
+create 2>/dev/null
 fi
+
+
 
 	
