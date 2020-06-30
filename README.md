@@ -1,7 +1,6 @@
 <h2 align="center">
  <img src="https://cdn.jsdelivr.net/gh/Dreamacro/clash/docs/logo.png" alt="Clash" width="200">
   <br>Luci For Clash <br>
-
 </h2>
 
   <p align="center">
