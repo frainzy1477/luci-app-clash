@@ -161,34 +161,15 @@ function clashr_core_check(btn)
 
 function clashdtun_core_check(btn)
 {
-    	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-        url='https://github.com/Dreamacro/clash/releases/tag/premium';
-        window.open(url);
-        return false;
-   });
+    url='https://github.com/Dreamacro/clash/releases/tag/premium';
+    window.open(url);
+     
 }
 
 function clashtun_core_check(btn)
 {
-    btn.disabled = true;
-    btn.value    = '<%:Checking...%>';
-    XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-   if(status.new_clashtun_core_version > status.clashtun_core)
-   {
-	coretun_butt.innerHTML ='<center><b><font color="green"><%:New Version :%>'+status.new_clashtun_core_version+'</font> </b></center>';
-	 }
-	
-   else if(status.new_clashtun_core_version==0)
-   {
-	coretun_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-reset" value="<%:Error Occured  |Return%>" onclick="return clashtun_core_return(this)"/></center>';
-  
-	}
-	else if(status.clashtun_core >= status.new_clashtun_core_version)
-    {
-        coretun_butt.innerHTML ='<center><input type="button" class="cbi-button cbi-button-reset" value="<%:No Update | Return%>" onclick="return clashtun_core_return(this)"/></center>';
-    }
-	return false;
-   });
+    url='https://github.com/comzyh/clash/releases';
+    window.open(url);
 }
 
 
@@ -238,15 +219,7 @@ function clashr_core_return(btn)
 }
 
 
-function clashtun_core_return(btn)
-{
-    XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', status.clashtun_core, function(x, status) {
-       btn.disabled = true;
-       btn.value    = '<%:Return Check%>';
-	coretun_butt.innerHTML = '<center><input type="button" class="cbi-button cbi-button-reload" value="<%:Check%>" onclick="return clashtun_core_check(this)"/></center>';
-   });
-    
-}
+
 //]]></script>
 
 
