@@ -1162,3 +1162,105 @@ msgstr "删除代理集"
 
 msgid "All Servers"
 msgstr "所有节点"
+
+msgid "Interface Name"
+msgstr "接口名称"
+
+msgid "Enable Interface Name"
+msgstr "启用接口名称"
+
+msgid "Set Interface Name"
+msgstr "设置接口名称"
+
+msgid "Tun Mode"
+msgstr "Tun模式"
+
+msgid "Enable Tun and make sure you are using tun supported core"
+msgstr "启用Tun并确保您使用的是Tun支持的核心"
+
+msgid "Stack"
+msgstr "Stack"
+
+msgid "Select Stack Mode"
+msgstr "选择Stack模式"
+
+msgid "Enable Clash DNS"
+msgstr "启用Clash DNS"
+
+msgid "DNS Listen Port"
+msgstr "DNS监听端口"
+
+msgid "Set DNS Listen Port"
+msgstr "设置DNS侦听端口"
+
+msgid "Default NameServer"
+msgstr "默认名称服务器"
+
+msgid "Default Nameserver List"
+msgstr "默认名称服务器列表"
+
+msgid "Enhanced Mode"
+msgstr "增强模式"
+
+msgid "Select Enhanced Mode"
+msgstr "选择增强模式"
+
+msgid "Fake IP Range"
+msgstr "假IP范围"
+
+msgid "Set Fake IP Range"
+msgstr "设置假IP范围"
+
+msgid "Fake IP  Filter List"
+msgstr "假IP过滤器列表"
+
+msgid "DNS Hijack"
+msgstr "DNS劫持"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Protocol"
+msgstr "协议"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Authentication"
+msgstr "认证方式"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Hosts"
+msgstr "主机"
+
+msgid "IP"
+msgstr "IP"
+
+msgid "Nameservers & Fallback"
+msgstr "自定义上游DNS服务器"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Advance DNS"
+msgstr "高级DNS设置"
+
+msgid "Clash DNS"
+msgstr "配置DNS设置"
+
+msgid "Mixed Port"
+msgstr "HTTP（S）和SOCKS5同一端口上"
+
+msgid "Enable IPv6"
+msgstr "启用IPv6"
+
+msgid "Filter List"
+msgstr "自定义过滤器列表"

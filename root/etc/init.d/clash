@@ -418,69 +418,7 @@ restore() {
 }
 
 
-use_dns(){
 
-if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-		echo "Checking Dns Mode " >$REAL_LOG 
-fi
-
-if [ "$core" -eq 1 ] || [ "$core" -eq 2 ];then
-
-
- if [ "$mode" -eq 1 ] || [ "$tun_mode" -eq 1 ] ;then
-
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Custom Dns Mode " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义Dns模式" >$REAL_LOG
-		fi
-		uci set clash.config.mode="1" && uci del clash.config.tun_mode && uci commit clash
-
- elif [ -z "$mode" ] || [ "$mode" -eq 0 ];then
-
-	if [ ! -z "$(grep "^ \{0,\}tun:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
- 	
-
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Custom Dns Mode " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义Dns模式" >$REAL_LOG
-		fi		
-		uci set clash.config.mode="1" && uci del clash.config.tun_mode && uci commit clash
-	fi
- fi
-fi
-
-
-if [ "$core" -eq 3 ] || [ "$core" -eq 4 ];then
-
-if [ "$tun_mode" -eq 1 ] || [ "$mode" -eq 1 ];then
-
-
-	
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Tun Dns Mode " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义Tun Dns模式" >$REAL_LOG
-		fi		
-	uci del clash.config.mode && uci set clash.config.tun_mode="1" && uci commit clash	
-
-
-elif [ -z "$tun_mode" ] || [ "$tun_mode" -eq 0 ];then
-
-	if [ -z "$(grep "^ \{0,\}tun:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ] ;then
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling Tun Dns Mode " >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用自定义Tun Dns模式" >$REAL_LOG
-		fi
-		uci del clash.config.mode && uci set clash.config.tun_mode="1" && uci commit clash
-	fi
-fi
-	
-fi
-
-}
 
 start(){
 #=========================================================================================================================== 
@@ -498,15 +436,14 @@ fi
 
 if [ "${enable}" -eq 1 ]; then
  	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-		echo "Starting Client.. " >$REAL_LOG 
+		echo "Starting Client" >$REAL_LOG 
 	elif [ "${lang}" == "zh_cn" ];then
-    	 echo "启动客户端..." >$REAL_LOG
+    	 echo "启动客户端" >$REAL_LOG
 	fi	
 	sleep 1
 	select_config >/dev/null 2>&1
 	sleep 1
-	use_dns >/dev/null 2>&1
-	sleep 1
+	
 
 if [ "${core}" -eq 1 ] && [ ! -f /etc/clash/clash ]; then
 	if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -608,7 +545,10 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
     ip_rules >/dev/null 2>&1
 	
 	if [ ! -z "$(egrep '^ {0,}rule-providers:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
-	
+		
+		if [ -f /etc/clash/dtun/clash ];then
+		uci set clash.config.core="4" && uci commit clash
+		else
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
@@ -618,11 +558,13 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		sleep 1
 		echo "Clash for OpenWRT" >$REAL_LOG		
 		exit 0		
-		
+		fi
 	fi
 	
 	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
-	
+		if [ -f /etc/clash/dtun/clash ];then
+		uci set clash.config.core="4" && uci commit clash
+		else
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
@@ -632,13 +574,13 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		sleep 1
 		echo "Clash for OpenWRT" >$REAL_LOG		
 		exit 0		
-		
+		fi
 	fi
 
 	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "$(uci get clash.config.p_mode 2>/dev/null)" != "Script" ];then
 		uci set clash.config.p_mode="Script"&& uci commit clash
-	elif [ "$(uci get clash.config.p_mode )" == "Script" ] && [ -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ];then
-		uci set clash.config.p_mode="Rule" && uci commit clash
+	elif [ "$(uci get clash.config.p_mode)" == "Script" ] && [ -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ];then
+		uci set clash.config.p_mode="rule" && uci commit clash
 	fi
 
     if [ "${core}" -eq 1 ];then

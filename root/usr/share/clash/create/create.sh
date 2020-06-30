@@ -68,6 +68,11 @@ rule_set()
    config_get "path" "$section" "path" ""
    config_get "url" "$section" "url" ""
    config_get "interval" "$section" "interval" ""
+   config_get_bool "enabled" "$section" "enabled" "1"
+
+   if [ "$enabled" = "0" ]; then
+      return
+   fi
 
    if [ "$path" != "./ruleprovider/$name.yaml" ] && [ "$type" = "http" ]; then
       path="./ruleprovider/$name.yaml"
@@ -124,6 +129,12 @@ yml_proxy_provider_set()
    config_get "health_check" "$section" "health_check" ""
    config_get "health_check_url" "$section" "health_check_url" ""
    config_get "health_check_interval" "$section" "health_check_interval" ""
+   config_get_bool "enabled" "$section" "enabled" "1"
+
+   if [ "$enabled" = "0" ]; then
+      return
+   fi
+
    
    if [ "$path" != "./proxyprovider/$name.yaml" ] && [ "$type" = "http" ]; then
       path="./proxyprovider/$name.yaml"
@@ -280,6 +291,12 @@ servers_set()
    config_get "alpn" "$section" "alpn" ""
    config_get "http_path" "$section" "http_path" ""
    config_get "keep_alive" "$section" "keep_alive" ""
+   config_get_bool "enabled" "$section" "enabled" "1"
+
+   if [ "$enabled" = "0" ]; then
+      return
+   fi
+
    
    if [ -z "$type" ]; then
       return
@@ -642,6 +659,12 @@ yml_groups_set()
    config_get "test_url" "$section" "test_url" ""
    config_get "test_interval" "$section" "test_interval" ""
    config_get "other_group" "$section" "other_group" ""
+   config_get_bool "enabled" "$section" "enabled" "1"
+
+   if [ "$enabled" = "0" ]; then
+      return
+   fi
+
 
    if [ -z "$type" ]; then
       return
@@ -722,6 +745,11 @@ add_rules()
 	   config_get "type" "$section" "type" ""
 	   config_get "res" "$section" "res" ""
 	   config_get "rulenamee" "$section" "rulenamee" ""
+		config_get_bool "enabled" "$section" "enabled" "1"
+
+	   if [ "$enabled" = "0" ]; then
+		  return
+	   fi
 	   
 	    if [ ! -z $rulename ];then
 	      rulename=$rulename
