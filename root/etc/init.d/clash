@@ -10,7 +10,7 @@ CLASHD="/etc/clash/dtun/clash"
 CLASH_CONFIG="/etc/clash"
 CRON_FILE="/etc/crontabs/root"
 CONFIG_YAML="/etc/clash/config.yaml"
-CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null) 
+CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null)  
 
 CUSLIST="/tmp/dnsmasq.d/custom_list.conf"
 CUSLITT="/tmp/dnsmasq.clash"
@@ -509,8 +509,23 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 
 	fi
 
-	sleep 2
+	sleep 1
 
+	enable_dns=$(uci get clash.config.enable_dns 2>/dev/null) 
+
+	if [ -z "$(grep "^ {0,}listen:" /etc/clash/config.yaml)" ] || [ -z "$(grep "^ {0,}enhanced-mode:" /etc/clash/config.yaml)" ] || [ -z "$(grep "^ {0,}dns:" /etc/clash/config.yaml)" ];then
+
+	if [ $enable_dns -eq 0 ];then
+			uci set clash.config.enable_dns="1" && uci commit clash
+			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+				echo "Enabling Custom Dns" >$REAL_LOG 
+			elif [ "${lang}" == "zh_cn" ];then
+				echo "启用自定义DNS" >$REAL_LOG
+			fi
+	fi
+
+	fi
+	sleep 1
    	yml_change >/dev/null 2>&1
 	
 
