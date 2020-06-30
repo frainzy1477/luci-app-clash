@@ -9,7 +9,7 @@ CONFIG_YAML_PATH=$(uci get clash.config.use_config 2>/dev/null)
 if [  -f $CONFIG_YAML_PATH ] && [ "$(ls -l $CONFIG_YAML_PATH|awk '{print int($5)}')" -ne 0 ];then
 	cp $CONFIG_YAML_PATH $CLASH_CONFIG 2>/dev/null		
 fi
-SCRIPT="/usr/share/clash/provider/script.yaml"
+SCRIPT="/usr/share/clash/create/script.yaml"
 rule_providers=$(uci get clash.config.rule_providers 2>/dev/null)
 CFG_FILE="/etc/config/clash"
 config_name=$(uci get clash.config.name_tag 2>/dev/null)
