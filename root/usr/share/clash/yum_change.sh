@@ -63,6 +63,7 @@
 cat $CONFIG_START >> $TEMP_FILE 2>/dev/null
 
 if [ "$interf" -eq 1 ] && [ ! -z "$interf_name" ] ;then
+
 cat >> "/tmp/interf_name.yaml" <<-EOF
 interface-name: ${interf_name} 
 EOF
@@ -95,36 +96,21 @@ fi
 cat /tmp/authentication.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null
 
-if [ $core -eq 4 ] || [ $core -eq 3 ];then
-if [ -z "$(grep "^ \{0,\}tun:" $CONFIG_YAML)" ];then
-
-if [ $tun_mode -eq 0 ];then
-uci set clash.config.tun_mode="1" && uci commit clash
-fi
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Enabling TUN" >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-	    	echo "启用TUN" >$REAL_LOG
-		fi
-fi
-fi
 
 
-if [ $tun_mode -eq 1 ];then
+if [ "$tun_mode" -eq 1 ];then
+
+if [ "$core" -eq 4 ] || [ "$core" -eq 3 ];then
 
 cat >> "/tmp/tun.yaml" <<-EOF
 tun:
-  enable: true  
+  enable: true 
+  stack: ${stack}  
 EOF
 
-
-if [ $core -eq 4 ];then
-cat >> "/tmp/tun.yaml" <<-EOF
-  stack: ${stack}   
-EOF
-fi 
 
 if [ $core -eq 3 ];then
+
 cat >> "/tmp/tun.yaml" <<-EOF
   device-url: dev://utun
   dns-listen: 0.0.0.0:${listen_port}   
@@ -132,7 +118,7 @@ EOF
 fi
 
 cat /tmp/tun.yaml >> $TEMP_FILE 2>/dev/null
-fi
+
 
 
 
@@ -165,6 +151,8 @@ fi
 cat /tmp/dnshijack.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null		
 		
+fi
+fi
 
 hosts_set()
 {
@@ -191,24 +179,26 @@ cat /tmp/hosts.yaml >> $TEMP_FILE 2>/dev/null
 sed -i -e "\$a " $TEMP_FILE 2>/dev/null
 
 
-
+enable_dns=$(uci get clash.config.enable_dns 2>/dev/null) 
 if [ ! -z $core ] ;then
-if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enable:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ];then
+
+if [ -z "$(grep "^ \{0,\}listen:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}enhanced-mode:" $CONFIG_YAML)" ] || [ -z "$(grep "^ \{0,\}dns:" $CONFIG_YAML)" ];then
 
 if [ $enable_dns -eq 0 ];then
 uci set clash.config.enable_dns="1" && uci commit clash
-fi
-
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Enabling Custom Dns" >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
 	    	echo "启用自定义DNS" >$REAL_LOG
 		fi
 fi
+
+
+fi
 fi
 
 
-enable_dns=$(uci get clash.config.enable_dns 2>/dev/null) 
+
 if [ "$enable_dns" -eq 1 ];then
 
 
@@ -249,6 +239,7 @@ cat /tmp/default_nameserver.yaml >> $TEMP_FILE 2>/dev/null
 if [ "$enhanced_mode" == "fake-ip" ];then
 
 fake_ip_range=$(uci get clash.config.fake_ip_range 2>/dev/null)
+
 cat >> "/tmp/fake_ip_range.yaml" <<-EOF
   fake-ip-range: $fake_ip_range
 EOF
@@ -257,8 +248,8 @@ cat /tmp/fake_ip_range.yaml >> $TEMP_FILE 2>/dev/null
 fi
 
 if [ "$enhanced_mode" == "fake-ip" ];then
-
-fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)		
+fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)
+		
 for list in $fake_ip_filter; do 
 echo "   - \"$list\"">>/tmp/fake_ip_filter.yaml
 done
@@ -266,8 +257,8 @@ done
 if [ -f /tmp/fake_ip_filter.yaml ];then
 sed -i "1i\  fake-ip-filter:" /tmp/fake_ip_filter.yaml
 fi
-
 cat /tmp/fake_ip_filter.yaml >> $TEMP_FILE 2>/dev/null
+
 fi
 	
 dnsservers_set()
@@ -306,11 +297,13 @@ dnsservers_set()
    config_foreach dnsservers_set "dnsservers"
    
 if [ -f /tmp/nameservers.yaml ];then
-sed -i "1i\  nameserver:" /tmp/nameservers.yaml 
+	sed -i "1i\  nameserver:" /tmp/nameservers.yaml 
 fi
+
 cat /tmp/nameservers.yaml >> $TEMP_FILE 2>/dev/null
 
 if [ -f /tmp/fallback.yaml ];then
+
 sed -i "1i\  fallback:" /tmp/fallback.yaml 
 
 cat >> "/tmp/fallback.yaml" <<-EOF
@@ -326,25 +319,37 @@ cat /tmp/fallback.yaml >> $TEMP_FILE 2>/dev/null
 
 fi
 
-rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.yaml /tmp/fake_ip_filter.yaml /tmp/default_nameserver.yaml /tmp/hosts.yaml /tmp/authentication.yaml /tmp/dnshijack.yaml /tmp/fake_ip_range.yaml /tmp/dns.yaml /tmp/interf_name.yaml
+sleep 1	
+		if [ "${enable_dns}" == "0" ];then
 		
+			if [ ! -z "$(grep "^dns:" "$CONFIG_YAML")" ]; then
+				sed -i "/dns:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+				sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
+				sed -i '1,/#clash-openwrt/d' $CONFIG_YAML 2>/dev/null
+				
+				sed -i '/#=============/ d' $CONFIG_YAML 2>/dev/null
+			fi
+			cat $CONFIG_YAML >> $TEMP_FILE 2>/dev/null
+			mv $TEMP_FILE $CONFIG_YAML 2>/dev/null
+			
+		elif [ "$[enable_dns}" == "1" ];then
 		
 
-	    if [ ! -z "$(grep "^proxies:" "$CONFIG_YAML")" ]; then
-		  sed -i "/^proxies:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
-	    elif [ ! -z "$(grep "^proxy-providers:" "$CONFIG_YAML")" ]; then
-		  sed -i "/proxy-providers:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
-	    fi
-	
-        sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
-		sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
-		sed -i '1,/#clash-openwrt/d' $CONFIG_YAML 2>/dev/null
+			if [ ! -z "$(grep "^proxies:" "$CONFIG_YAML")" ]; then
+			  sed -i "/^proxies:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+			elif [ ! -z "$(grep "^proxy-providers:" "$CONFIG_YAML")" ]; then
+			  sed -i "/proxy-providers:/i\#clash-openwrt" $CONFIG_YAML 2>/dev/null
+			fi
 		
-		mv /etc/clash/config.yaml /etc/clash/dns.yaml
-		cat $TEMP_FILE /etc/clash/dns.yaml > $CONFIG_YAML 2>/dev/null
-		rm -rf /etc/clash/dns.yaml
-		sed -i '/#=============/ d' $CONFIG_YAML 2>/dev/null
-	
+			sed -i "/#clash-openwrt/a\#=============" $CONFIG_YAML 2>/dev/null
+			sed -i "/#=============/a\ " $CONFIG_YAML 2>/dev/null
+			sed -i '1,/#clash-openwrt/d' $CONFIG_YAML 2>/dev/null
+			
+			mv /etc/clash/config.yaml /etc/clash/dns.yaml
+			cat $TEMP_FILE /etc/clash/dns.yaml > $CONFIG_YAML 2>/dev/null
+			rm -rf /etc/clash/dns.yaml
+			sed -i '/#=============/ d' $CONFIG_YAML 2>/dev/null
+		fi
 		
 
 		fake_ip=$(egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}')
@@ -391,4 +396,7 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 				sed -i '/^enhanced-mode:/a\  fake-ip-filter:' /etc/clash/config.yaml 2>/dev/null
 				sed -i '/fake-ip-filter:/r/usr/share/clash/fake_filter.list' "/etc/clash/config.yaml" 2>/dev/null
 			fi	
-		fi		
+		fi	
+		
+rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.yaml /tmp/fake_ip_filter.yaml /tmp/default_nameserver.yaml /tmp/hosts.yaml /tmp/authentication.yaml /tmp/dnshijack.yaml /tmp/fake_ip_range.yaml /tmp/dns.yaml /tmp/interf_name.yaml
+			

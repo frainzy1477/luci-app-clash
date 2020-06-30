@@ -80,9 +80,9 @@ select_config(){
 #=========================================================================================================================== 
 config_type=$(uci get clash.config.config_type 2>/dev/null)
 if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-	echo "Checking Config file..." >$REAL_LOG 
+	echo "Checking Config file" >$REAL_LOG 
 elif [ "${lang}" == "zh_cn" ];then
-	echo "正在检查配置文件。。。" >$REAL_LOG
+	echo "正在检查配置文件" >$REAL_LOG
 fi
 
 if [  -f $CONFIG_YAML_PATH ] && [ "$(ls -l $CONFIG_YAML_PATH|awk '{print int($5)}')" -ne 0 ];then
@@ -495,6 +495,21 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 	check >/dev/null 2>&1
 
 	custom_list >/dev/null 2>&1
+
+	if [ "$core" -eq 4 ] || [ "$core" -eq 3 ];then
+
+	if [ $tun_mode -eq 0 ];then
+			uci set clash.config.tun_mode="1" && uci set clash.config.stack="system" && uci commit clash
+			if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+				echo "Enabling TUN" >$REAL_LOG 
+			elif [ "${lang}" == "zh_cn" ];then
+				echo "启用TUN" >$REAL_LOG
+			fi	
+	fi
+
+	fi
+
+	sleep 2
 
    	yml_change >/dev/null 2>&1
 	
