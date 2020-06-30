@@ -525,6 +525,48 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 	fi
 
 	fi
+
+	if [ ! -z "$(egrep '^ {0,}rule-providers:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
+		
+		if [ -f /etc/clash/dtun/clash ];then
+		uci set clash.config.core="4" && uci commit clash
+		sleep 1
+		else
+		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
+		elif [ "${lang}" == "zh_cn" ];then
+			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
+		fi
+		remove_mark >/dev/null 2>&1
+		sleep 1
+		echo "Clash for OpenWRT" >$REAL_LOG		
+		exit 0		
+		fi
+	fi
+	
+	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
+		if [ -f /etc/clash/dtun/clash ];then
+		uci set clash.config.core="4" && uci commit clash
+		sleep 1
+		else
+		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
+			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
+		elif [ "${lang}" == "zh_cn" ];then
+			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
+		fi
+		remove_mark >/dev/null 2>&1
+		sleep 1
+		echo "Clash for OpenWRT" >$REAL_LOG		
+		exit 0		
+		fi
+	fi
+        
+	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "$(uci get clash.config.p_mode 2>/dev/null)" != "Script" ];then
+		uci set clash.config.p_mode="Script"&& uci commit clash
+	elif [ "$(uci get clash.config.p_mode)" == "Script" ] && [ -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ];then
+		uci set clash.config.p_mode="rule" && uci commit clash
+	fi
+
 	sleep 1
    	yml_change >/dev/null 2>&1
 	
@@ -572,48 +614,10 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 	
 	game_rules >/dev/null 2>&1
 	
-    ip_rules >/dev/null 2>&1
+       ip_rules >/dev/null 2>&1
 	
-	if [ ! -z "$(egrep '^ {0,}rule-providers:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
-		
-		if [ -f /etc/clash/dtun/clash ];then
-		uci set clash.config.core="4" && uci commit clash
-		else
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
-		fi
-		remove_mark >/dev/null 2>&1
-		sleep 1
-		echo "Clash for OpenWRT" >$REAL_LOG		
-		exit 0		
-		fi
-	fi
-	
-	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "${core}" -ne 4 ];then
-		if [ -f /etc/clash/dtun/clash ];then
-		uci set clash.config.core="4" && uci commit clash
-		else
-		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
-			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
-		elif [ "${lang}" == "zh_cn" ];then
-			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
-		fi
-		remove_mark >/dev/null 2>&1
-		sleep 1
-		echo "Clash for OpenWRT" >$REAL_LOG		
-		exit 0		
-		fi
-	fi
-
-	if [ ! -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ] && [ "$(uci get clash.config.p_mode 2>/dev/null)" != "Script" ];then
-		uci set clash.config.p_mode="Script"&& uci commit clash
-	elif [ "$(uci get clash.config.p_mode)" == "Script" ] && [ -z "$(egrep '^ {0,}script:' "/etc/clash/config.yaml")" ];then
-		uci set clash.config.p_mode="rule" && uci commit clash
-	fi
-
-    if [ "${core}" -eq 1 ];then
+        
+        if [ "$(uci get clash.config.core)" -eq 1 ];then
         	nohup $CLASH -d "$CLASH_CONFIG" > /usr/share/clash/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -622,7 +626,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 			echo "Clash 计划任务,启动进程守护程序..." >$REAL_LOG
 		fi
 		
-	elif [ "${core}" -eq 3 ];then
+	elif [ "$(uci get clash.config.core)" -eq 3 ];then
        	 	nohup $CLASHT -d "$CLASH_CONFIG" > /usr/share/clash/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -630,7 +634,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		elif [ "${lang}" == "zh_cn" ];then
 			echo "Clash 计划任务,启动进程守护程序..." >$REAL_LOG
 		fi	
-	elif [ "${core}" -eq 4 ];then
+	elif [ "$(uci get clash.config.core)" -eq 4 ];then
        	 	nohup $CLASHD -d "$CLASH_CONFIG" > /usr/share/clash/clash.txt 2>&1 &	
 		
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
@@ -638,7 +642,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		elif [ "${lang}" == "zh_cn" ];then
 			echo "Clash 计划任务,启动进程守护程序..." >$REAL_LOG
 		fi	
-	elif [ "${core}" -eq 2 ];then
+	elif [ "$(uci get clash.config.core)" -eq 2 ];then
         	nohup $CLASHR -d "$CLASH_CONFIG" > /usr/share/clash/clash.txt 2>&1 &
 				
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
