@@ -20,7 +20,7 @@
 		allow_lan=$(uci get clash.config.allow_lan 2>/dev/null)
 		log_level=$(uci get clash.config.level 2>/dev/null)
 		CONFIG_START="/tmp/dns.yaml"
-		 
+		enhanced_mode=$(uci get clash.config.enhanced_mode 2>/dev/null)
 		mixed_port=$(uci get clash.config.mixed_port 2>/dev/null)
 		enable_ipv6=$(uci get clash.config.enable_ipv6 2>/dev/null)
 		
@@ -176,8 +176,10 @@ hosts_set()
 
 	   
 }
+if [ "$enhanced_mode" == "redir-host" ];then
    config_load "clash"
    config_foreach hosts_set "hosts"
+fi
    
 if [ -f /tmp/hosts.yaml ];then
 sed -i "1i\hosts:" /tmp/hosts.yaml 
@@ -218,7 +220,7 @@ if [ -f /tmp/default_nameserver.yaml ];then
 sed -i "1i\  default-nameserver:" /tmp/default_nameserver.yaml
 fi
 
-enhanced_mode=$(uci get clash.config.enhanced_mode 2>/dev/null)
+
 	
 cat >> "/tmp/default_nameserver.yaml" <<-EOF
   enhanced-mode: $enhanced_mode
@@ -240,7 +242,7 @@ if [ "$enhanced_mode" == "fake-ip" ];then
 
 fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)		
 for list in $fake_ip_filter; do 
-echo "   - \"$list\"">>/tmp/fake_ip_filter.yaml
+echo "   - '$list'">>/tmp/fake_ip_filter.yaml
 done
 
 if [ -f /tmp/fake_ip_filter.yaml ];then
@@ -370,7 +372,7 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 				do 
 				line=$(sed -n "$count_num"p /usr/share/clash/server.list)
 				if [ -z "$(echo $line |grep '^ \{0,\}#' 2>/dev/null)" ]; then	
-					 echo "   - \"$line\"" >> "$FAKE_FILTER_FILE"
+					 echo "   - '$line'" >> "$FAKE_FILTER_FILE"
 				fi
 				count_num=$(( $count_num + 1))	
 				done	  
@@ -398,5 +400,3 @@ rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.ya
 			fi	
 		fi	
 		
-rm -rf /tmp/tun.yaml /tmp/enable_dns.yaml /tmp/fallback.yaml /tmp/nameservers.yaml /tmp/fake_ip_filter.yaml /tmp/default_nameserver.yaml /tmp/hosts.yaml /tmp/authentication.yaml /tmp/dnshijack.yaml /tmp/fake_ip_range.yaml /tmp/dns.yaml /tmp/interf_name.yaml
-			

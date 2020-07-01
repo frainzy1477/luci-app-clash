@@ -45,7 +45,8 @@ o:depends("rul", 0)
 
 o = s:option(Flag, "script", translate("Use Script"))
 o.description = translate("Use Script")
-
+o:depends("rul", 1)
+o:depends("rulprp", 1)
 
 o = s:option(Value, "name_tag")
 o.title = translate("Config Name")
