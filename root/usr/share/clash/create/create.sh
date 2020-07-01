@@ -289,6 +289,7 @@ servers_set()
    config_get "alpn" "$section" "alpn" ""
    config_get "http_path" "$section" "http_path" ""
    config_get "keep_alive" "$section" "keep_alive" ""
+   config_get "servername" "$section" "servername" ""
    config_get_bool "enabled" "$section" "enabled" "1"
 
    if [ "$enabled" = "0" ]; then
@@ -485,6 +486,11 @@ cat >> "$SERVER_FILE" <<-EOF
   skip-cert-verify: $skip_cert_verify
 EOF
       fi
+      if [ ! -z "$servername" ] && [ "$tls" = "true" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+  servername: $servername
+EOF
+fi	  
       if [ "$obfs_vmess" != "none" ]; then
 cat >> "$SERVER_FILE" <<-EOF
   $obfs_vmess
@@ -799,7 +805,7 @@ fi
 		listen_port=$(uci get clash.config.listen_port 2>/dev/null)	
 		TEMP_FILE="/tmp/clashdns.yaml"
 		interf=$(uci get clash.config.interf 2>/dev/null)
-		
+		enhanced_mode=$(uci get clash.config.enhanced_mode 2>/dev/null)
 
 		rm -rf $TEMP_FILE 2>/dev/null
 		
@@ -937,8 +943,10 @@ hosts_set()
 
 	   
 }
+if [ "$enhanced_mode" == "redir-host" ];then
    config_load "clash"
    config_foreach hosts_set "hosts"
+fi   
    
 if [ -f /tmp/hosts.yaml ];then
 sed -i "1i\hosts:" /tmp/hosts.yaml 
@@ -977,7 +985,7 @@ if [ -f /tmp/default_nameserver.yaml ];then
 sed -i "1i\  default-nameserver:" /tmp/default_nameserver.yaml
 fi
 
-enhanced_mode=$(uci get clash.config.enhanced_mode 2>/dev/null)
+
 	
 cat >> "/tmp/default_nameserver.yaml" <<-EOF
   enhanced-mode: $enhanced_mode
@@ -999,7 +1007,7 @@ if [ "$enhanced_mode" == "fake-ip" ];then
 
 fake_ip_filter=$(uci get clash.config.fake_ip_filter 2>/dev/null)		
 for list in $fake_ip_filter; do 
-echo "   - \"$list\"">>/tmp/fake_ip_filter.yaml
+echo "   - '$list'">>/tmp/fake_ip_filter.yaml
 done
 
 if [ -f /tmp/fake_ip_filter.yaml ];then
@@ -1027,17 +1035,25 @@ dnsservers_set()
    fi
    
     if [ "$ser_type" == "nameserver" ]; then
-	   if [ -z "$ser_port" ]; then
-			echo "   - $protocol$ser_address" >>/tmp/nameservers.yaml
-	   else
-			echo "   - $protocol$ser_address:$ser_port" >>/tmp/nameservers.yaml
-	   fi
+		if [ "$protocol" == "none" ] && [ ! -z "$ser_port" ]; then
+				echo "   - $ser_address:$ser_port" >>/tmp/nameservers.yaml
+		elif [ "$protocol" == "none" ] && [ -z "$ser_port" ]; then
+				echo "   - $ser_address" >>/tmp/nameservers.yaml
+		elif [ -z "$ser_port" ]; then
+				echo "   - $protocol$ser_address" >>/tmp/nameservers.yaml
+		else
+				echo "   - $protocol$ser_address:$ser_port" >>/tmp/nameservers.yaml
+		fi
     elif [ "$ser_type" == "fallback" ]; then
-	   if [ -z "$ser_port" ]; then
-			echo "   - $protocol$ser_address" >>/tmp/fallback.yaml
-	   else
-			echo "   - $protocol$ser_address:$ser_port" >>/tmp/fallback.yaml
-	   fi	
+		if [ "$protocol" == "none" ] && [ ! -z "$ser_port" ]; then
+				echo "   - $ser_address:$ser_port" >>/tmp/fallback.yaml
+		elif [ "$protocol" == "none" ] && [ -z "$ser_port" ]; then
+				echo "   - $ser_address" >>/tmp/fallback.yaml
+		elif [ -z "$ser_port" ]; then
+				echo "   - $protocol$ser_address" >>/tmp/fallback.yaml
+		else
+				echo "   - $protocol$ser_address:$ser_port" >>/tmp/fallback.yaml
+		fi	  
    fi
 	
 }
