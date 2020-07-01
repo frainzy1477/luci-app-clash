@@ -158,7 +158,7 @@ var HTTP = {
 		   
 		   		   
 		   
-		   
+	var dnew = document.getElementById('_downloadnew');	   
 	var web = document.getElementById('_web');
 	var webb = document.getElementById('_webb');
 	var clash = document.getElementById('_clash');
@@ -194,7 +194,11 @@ var HTTP = {
 			}	
 			if(status.typeconf==0 || status.typeconf==''){
 				conf_path.innerHTML = status.typeconf ? '<b><font color="red"><%:NOT SELECTED%></font></b>' : '<b><font color="red"><%:NOT RUNNING%></font></b>';
-			}		
+			}	
+			if(status.new_version > status.current_version)
+			{
+				dnew.innerHTML ='<center><br><a href="https://github.com/frainzy1477/luci-app-clash/releases/download/'+status.new_version+'/luci-app-clash_'+status.new_version+'_all.ipk" class="btn" style="height:20px;font-size:15px;margin-top:-20px;background-color:#568fa1;color:#ffffff;" target="_blank"><%:Download Update%></a></center>';
+			}			
 			IP.getIpifyIP();
 			IP.getIpipnetIP();
 
@@ -234,29 +238,9 @@ var HTTP = {
 	  }
 	});
 	
-	var dnew = document.getElementById('_downloadnew');
-	
-	XHR.get('<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-	  if ( x && x.status == 200 ) {
-		if(status.new_version > status.current_version)
-		{
-			dnew.innerHTML ='<center><br><a href="https://github.com/frainzy1477/luci-app-clash/releases/download/'+status.new_version+'/luci-app-clash_'+status.new_version+'_all.ipk" class="btn" style="height:20px;font-size:15px;margin-top:-20px;background-color:#568fa1;color:#ffffff;" target="_blank"><%:Download Update%></a></center>';
-
-		}		 
-	  }
-	});
-	
-	XHR.poll(3, '<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {
-	  if ( x && x.status == 200 ) {
-		if(status.new_version > status.current_version)
-		{
-			dnew.innerHTML ='<center><br><a href="https://github.com/frainzy1477/luci-app-clash/releases/download/'+status.new_version+'/luci-app-clash_'+status.new_version+'_all.ipk" class="btn" style="height:20px;font-size:15px;margin-top:-20px;background-color:#568fa1;color:#ffffff;" target="_blank"><%:Download Update%></a></center>';
-		}		 
-	  }
-	});
 	
 
-
+	XHR.poll(5,'<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {});
 
 //]]></script>
 
