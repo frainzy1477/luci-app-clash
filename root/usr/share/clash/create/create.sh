@@ -909,11 +909,16 @@ dnshijack_set()
       return
     fi
 
-	if [ -z "$port" ]; then
+	if [ "$type" == "none" ] && [ ! -z "$port" ]; then
+			echo "   - $ip:$port">>/tmp/dnshijack.yaml
+	elif [ "$type" == "none" ] && [ -z "$port" ]; then
+			echo "   - $ip">>/tmp/dnshijack.yaml
+	elif [ -z "$port" ]; then
 			echo "   - $type$ip">>/tmp/dnshijack.yaml
 	else
 			echo "   - $type$ip:$port">>/tmp/dnshijack.yaml
 	fi
+
 	   
 }
    config_load "clash"
