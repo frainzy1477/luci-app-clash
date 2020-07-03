@@ -386,12 +386,9 @@ add_address(){
 }
 
 
-add_address >/dev/null 2>&1
-
-
 		fake_ip=$(egrep '^ {0,}enhanced-mode' /etc/clash/config.yaml |grep enhanced-mode: |awk -F ': ' '{print $2}')
 		#fake_ip=$(uci get clash.config.enhanced_mode 2>/dev/null)
-
+		add_address >/dev/null 2>&1
 
 		if [ "${fake_ip}" == "fake-ip" ];then
 		CUSTOM_FILE="/usr/share/clash/server.list"
