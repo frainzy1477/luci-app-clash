@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk 
 
 PKG_NAME:=luci-app-clash
-PKG_VERSION:=v1.7.5.3
+PKG_VERSION:=v1.7.5.4
 PKG_MAINTAINER:=frainzy1477
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/luci-app-clash
+define Package/$(PKG_NAME)
 	SECTION:=luci
 	CATEGORY:=LuCI
 	SUBMENU:=2. Clash
@@ -16,7 +16,7 @@ define Package/luci-app-clash
 	MAINTAINER:=frainzy1477
 endef
 
-define Package/luci-app-clash/description
+define Package/$(PKG_NAME)/description
 	Luci Interface for clash.
 endef
 
@@ -139,10 +139,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/rpcd/acl.d/luci-app-clash.json $(1)/usr/share/rpcd/acl.d
 	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/Steam.rules $(1)/usr/share/clash/rules/g_rules
 	$(INSTALL_BIN) ./root//usr/share/clash/rules/rules.list $(1)/usr/share/clash/rules
-
-	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash
 	
 	$(INSTALL_BIN) ./root/usr/share/clash/luci_version $(1)/usr/share/clash
+	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/server.list $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/clash_real.txt $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/logstatus_check $(1)/usr/share/clash
