@@ -170,9 +170,9 @@ local function localip()
 	return luci.sys.exec("uci get network.lan.ipaddr")
 end
 
-local function check_version()
-	return luci.sys.exec("sh /usr/share/clash/check_luci_version.sh")
-end
+--local function check_version()
+--	return luci.sys.exec("sh /usr/share/clash/check_luci_version.sh")
+--end
 
 local function check_core()
 	return luci.sys.exec("sh /usr/share/clash/check_core_version.sh")
@@ -186,12 +186,19 @@ local function check_clashtun_core()
 	return luci.sys.exec("sh /usr/share/clash/check_clashtun_core_version.sh")
 end
 
+--local function current_version()
+--	return luci.sys.exec("sed -n 1p /usr/share/clash/luci_version")
+--end
+
+--local function new_version()
+--	return luci.sys.exec("sed -n 1p /usr/share/clash/new_luci_version")
+--end
 local function current_version()
-	return luci.sys.exec("sed -n 1p /usr/share/clash/luci_version")
+	return luci.sys.exec("opkg list-installed |grep 'luci-app-clash' |awk -F '- ' '{print $2}'")
 end
 
 local function new_version()
-	return luci.sys.exec("sed -n 1p /usr/share/clash/new_luci_version")
+	return luci.sys.exec("curl -sL "https://api.github.com/repos/frainzy1477/luci-app-clash/releases/latest" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4")
 end
 
 local function new_core_version()
@@ -330,7 +337,7 @@ end
 function check_status()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
-		check_version = check_version(),
+		--check_version = check_version(),
 		check_core = check_core(),
 		current_version = current_version(),
 		check_clashr_core = check_clashr_core(),
