@@ -76,7 +76,7 @@
 	});
 	
 
-	XHR.poll(5,'<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {});	
+	XHR.poll(3,'<%=luci.dispatcher.build_url("admin", "services", "clash", "check_status")%>', null, function(x, status) {});	
 
 
 	XHR.poll(1,'<%=luci.dispatcher.build_url("admin", "services", "clash", "status")%>', null, function(x, status) {
