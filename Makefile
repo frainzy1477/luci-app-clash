@@ -139,7 +139,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/rpcd/acl.d/luci-app-clash.json $(1)/usr/share/rpcd/acl.d
 	$(INSTALL_BIN) ./root/usr/share/clash/rules/g_rules/Steam.rules $(1)/usr/share/clash/rules/g_rules
 	$(INSTALL_BIN) ./root//usr/share/clash/rules/rules.list $(1)/usr/share/clash/rules
-
+	
+	$(INSTALL_BIN) ./root/usr/share/clash/luci_version $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/rule.yaml $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/server.list $(1)/usr/share/clash
 	$(INSTALL_BIN) ./root/usr/share/clash/clash_real.txt $(1)/usr/share/clash
