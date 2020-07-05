@@ -26,8 +26,12 @@ rm -rf /tmp/Proxy_Group /tmp/group_*.yaml /tmp/yaml_group.yaml 2>/dev/null
     	echo "Start updating policy group config" >$REAL_LOG
 	fi
 
-
- 
+	   sed -i 's/^Proxy Group:/proxy-groups:/g' "$load"
+	   sed -i 's/^proxy-provider:/proxy-providers:/g' "$load"
+	   sed -i 's/^Proxy:/proxies:/g' "$load"
+	   sed -i 's/^Rule:/rules:/g' "$load"
+	   sed -i 's/^rule-provider:/rule-providers:/g' "$load"
+	   
 
    group_len=$(sed -n '/^ \{0,\}proxy-groups:/=' "$load" 2>/dev/null)
    provider_len=$(sed -n '/^ \{0,\}proxy-providers:/=' "$load" 2>/dev/null)
