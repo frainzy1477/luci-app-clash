@@ -1,17 +1,9 @@
-name: x86_64
 on:
-  release:
-    types:
-      - created
-
-  pull_request:
-    types:
-      - review_requested
-
   push:
-    branches:
-      - patcher
+    tags:
+      - 'v*.*.*.*'
 
+name: luci-app-clash
 jobs:
   build:
     runs-on: ubuntu-18.04
