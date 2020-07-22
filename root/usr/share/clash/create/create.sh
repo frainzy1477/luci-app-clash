@@ -625,8 +625,12 @@ cat >> "$SERVER_FILE" <<-EOF
   protocol-param: "$protocolparam"
   obfs: "$obfs_ssr"
   obfs-param: "$obfsparam"
-  udp: true
 EOF
+  if [ ! -z "$udp" ]; then
+cat >> "$SERVER_FILE" <<-EOF
+  udp: $udp
+EOF
+  fi
 fi
 
 
