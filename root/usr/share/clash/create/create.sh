@@ -622,9 +622,10 @@ cat >> "$SERVER_FILE" <<-EOF
   cipher: $cipher_ssr
   password: "$password"
   protocol: "$protocol"
-  protocolparam: "$protocolparam"
+  protocol-param: "$protocolparam"
   obfs: "$obfs_ssr"
-  obfsparam: "$obfsparam"
+  obfs-param: "$obfsparam"
+  udp: true
 EOF
 fi
 
