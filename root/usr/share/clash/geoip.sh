@@ -29,5 +29,4 @@ if pidof clash >/dev/null; then
 /etc/init.d/clash restart 2>/dev/null
 fi
 
-fi
 
