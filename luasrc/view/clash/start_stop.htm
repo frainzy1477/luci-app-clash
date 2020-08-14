@@ -24,6 +24,7 @@ function stop(){
 function reload(){
 	XHR.get('<%=url([[admin]], [[services]], [[clash]], [[reload]])%>',null,function(x, data){}
 		);
+	window.setTimeout("location.href='/cgi-bin/luci/admin/services/clash/'", 500);
 	return
 }
 
