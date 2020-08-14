@@ -68,16 +68,16 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         make package/${PKGN}/compile -j$(nproc) V=s
-        mkdir ../bin
-        find bin/ -type f -name "*${PKGN}*" | xargs -t -i mv -vf {} ../bin
         assets=()
-        for asset in ../bin/*.ipk; do
+        for asset in ../bin/packages/x86_64/base/*.ipk; do
           assets+=("-a" "$asset")
         done
         tag_name="${GITHUB_REF##*/}"
         hub release create -p -d "${assets[@]}" -m "$tag_name" "$tag_name"
-
-                
+        
+        mkdir ../bin
+        find bin/ -type f -name "*${PKGN}*" | xargs -t -i mv -vf {} ../bin
+            
     - name: Upload - push to artifact file
       uses: actions/upload-artifact@v1
       with:
