@@ -16,7 +16,6 @@ jobs:
     - name: Checkout - ${{ github.ref }}
       uses: actions/checkout@v1
 
-        
     - name: Prepare SDK ENV
       run: |
         wget -q "${URL}"
@@ -61,7 +60,7 @@ jobs:
         make package/${PKGN}/compile -j$(nproc) V=s
         mkdir ../bin
         find bin/ -type f -name "*${PKGN}*" | xargs -t -i mv -vf {} ../bin
-            
+
     - name: Upload - push to artifact file
       uses: actions/upload-artifact@v1
       with:
