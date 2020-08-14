@@ -1,7 +1,7 @@
 on:
   push:
-    tags:
-      - 'v*.*.*.*'
+    branches: 
+      - test
 
 name: luci-app-clash
 jobs:
@@ -14,15 +14,8 @@ jobs:
 
     steps:
     - name: Checkout - ${{ github.ref }}
-      uses: actions/checkout@v2
-      
-    - name: Checkout tag
-      run: |
-        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        tag_name="${GITHUB_REF##*/}"
-        echo Tag $tag_name
-        git checkout $tag_name
-        
+      uses: actions/checkout@v1
+
     - name: Prepare SDK ENV
       run: |
         wget -q "${URL}"
@@ -63,19 +56,11 @@ jobs:
     - name: Build target
       env:
         DEBIAN_FRONTEND: noninteractive
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         make package/${PKGN}/compile -j$(nproc) V=s
         mkdir ../bin
         find bin/ -type f -name "*${PKGN}*" | xargs -t -i mv -vf {} ../bin
-        assets=()
-        for asset in ../bin/*.ipk; do
-          assets+=("-a" "$asset")
-        done
-        tag_name="${GITHUB_REF##*/}"
-        hub release create -p -d "${assets[@]}" -m "$tag_name" "$tag_name"
 
-                
     - name: Upload - push to artifact file
       uses: actions/upload-artifact@v1
       with:
