@@ -939,8 +939,10 @@ reload()
 {
 if pidof clash >/dev/null; then
       remove_mark 2>/dev/null
-	  yml_dns_change 2>/dev/null
-      rules 2>/dev/null	 
-	  echo "Clash Reload Completed"	
+      yml_dns_change 2>/dev/null
+      rules 2>/dev/null	
+      sleep 5
+      echo "Clash for OpenWRT" >$REAL_LOG
+      echo "Clash Reload Completed"	
 fi	  
 }
