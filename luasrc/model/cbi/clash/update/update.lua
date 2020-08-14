@@ -33,7 +33,6 @@ o.description =''..font_red..bold_on..translate("Manually download, unzip and re
 ..translatef("<a href=\"%s\" target=\"_blank\">" .. "Dreamacro clash tun core - clash(premium)</a>", translate("https://github.com/Dreamacro/clash/releases/tag/premium"))
 
 
-
 o.title = translate("  ")
 o.template = "clash/upload_core"
 um = sul:option(DummyValue, "", nil)
