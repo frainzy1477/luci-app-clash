@@ -15,33 +15,33 @@ bold_off = [[</strong>]]
 
 
 
-ko = Map("clash")
+ko = Map("trojan")
 ko.reset = false
 ko.submit = false
-sul =ko:section(TypedSection, "clash",translate("Manual Upload"))
+sul =ko:section(TypedSection, "trojan",translate("Manual Upload"))
 sul.anonymous = true
 sul.addremove=false
 o = sul:option(FileUpload, "")
-o.description =''..font_red..bold_on..translate("Manually download, unzip and rename clash core from links below and upload")..bold_off..font_off..' '
+o.description =''..font_red..bold_on..translate("Manually download, unzip and rename trojan core from links below and upload")..bold_off..font_off..' '
 .."<br />"
-..translatef("<a href=\"%s\" target=\"_blank\">" .. "Dreamacro clash core - clash</a>", translate("https://github.com/Dreamacro/clash/releases/latest"))
+..translatef("<a href=\"%s\" target=\"_blank\">" .. "Dreamacro trojan core - trojan</a>", translate("https://github.com/Dreamacro/trojan/releases/latest"))
 .."<br />"
-..translatef("<a href=\"%s\" target=\"_blank\">" .. "Frainzy1477 clashr core - clash</a>", translate("https://github.com/frainzy1477/clash_dev/releases/latest"))
+..translatef("<a href=\"%s\" target=\"_blank\">" .. "Frainzy1477 clashr core - trojan</a>", translate("https://github.com/frainzy1477/clash_dev/releases/latest"))
 .."<br />"
-..translatef("<a href=\"%s\" target=\"_blank\">" .. "comzyh clash tun core - clash(ctun)</a>", translate("https://github.com/comzyh/clash/releases/latest"))
+..translatef("<a href=\"%s\" target=\"_blank\">" .. "comzyh trojan tun core - trojan(ctun)</a>", translate("https://github.com/comzyh/trojan/releases/latest"))
 .."<br />"
-..translatef("<a href=\"%s\" target=\"_blank\">" .. "Dreamacro clash tun core - clash(premium)</a>", translate("https://github.com/Dreamacro/clash/releases/tag/premium"))
+..translatef("<a href=\"%s\" target=\"_blank\">" .. "Dreamacro trojan tun core - trojan(premium)</a>", translate("https://github.com/Dreamacro/trojan/releases/tag/premium"))
 
 
 o.title = translate("  ")
-o.template = "clash/upload_core"
+o.template = "trojan/upload_core"
 um = sul:option(DummyValue, "", nil)
-um.template = "clash/clash_dvalue"
+um.template = "trojan/clash_dvalue"
 
 local dir, fd,dtun,ctun,cssr
-dir = "/etc/clash/"
-dtun="/etc/clash/dtun/"
-ctun="/etc/clash/clashtun/"
+dir = "/etc/trojan/"
+dtun="/etc/trojan/dtun/"
+ctun="/etc/trojan/clashtun/"
 
 http.setfilehandler(
 	function(meta, chunk, eof)
@@ -49,7 +49,7 @@ http.setfilehandler(
 		if not fd then
 			if not meta then return end
 			
-			if fp == "clash" then
+			if fp == "trojan" then
 			   if meta and chunk then fd = nixio.open(dir .. meta.file, "w") end
 			elseif fp == "clashctun" then
 			   if meta and chunk then fd = nixio.open(ctun .. meta.file, "w") end
@@ -69,18 +69,18 @@ http.setfilehandler(
 			fd:close()
 			fd = nil
 			
-			if fp == "clash" then
-			    	SYS.exec("chmod 755 /etc/clash/clash 2>&1 &")
-				SYS.exec("rm -rf /usr/share/clash/core_version 2>/dev/null && /etc/clash/clash -v | awk -F ' ' '{print $2}' >> /usr/share/clash/core_version 2>/dev/null")
-				um.value = translate("File saved to") .. ' "/etc/clash/'..meta.file..'"'
+			if fp == "trojan" then
+			    	SYS.exec("chmod 755 /etc/trojan/trojan 2>&1 &")
+				SYS.exec("rm -rf /usr/share/trojan/core_version 2>/dev/null && /etc/trojan/trojan -v | awk -F ' ' '{print $2}' >> /usr/share/trojan/core_version 2>/dev/null")
+				um.value = translate("File saved to") .. ' "/etc/trojan/'..meta.file..'"'
 			elseif fp == "clashctun" then
-			    	SYS.exec("chmod 755 /etc/clash/clashtun/clash 2>&1 &")
-				SYS.exec("rm -rf /usr/share/clash/tun_version 2>/dev/null && /etc/clash/clashtun/clash -v | awk -F ' ' '{print $2}' >> /usr/share/clash/tun_version 2>/dev/null")
-				um.value = translate("File saved to") .. ' "/etc/clash/clashtun/'..meta.file..'"'
+			    	SYS.exec("chmod 755 /etc/trojan/clashtun/trojan 2>&1 &")
+				SYS.exec("rm -rf /usr/share/trojan/tun_version 2>/dev/null && /etc/trojan/clashtun/trojan -v | awk -F ' ' '{print $2}' >> /usr/share/trojan/tun_version 2>/dev/null")
+				um.value = translate("File saved to") .. ' "/etc/trojan/clashtun/'..meta.file..'"'
 			elseif fp == "clashdtun" then
-			    SYS.exec("chmod 755 /etc/clash/dtun/clash 2>&1 &")
-				SYS.exec("rm -rf /usr/share/clash/dtun_core_version 2>/dev/null && /etc/clash/dtun/clash -v | awk -F ' ' '{print $2}' >> /usr/share/clash/dtun_core_version 2>/dev/null")
-				um.value = translate("File saved to") .. ' "/etc/clash/dtun/'..meta.file..'"'  
+			    SYS.exec("chmod 755 /etc/trojan/dtun/trojan 2>&1 &")
+				SYS.exec("rm -rf /usr/share/trojan/dtun_core_version 2>/dev/null && /etc/trojan/dtun/trojan -v | awk -F ' ' '{print $2}' >> /usr/share/trojan/dtun_core_version 2>/dev/null")
+				um.value = translate("File saved to") .. ' "/etc/trojan/dtun/'..meta.file..'"'  
 			end
 			
 			
@@ -97,18 +97,18 @@ end
 
 
 
-m = Map("clash")
-m:section(SimpleSection).template  = "clash/update"
+m = Map("trojan")
+m:section(SimpleSection).template  = "trojan/update"
 m.pageaction = false
 
-k = Map("clash")
-s = k:section(TypedSection, "clash",translate("Download Online"))
+k = Map("trojan")
+s = k:section(TypedSection, "trojan",translate("Download Online"))
 s.anonymous = true
 o = s:option(ListValue, "dcore", translate("Core Type"))
 o.default = "clashcore"
-o:value("1", translate("Clash"))
-o:value("3", translate("Clash(ctun)"))
-o:value("4", translate("Clash(premium)"))
+o:value("1", translate("trojan"))
+o:value("3", translate("trojan(ctun)"))
+o:value("4", translate("trojan(premium)"))
 
 
 
@@ -134,12 +134,12 @@ o.inputtitle = translate("Save & Apply")
 o.title = luci.util.pcdata(translate("Save & Apply"))
 o.inputstyle = "reload"
 o.write = function()
-  k.uci:commit("clash")
+  k.uci:commit("trojan")
 end
 
 o = s:option(Button,"download")
 o.title = translate("Download")
-o.template = "clash/core_check"
+o.template = "trojan/core_check"
 
 
 return m, ko,k

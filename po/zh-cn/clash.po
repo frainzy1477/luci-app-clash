@@ -42,7 +42,7 @@ msgid "Custom List DNS"
 msgstr "自定义列表DNS"
 
 msgid "Apply Custom List"
-msgstr "保存自定义列表"
+msgstr "应用自定义列表"
 
 msgid "Custom List"
 msgstr "自定义列表"
@@ -93,7 +93,7 @@ msgid "Start"
 msgstr "启用客户端"
 
 msgid "Reload"
-msgstr "重启客户端"
+msgstr "重装客户端"
 
 msgid "enabled"
 msgstr "启用"
@@ -993,8 +993,8 @@ msgstr "选择类型"
 msgid "Set custom rules under Setting=>Others , will take effect when client start"
 msgstr "在“设置”=>“其他”下设置自定义规则，将在客户端启动时生效"
 
-msgid "Customs Rules"
-msgstr "自定义规则"
+msgid "Append Customs Rules"
+msgstr "附加自定义规则"
 
 msgid "Edit Custom Rule & Group"
 msgstr "编辑自定义规则组"
@@ -1009,7 +1009,7 @@ msgid "Manually download, unzip and rename clash core from links below and uploa
 msgstr "从下面的链接手动下载、解压和重命名到clash然后上载"
 
 msgid "Manual Upload"
-msgstr "手动上传"
+msgstr "手动上载"
 
 msgid "Download Online"
 msgstr "在线下载"
