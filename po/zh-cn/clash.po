@@ -948,8 +948,8 @@ msgstr "代理模式"
 msgid "Choose proxy mode"
 msgstr "选择代理模式"
 
-msgid "NB: Upload only Dreamacro clash tun core - (https://github.com/Dreamacro/clash/releases/tag/TUN)"
-msgstr "注意：只上传clash tun内核-(https://github.com/Dreamacro/clash/releases/tag/TUN)"
+msgid "NB: Upload only Dreamacro clash tun core - (https://github.com/Dreamacro/clash/releases/tag/premium)"
+msgstr "注意：只上传clash(premium)内核-(https://github.com/Dreamacro/clash/releases/tag/premium)"
 
 msgid "Load Provider"
 msgstr "读取代理集"
@@ -1006,7 +1006,7 @@ msgid "IP/Domain/Address/Keyword/Port"
 msgstr "IP/域/地址/关键字/端口"
 
 msgid "Manually download, unzip and rename clash core from links below and upload"
-msgstr "从下面的链接手动下载、解压和重命名到clash然后上载"
+msgstr "从以下链接手动下载、解压和重命名为clash，然后再选择对应版本上载"
 
 msgid "Manual Upload"
 msgstr "手动上载"

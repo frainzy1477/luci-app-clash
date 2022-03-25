@@ -1,0 +1,3 @@
+#不要删除且在第三行，否则系统取不到版本号。只能手动输入检测.每次只需更改=后面的日期2022.03.21即可。
+#最新版本号 https://release.dreamacro.workers.dev/的最新日期文件同名即可。
+!clash(premium)_version=2022.03.21

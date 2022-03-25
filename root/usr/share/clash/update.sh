@@ -17,7 +17,9 @@ if [ $type == "clash" ] && [ ! -z $url ];then
 	elif [ $lang == "zh_cn" ];then
 				echo "开始更新配置" >$REAL_LOG
 	fi
-	wget --no-check-certificate --user-agent="Clash/OpenWRT" $url -O 2>&1 >1 $CONFIG_YAML
+	#wget --no-check-certificate --user-agent="Clash/OpenWRT" $url -O 2>&1 >1 $CONFIG_YAML
+	clash_wget_dl="wget --no-check-certificate -t 2 -T 20 --user-agent=\"Clash/OpenWRT\" ${url} -O 2>&1 >1 $CONFIG_YAML"
+	`${clash_wget_dl}`
 	
 	if [ "$?" -eq "0" ]; then
 		if [ $lang == "en" ] || [ $lang == "auto" ];then

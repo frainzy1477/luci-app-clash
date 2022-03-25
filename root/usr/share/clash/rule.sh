@@ -2,7 +2,10 @@
 rule=$(uci get clash.config.rule_url 2>/dev/null)
 RULE_YAML="/tmp/Rule"
 
-wget -c4 --no-check-certificate --user-agent="Clash/OpenWRT"  "$rule" -O 2>&1 >1 $RULE_YAML
+#wget -c4 --no-check-certificate --user-agent="Clash/OpenWRT"  "$rule" -O 2>&1 >1 $RULE_YAML
+clash_wget_dl="wget --no-check-certificate -t 2 -T 20 -c4 --user-agent=\"Clash/OpenWRT\"  ${rule} -O 2>&1 >1 ${RULE_YAML}"
+
+`${clash_wget_dl}`
 
 if [ -f  "$RULE_YAML" ]; then
 status=$(egrep '^ {0,}Rule:' /tmp/Rule)

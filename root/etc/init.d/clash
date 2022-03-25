@@ -388,8 +388,7 @@ rules(){
 			iptables -t mangle -A clash -d 198.18.0.0/16 -j MARK --set-mark "$PROXY_FWMARK"
 			fi
 			
-            iptables -t mangle -I OUTPUT -j clash
-            #iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"
+			#iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -j MARK --set-mark "$PROXY_FWMARK"
 			#iptables -t mangle -I PREROUTING -m set ! --match-set china dst -j MARK --set-mark "$PROXY_FWMARK"
 			iptables -t mangle -I PREROUTING -m set ! --match-set localnetwork dst -m set ! --match-set china dst -j MARK --set-mark "$PROXY_FWMARK"
 			iptables -t mangle -I PREROUTING -m set --match-set reject_lan src -j RETURN >/dev/null 2>&1
@@ -527,7 +526,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
-			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
+			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)内核" >$REAL_LOG
 		fi
 		remove_mark >/dev/null 2>&1
 		sleep 1
@@ -544,7 +543,7 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5)}')" -ne 
 		if [ "${lang}" == "en" ] || [ $lang == "auto" ];then
 			echo "Your Current Config only support Clash Core(dtun)" >$REAL_LOG 
 		elif [ "${lang}" == "zh_cn" ];then
-			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)h内核" >$REAL_LOG
+			echo "你在使用配置不支持Clash内核，仅支持Clash(dtun)内核" >$REAL_LOG
 		fi
 		remove_mark >/dev/null 2>&1
 		sleep 1

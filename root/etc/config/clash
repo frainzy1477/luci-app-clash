@@ -47,70 +47,173 @@ config dnshijack
 
 config dnshijack
 	option enabled '1'
-	option ip '8.8.8.8'
+	option ip '114.114.114.114'
 	option port '53'
 	option type 'udp://'
-	
+
 config hosts
 	option enabled '0'
 	option adress '*.clash.dev'
 	option ip '127.0.0.1'
-	
+
 config hosts
 	option enabled '0'
 	option adress 'alpha.clash.dev'
 	option ip '::1'
 
 config dnsservers
-	option enabled '1'
 	option ser_type 'nameserver'
-	option ser_address '114.114.114.114'
+	option type 'udp'
+	option ip '114.114.114.114'
+	option enabled '1'
 	option protocol 'udp://'
+	option ser_address '114.114.114.114'
 
 config dnsservers
+	option ser_type 'nameserver'
+	option type 'udp'
+	option ip '119.29.29.29'
+	option enabled '0'
+	option protocol 'udp://'
+	option ser_address '119.29.29.29'
+
+config dnsservers
+	option ser_type 'nameserver'
+	option type 'udp'
+	option ip '119.28.28.28'
+	option enabled '0'
+	option protocol 'udp://'
+	option ser_address '223.5.5.5'
+
+config dnsservers
+	option ser_type 'nameserver'
+	option type 'udp'
+	option ip '223.5.5.5'
 	option enabled '1'
-	option ser_port '853'
+	option protocol 'https://'
+	option ser_address 'doh.pub/dns-query'
+
+config dnsservers
+	option type 'https'
+	option ip 'doh.pub/dns-query'
+	option ser_type 'nameserver'
+	option enabled '1'
+	option protocol 'https://'
+	option ser_address 'dns.alidns.com/dns-query'
+
+config dnsservers
+	option type 'https'
+	option ip 'dns.alidns.com/dns-query'
+	option enabled '1'
+	option ser_type 'fallback'
+	option protocol 'https://'
+	option ser_address 'dns.cloudflare.com/dns-query'
+
+config dnsservers
+	option type 'https'
+	option ser_type 'fallback'
+	option ip 'dns.cloudflare.com/dns-query'
+	option enabled '0'
 	option protocol 'tls://'
-	option ser_type 'nameserver'
-	option ser_address '47.96.179.163'
-
-config dnsservers
-	option enabled '1'
-	option ser_type 'nameserver'
-	option ser_address '118.89.110.78'
+	option ser_address 'dns.google'
 	option ser_port '853'
-	option protocol 'tls://'
 
 config dnsservers
-	option enabled '1'
-	option ser_type 'nameserver'
+	option ser_type 'fallback'
+	option ip 'dns.google'
+	option port '853'
+	option type 'tls'
+	option enabled '0'
+	option protocol 'https://'
+	option ser_address '1.1.1.1/dns-query'
+
+config dnsservers
+	option ser_type 'fallback'
+	option type 'https'
+	option ip '1.1.1.1/dns-query'
+	option enabled '0'
+	option protocol 'tls://'
+	option ser_address '1.1.1.1'
+	option ser_port '853'
+
+config dnsservers
+	option ser_type 'fallback'
+	option ip '1.1.1.1'
+	option port '853'
+	option type 'tls'
+	option enabled '0'
+	option protocol 'tls://'
 	option ser_address '8.8.8.8'
+	option ser_port '853'
+
+config dnsservers
+	option enabled '0'
+	option ser_type 'fallback'
+	option ip '8.8.8.8'
+	option port '853'
+	option type 'tls'
+	option protocol 'udp://'
+	option ser_address '2001:4860:4860::8888'
 	option ser_port '53'
+
+config dnsservers
+	option type 'udp'
+	option ser_type 'fallback'
+	option ip '2001:4860:4860::8888'
+	option port '53'
+	option enabled '0'
 	option protocol 'udp://'
+	option ser_address '2001:4860:4860::8844'
+	option ser_port '53'
 
 config dnsservers
-	option enabled '1'
-	option ser_type 'nameserver'
-	option ser_address '1.1.1.1'
-	option ser_port '853'
-	option protocol 'tls://'
-
-config dnsservers
-	option enabled '1'
+	option type 'udp'
 	option ser_type 'fallback'
-	option ser_address '114.114.114.114'
+	option ip '2001:4860:4860::8844'
+	option port '53'
+	option enabled '0'
 	option protocol 'udp://'
+	option ser_address '2001:da8::666'
+	option ser_port '53'
 
 config dnsservers
-	option enabled '1'
+	option type 'udp'
 	option ser_type 'fallback'
-	option ser_address '118.89.110.78'
-	option ser_port '853'
+	option ip '2001:da8::666'
+	option port '53'
+	option enabled '1'
+	option protocol 'https://'
+	option ser_address 'public.dns.iij.jp/dns-query'
+
+config dnsservers
+	option ser_type 'fallback'
+	option type 'https'
+	option ip 'public.dns.iij.jp/dns-query'
+	option enabled '1'
+	option protocol 'https://'
+	option ser_address 'jp.tiar.app/dns-query'
+
+config dnsservers
+	option ser_type 'fallback'
+	option type 'https'
+	option ip 'jp.tiar.app/dns-query'
+	option enabled '1'
+	option protocol 'https://'
+	option ser_address 'jp.tiarap.org/dns-query'
+
+config dnsservers
+	option ser_type 'fallback'
+	option type 'https'
+	option ip 'jp.tiarap.org/dns-query'
+	option enabled '0'
 	option protocol 'tls://'
+	option ser_address 'jp.tiar.app'
 
 config dnsservers
-	option enabled '1'
 	option ser_type 'fallback'
-	option ser_address '1.1.1.1'
-	option protocol 'tcp://'
+	option ip 'jp.tiar.app'
+	option type 'tls'
+	option enabled '1'
+	option protocol 'tls://'
+	option ser_address 'dot.tiar.app'
 
